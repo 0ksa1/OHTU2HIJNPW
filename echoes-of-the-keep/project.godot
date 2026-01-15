@@ -11,5 +11,10 @@ config_version=5
 [application]
 
 config/name="Echoes of the Keep"
+run/main_scene="uid://c4g5w8jytvlk3"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
