@@ -717,7 +717,6 @@ tile_set = SubResource("TileSet_ycayy")
 
 [node name="player" parent="." instance=ExtResource("1_w5aja")]
 motion_mode = 1
-mov_speed = 150.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4, 4)
