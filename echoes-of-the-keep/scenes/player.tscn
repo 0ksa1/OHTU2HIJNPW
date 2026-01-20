@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=3 uid="uid://bysyxofpjcxjj"]
 
 [ext_resource type="Texture2D" uid="uid://ce7t4x48lfsm2" path="res://animations/fight-stance-idle-8-frames/south/frame_000.png" id="1_f1ej7"]
-[ext_resource type="Script" uid="uid://tq3h0pushebe" path="res://scenes/player_movement.gd" id="1_oprun"]
+[ext_resource type="Script" uid="uid://tq3h0pushebe" path="res://scripts/player_movement.gd" id="1_oprun"]
 [ext_resource type="Texture2D" uid="uid://cnjdae7xvvjre" path="res://animations/fight-stance-idle-8-frames/south/frame_001.png" id="2_oprun"]
 [ext_resource type="Texture2D" uid="uid://m5l33mqts1aa" path="res://animations/fight-stance-idle-8-frames/south/frame_002.png" id="3_a8ls1"]
 [ext_resource type="Texture2D" uid="uid://be134kjhulo60" path="res://animations/fight-stance-idle-8-frames/south/frame_003.png" id="4_qfm1y"]
@@ -89,3 +89,9 @@ frame_progress = 0.18400344
 [node name="collision" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 3)
 shape = SubResource("CapsuleShape2D_dt7fs")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(5, 5)
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0

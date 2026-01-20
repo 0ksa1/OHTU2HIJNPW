@@ -13,12 +13,14 @@ func pause():
 	$AnimationPlayer.play("blur_animation")
 	show()
 
+# pause ja resume
 func testEsc():
 	if Input.is_action_just_pressed("escKey") and get_tree().paused == false:
 		pause()
 	elif Input.is_action_just_pressed("escKey") and get_tree().paused == true:
 		resume()
 
+#nappien painallukset
 func _on_resume_button_pressed():
 	resume()
 func _on_restart_button_pressed():
@@ -26,6 +28,9 @@ func _on_restart_button_pressed():
 	get_tree().reload_current_scene()
 func _on_quit_button_pressed():
 	get_tree().quit()
+	#
+	# Tänne settings ja controls napit
+	#
 
 func _process(delta):
 	testEsc()
