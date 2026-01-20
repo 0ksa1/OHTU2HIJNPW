@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=4 uid="uid://dp7sp7pxd1qgf"]
+[gd_scene load_steps=8 format=4 uid="uid://dp7sp7pxd1qgf"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_onqr8"]
 [ext_resource type="PackedScene" uid="uid://bysyxofpjcxjj" path="res://scenes/player.tscn" id="1_w5aja"]
-[ext_resource type="PackedScene" uid="uid://cxsbvubvyy24k" path="res://scenes/pause_menu.tscn" id="3_ycayy"]
-[ext_resource type="Script" uid="uid://dji04ov37q01t" path="res://pause_menu.gd" id="4_bw6k5"]
+[ext_resource type="PackedScene" uid="uid://b7rrmwbsn41pt" path="res://scenes/pause_menu.tscn" id="3_ycayy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ycayy"]
 texture = ExtResource("1_onqr8")
@@ -723,10 +722,6 @@ position = Vector2(3, -2)
 motion_mode = 1
 mov_speed = 150.0
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(4, 4)
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("3_ycayy")]
-script = ExtResource("4_bw6k5")
