@@ -12,8 +12,7 @@ func _ready() -> void:
 	sprite.play(_idle_anim_for_dir(last_dir))
 
 
-func _physics_process(delta: float) -> void:
-	# Lue input
+func _physics_process(_delta):
 	input_dir.x = Input.get_axis("move_left", "move_right")
 	input_dir.y = Input.get_axis("move_up", "move_down")
 	input_dir = input_dir.normalized()
@@ -33,8 +32,6 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-
-# -------- Apufunktiot --------
 
 func _to_cardinal(v: Vector2) -> Vector2:
 	# Valitse pääsuunta sen mukaan, kumpi akseli on vahvempi
