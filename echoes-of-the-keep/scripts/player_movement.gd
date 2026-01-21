@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @export var mov_speed: float = 500.0
 
-var character_direction: Vector2 = Vector2.ZERO
+var input_dir: Vector2 = Vector2.ZERO
 var last_dir: Vector2 = Vector2.DOWN
 
 @onready var sprite: AnimatedSprite2D = %sprite
@@ -13,30 +13,28 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	character_direction.x = Input.get_axis("move_left", "move_right")
-	character_direction.y = Input.get_axis("move_up", "move_down")
-	character_direction = character_direction.normalized()
+	# Lue input
+	input_dir.x = Input.get_axis("move_left", "move_right")
+	input_dir.y = Input.get_axis("move_up", "move_down")
+	input_dir = input_dir.normalized()
 
-	# Päivitä viimeisin suunta vain jos liikutaan
-	if character_direction != Vector2.ZERO:
-		last_dir = _to_cardinal(character_direction)
-		velocity = character_direction * mov_speed
+	# Päivitä viimeisin pääsuunta vain jos liikutaan
+	if input_dir != Vector2.ZERO:
+		last_dir = _to_cardinal(input_dir)
+		velocity = input_dir * mov_speed
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, mov_speed)
 
-	# Animaation valinta:
-	if character_direction != Vector2.ZERO:
-		# Teillä ei ehkä ole vielä run_* animaatioita -> fallback idleen
-		var run_anim := _run_anim_for_dir(last_dir)
-		if sprite.sprite_frames.has_animation(run_anim):
-			_play_if_needed(run_anim)
-		else:
-			_play_if_needed(_idle_anim_for_dir(last_dir))
+	# Valitse animaatio
+	if input_dir != Vector2.ZERO:
+		_play_if_needed(_run_anim_for_dir(last_dir))
 	else:
 		_play_if_needed(_idle_anim_for_dir(last_dir))
 
 	move_and_slide()
 
+
+# -------- Apufunktiot --------
 
 func _to_cardinal(v: Vector2) -> Vector2:
 	# Valitse pääsuunta sen mukaan, kumpi akseli on vahvempi
