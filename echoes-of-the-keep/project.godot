@@ -15,6 +15,15 @@ run/main_scene="uid://dp7sp7pxd1qgf"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GUI="*res://scripts/autoloads/GUI_Autoload.gd"
+
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/scale_mode="integer"
+
 [input]
 
 move_up={

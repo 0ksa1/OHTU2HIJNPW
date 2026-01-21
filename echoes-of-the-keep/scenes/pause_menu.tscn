@@ -69,26 +69,24 @@ _data = {
 }
 
 [node name="PauseMenu" type="Control"]
-process_mode = 3
+process_mode = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -4.0
-offset_top = 2.0
-offset_right = -4.0
-offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_myx47")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_nwcfo")
-layout_mode = 0
-offset_left = 4.0
-offset_top = -2.0
-offset_right = 1158.0
-offset_bottom = 646.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 0
@@ -96,9 +94,39 @@ offset_right = 1154.0
 offset_bottom = 649.0
 
 [node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
-process_mode = 3
+process_mode = 2
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+
+[node name="SettingsPanel" type="Panel" parent="CenterContainer/PanelContainer"]
+process_mode = 2
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/SettingsPanel"]
+process_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SettingsOtsikko" type="Label" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer"]
+layout_mode = 2
+text = "SETTINGS"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Resolution" type="Label" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Resolution:"
+
+[node name="OptionButton" type="OptionButton" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer"]
 process_mode = 3
@@ -110,30 +138,34 @@ layout_mode = 2
 text = "Resume"
 
 [node name="RestartButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
-process_mode = 3
+process_mode = 2
 layout_mode = 2
 text = "Restart
 "
 
 [node name="SettingsButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+process_mode = 2
 layout_mode = 2
 text = "Settings"
 
 [node name="ControlsButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+process_mode = 2
 layout_mode = 2
 text = "Controls"
 
 [node name="QuitButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
-process_mode = 3
+process_mode = 2
 layout_mode = 2
 text = "Quit"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-process_mode = 3
+process_mode = 2
 libraries = {
 &"": SubResource("AnimationLibrary_2nc7s")
 }
 
 [connection signal="pressed" from="CenterContainer/PanelContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="CenterContainer/PanelContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="CenterContainer/PanelContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="CenterContainer/PanelContainer/VBoxContainer/ControlsButton" to="." method="_on_controls_button_pressed"]
 [connection signal="pressed" from="CenterContainer/PanelContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
