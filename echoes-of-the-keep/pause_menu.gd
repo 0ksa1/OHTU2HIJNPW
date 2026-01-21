@@ -30,12 +30,11 @@ func update_button_values():
 	var resolutions_index = GUI.resolutions.keys().find(window_size_string)
 	resolutions_option_button.selected = resolutions_index
 
+#tämä osuus ilmeisesti tökkii
+#korjaan myöhemmin
 func _on_option_button_item_selected(index):
 	var key = resolutions_option_button.get_item_text(index)
-
-	var w := get_window()
-	w.mode = Window.MODE_WINDOWED
-	w.size = GUI.resolutions[key]
+	get_window().set_size(GUI.resolutions[key])
 	
 
 func open_settings():
