@@ -64,3 +64,4 @@ func _run_anim_for_dir(dir: Vector2) -> String:
 func _play_if_needed(anim: String) -> void:
 	if sprite.animation != anim or not sprite.is_playing():
 		sprite.play(anim)
+		

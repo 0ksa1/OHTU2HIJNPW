@@ -24,7 +24,13 @@ func _ready() -> void:
 	sprite.play(_idle_anim_for_dir(last_dir))
 
 
-func _physics_process(_delta):
+func _physics_process(delta):
+	player_movement(delta)
+	current_camera()
+	
+	
+	
+func player_movement(delta):
 	input_dir.x = Input.get_axis(\"move_left\", \"move_right\")
 	input_dir.y = Input.get_axis(\"move_up\", \"move_down\")
 	input_dir = input_dir.normalized()
@@ -76,6 +82,18 @@ func _run_anim_for_dir(dir: Vector2) -> String:
 func _play_if_needed(anim: String) -> void:
 	if sprite.animation != anim or not sprite.is_playing():
 		sprite.play(anim)
+
+func player():
+	pass
+	
+func current_camera():
+	if global.current_scene == \"game_scene\":
+		$game_scene_camera.enabled = true
+		$dungeon_camera.enabled = false
+	elif global.current_scene == \"dungeon_1\":
+		$game_scene_camera.enabled = false
+		$dungeon_camera.enabled = true
+	
 "
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a8ls1"]
@@ -569,24 +587,33 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3vyb7"]
-size = Vector2(15.5, 10)
+[sub_resource type="CircleShape2D" id="CircleShape2D_smehm"]
+radius = 5.0
 
 [node name="player" type="CharacterBody2D"]
+position = Vector2(29, 27)
 script = SubResource("GDScript_smehm")
 mov_speed = 150.0
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
+position = Vector2(0, -1)
 sprite_frames = SubResource("SpriteFrames_u8vuu")
 animation = &"run_up"
 
-[node name="camera" type="Camera2D" parent="."]
+[node name="game_scene_camera" type="Camera2D" parent="."]
+position = Vector2(-1, 1)
 zoom = Vector2(5, 5)
 process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
 [node name="collision" type="CollisionShape2D" parent="."]
-position = Vector2(1, 12)
-shape = SubResource("RectangleShape2D_3vyb7")
+position = Vector2(-1, 12)
+shape = SubResource("CircleShape2D_smehm")
+
+[node name="dungeon_camera" type="Camera2D" parent="."]
+position = Vector2(-1, 1)
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
