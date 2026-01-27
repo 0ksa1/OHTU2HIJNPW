@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://l0bac5v7t666"]
+
+[ext_resource type="Texture2D" uid="uid://cq5bvawakub26" path="res://art/npc/girl/idle/girl.png" id="1_78mcp"]
+[ext_resource type="Script" uid="uid://dhsob1d1itnei" path="res://scenes/girl_npc.gd" id="1_yfdec"]
+[ext_resource type="PackedScene" uid="uid://b2up7eeemadak" path="res://dialogue/dialogue.tscn" id="3_bwauq"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yfdec"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_78mcp")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 1.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bwauq"]
+size = Vector2(16, 11.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4q8gf"]
+radius = 37.0
+
+[node name="GirlNpc" type="CharacterBody2D"]
+script = ExtResource("1_yfdec")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_yfdec")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 12)
+shape = SubResource("RectangleShape2D_bwauq")
+
+[node name="chat_detection" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="chat_detection"]
+shape = SubResource("CircleShape2D_4q8gf")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Dialogue" parent="CanvasLayer" instance=ExtResource("3_bwauq")]
+
+[connection signal="body_entered" from="chat_detection" to="." method="_on_chat_detection_body_entered"]
+[connection signal="body_exited" from="chat_detection" to="." method="_on_chat_detection_body_exited"]
+[connection signal="dialogue_finished" from="CanvasLayer/Dialogue" to="." method="_on_dialogue_dialogue_finished"]
