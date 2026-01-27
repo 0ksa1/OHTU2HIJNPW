@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dxbkuor8cih1c" path="res://scenes/game_scene.gd" id="1_y3j0m"]
 [ext_resource type="TileSet" uid="uid://djvqms3pl5kap" path="res://tiles/collision_tileset.tres" id="2_bw6k5"]
 [ext_resource type="PackedScene" uid="uid://b7rrmwbsn41pt" path="res://scenes/pause_menu.tscn" id="3_ycayy"]
-[ext_resource type="PackedScene" uid="uid://dohybjnu4fth3" path="res://scenes/player.tscn" id="5_rurhu"]
+[ext_resource type="PackedScene" uid="uid://dohybjnu4fth3" path="res://scripts/player.tscn" id="5_rurhu"]
 [ext_resource type="PackedScene" uid="uid://l0bac5v7t666" path="res://scenes/girl_npc.tscn" id="6_rurhu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ycayy"]
