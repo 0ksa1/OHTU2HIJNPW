@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export var mov_speed: float = 500.0
+@export var mov_speed: float = 150
 
 var input_dir: Vector2 = Vector2.ZERO
 var last_dir: Vector2 = Vector2.DOWN
@@ -12,7 +12,13 @@ func _ready() -> void:
 	sprite.play(_idle_anim_for_dir(last_dir))
 
 
-func _physics_process(_delta):
+func _physics_process(delta):
+	player_movement(delta)
+	current_camera()
+	
+	
+	
+func player_movement(delta):
 	input_dir.x = Input.get_axis("move_left", "move_right")
 	input_dir.y = Input.get_axis("move_up", "move_down")
 	input_dir = input_dir.normalized()
@@ -64,7 +70,6 @@ func _run_anim_for_dir(dir: Vector2) -> String:
 func _play_if_needed(anim: String) -> void:
 	if sprite.animation != anim or not sprite.is_playing():
 		sprite.play(anim)
-		
 
 func player():
 	pass
