@@ -34,7 +34,7 @@ git clone https://github.com/0ksa1/OHTU2HIJNPW.git
 - Move: WASD
 - Pause: Esc
 - Attack: TBD
-- Interact: TBD
+- Interact: E
   
 <h1 align="center">Contributors</h1>
 
