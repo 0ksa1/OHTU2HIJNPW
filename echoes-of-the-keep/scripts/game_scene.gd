@@ -3,6 +3,11 @@ extends Node2D
 func _ready() -> void:
 	$collision_tilemap.visible = false
 	
+	if global.firstload == true:
+		$player.position.x = global.player_start_posx
+		$player.position.y = global.player_start_posy
+	
+	
 func _process(delta):
 	change_scene()
 
