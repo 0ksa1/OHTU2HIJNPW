@@ -1,11 +1,35 @@
-[gd_scene load_steps=7 format=3 uid="uid://b7rrmwbsn41pt"]
+[gd_scene load_steps=11 format=3 uid="uid://b7rrmwbsn41pt"]
 
 [ext_resource type="Shader" uid="uid://msui542rssr8" path="res://pause_menu.gdshader" id="1_hdmo1"]
 [ext_resource type="Script" uid="uid://dji04ov37q01t" path="res://pause_menu.gd" id="1_myx47"]
+[ext_resource type="Texture2D" uid="uid://bj6v8k3ck4nma" path="res://art/ui/pause_panel.tres" id="3_kukqi"]
+[ext_resource type="Texture2D" uid="uid://cjd4ltaxjabo4" path="res://art/ui/menu/settings.tres" id="4_5d2l8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nwcfo"]
 shader = ExtResource("1_hdmo1")
 shader_parameter/lod = 0.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5d2l8"]
+texture = ExtResource("3_kukqi")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 20.0
+expand_margin_top = 20.0
+expand_margin_right = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7l7mv"]
+texture = ExtResource("4_5d2l8")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
 
 [sub_resource type="Animation" id="Animation_p81d2"]
 length = 0.001
@@ -96,11 +120,15 @@ offset_bottom = 649.0
 [node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
 process_mode = 2
 modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(400, 100)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_5d2l8")
 
 [node name="SettingsPanel" type="Panel" parent="CenterContainer/PanelContainer"]
 process_mode = 2
+custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_7l7mv")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/SettingsPanel"]
 process_mode = 2
@@ -113,7 +141,8 @@ grow_vertical = 2
 
 [node name="SettingsOtsikko" type="Label" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer"]
 layout_mode = 2
-text = "SETTINGS"
+text = "
+"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer"]
 layout_mode = 2
