@@ -1,18 +1,43 @@
-[gd_scene load_steps=7 format=3 uid="uid://l0bac5v7t666"]
+[gd_scene load_steps=11 format=3 uid="uid://l0bac5v7t666"]
 
-[ext_resource type="Texture2D" uid="uid://cq5bvawakub26" path="res://art/npc/girl/idle/girl.png" id="1_78mcp"]
 [ext_resource type="Script" uid="uid://dhsob1d1itnei" path="res://scenes/girl_npc.gd" id="1_yfdec"]
 [ext_resource type="PackedScene" uid="uid://b2up7eeemadak" path="res://dialogue/dialogue.tscn" id="3_bwauq"]
+[ext_resource type="Texture2D" uid="uid://cf5vpwj5u1hjy" path="res://art/npc/girl/idle/tyty_idle_clothed_FULL_stretched2.png" id="7_udb01"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_yfdec"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5y63y"]
+atlas = ExtResource("7_udb01")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aihtf"]
+atlas = ExtResource("7_udb01")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l2way"]
+atlas = ExtResource("7_udb01")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vgrv"]
+atlas = ExtResource("7_udb01")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_satta"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_78mcp")
+"texture": SubResource("AtlasTexture_5y63y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aihtf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l2way")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3vgrv")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 1.0
+"speed": 4.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bwauq"]
@@ -25,16 +50,20 @@ radius = 37.0
 script = ExtResource("1_yfdec")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_yfdec")
+position = Vector2(1, -2)
+sprite_frames = SubResource("SpriteFrames_satta")
 animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.09960685
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 12)
+position = Vector2(1, 12)
 shape = SubResource("RectangleShape2D_bwauq")
 
 [node name="chat_detection" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="chat_detection"]
+position = Vector2(1, 0)
 shape = SubResource("CircleShape2D_4q8gf")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
