@@ -726,7 +726,7 @@ tile_map_data = PackedByteArray("AAD6//7/AAAKAAsAAAD7//7/AAALAAsAAAAHAAIAAAAKAAs
 tile_set = SubResource("TileSet_ycayy")
 
 [node name="girl_npc" parent="." instance=ExtResource("6_rurhu")]
-position = Vector2(110, -84)
+position = Vector2(110, -86)
 
 [node name="player" parent="." groups=["player"] instance=ExtResource("5_rurhu")]
 motion_mode = 1
