@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=4 uid="uid://dp7sp7pxd1qgf"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_onqr8"]
-[ext_resource type="Script" uid="uid://dxbkuor8cih1c" path="res://scripts/game_scene.gd" id="1_y3j0m"]
+[ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_y3j0m"]
 [ext_resource type="TileSet" uid="uid://djvqms3pl5kap" path="res://tiles/collision_tileset.tres" id="2_bw6k5"]
 [ext_resource type="PackedScene" uid="uid://b7rrmwbsn41pt" path="res://scenes/pause_menu.tscn" id="3_ycayy"]
 [ext_resource type="PackedScene" uid="uid://dohybjnu4fth3" path="res://scenes/player.tscn" id="5_rurhu"]
@@ -729,16 +729,13 @@ tile_map_data = PackedByteArray("AAD6//7/AAAKAAsAAAD7//7/AAALAAsAAAAHAAIAAAAKAAs
 tile_set = SubResource("TileSet_ycayy")
 
 [node name="girl_npc" parent="." instance=ExtResource("6_rurhu")]
-position = Vector2(110, -86)
+position = Vector2(103, -69)
 
-[node name="player" parent="." groups=["player"] instance=ExtResource("5_rurhu")]
+[node name="player" parent="." instance=ExtResource("5_rurhu")]
 position = Vector2(-89, 0)
 
 [node name="collision" parent="player" index="2"]
 position = Vector2(1, 13)
-
-[node name="girl_npc" parent="." instance=ExtResource("6_rurhu")]
-position = Vector2(110, -84)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
