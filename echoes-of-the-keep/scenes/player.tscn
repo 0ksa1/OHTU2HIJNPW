@@ -1,6 +1,7 @@
 [gd_scene load_steps=76 format=3 uid="uid://dohybjnu4fth3"]
 
 [ext_resource type="Texture2D" uid="uid://b8qls4rdapdp5" path="res://art/player/idle/idle_down.png" id="1_smehm"]
+[ext_resource type="Script" uid="uid://msne0d0esa3u" path="res://scripts/player.gd" id="1_ur7pv"]
 [ext_resource type="Texture2D" uid="uid://curykovpyvd6m" path="res://art/player/idle/idle_left.png" id="2_ur7pv"]
 [ext_resource type="Texture2D" uid="uid://ccregxjynofq1" path="res://art/player/idle/idle_right.png" id="3_y4r1p"]
 [ext_resource type="Texture2D" uid="uid://1wh2wo7pt1cw" path="res://art/player/idle/idle_up.png" id="4_d2wvv"]
@@ -8,75 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://yo7kg8hpbmi6" path="res://art/player/run/run_left.png" id="6_jej6c"]
 [ext_resource type="Texture2D" uid="uid://dgq331e1433ti" path="res://art/player/run/run_right.png" id="7_f1ej7"]
 [ext_resource type="Texture2D" uid="uid://ckvto6nriw4uy" path="res://art/player/run/run_up.png" id="8_oprun"]
-
-[sub_resource type="GDScript" id="GDScript_smehm"]
-script/source = "extends CharacterBody2D
-
-@export var mov_speed: float = 500.0
-
-var input_dir: Vector2 = Vector2.ZERO
-var last_dir: Vector2 = Vector2.DOWN
-
-@onready var sprite: AnimatedSprite2D = %sprite
-
-
-func _ready() -> void:
-	sprite.play(_idle_anim_for_dir(last_dir))
-
-
-func _physics_process(_delta):
-	input_dir.x = Input.get_axis(\"move_left\", \"move_right\")
-	input_dir.y = Input.get_axis(\"move_up\", \"move_down\")
-	input_dir = input_dir.normalized()
-
-	# Päivitä viimeisin pääsuunta vain jos liikutaan
-	if input_dir != Vector2.ZERO:
-		last_dir = _to_cardinal(input_dir)
-		velocity = input_dir * mov_speed
-	else:
-		velocity = velocity.move_toward(Vector2.ZERO, mov_speed)
-
-	# Valitse animaatio
-	if input_dir != Vector2.ZERO:
-		_play_if_needed(_run_anim_for_dir(last_dir))
-	else:
-		_play_if_needed(_idle_anim_for_dir(last_dir))
-
-	move_and_slide()
-
-
-func _to_cardinal(v: Vector2) -> Vector2:
-	# Valitse pääsuunta sen mukaan, kumpi akseli on vahvempi
-	if abs(v.x) > abs(v.y):
-		return Vector2.RIGHT if v.x > 0.0 else Vector2.LEFT
-	else:
-		return Vector2.DOWN if v.y > 0.0 else Vector2.UP
-
-
-func _idle_anim_for_dir(dir: Vector2) -> String:
-	if dir == Vector2.UP:
-		return \"idle_up\"
-	if dir == Vector2.DOWN:
-		return \"idle_down\"
-	if dir == Vector2.LEFT:
-		return \"idle_left\"
-	return \"idle_right\"
-
-
-func _run_anim_for_dir(dir: Vector2) -> String:
-	if dir == Vector2.UP:
-		return \"run_up\"
-	if dir == Vector2.DOWN:
-		return \"run_down\"
-	if dir == Vector2.LEFT:
-		return \"run_left\"
-	return \"run_right\"
-
-
-func _play_if_needed(anim: String) -> void:
-	if sprite.animation != anim or not sprite.is_playing():
-		sprite.play(anim)
-"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a8ls1"]
 atlas = ExtResource("1_smehm")
@@ -569,24 +501,41 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3vyb7"]
-size = Vector2(15.5, 10)
+[sub_resource type="CircleShape2D" id="CircleShape2D_smehm"]
+radius = 5.0
 
-[node name="player" type="CharacterBody2D"]
-script = SubResource("GDScript_smehm")
-mov_speed = 150.0
+[node name="player" type="CharacterBody2D" groups=["player"]]
+position = Vector2(29, 27)
+script = ExtResource("1_ur7pv")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
+position = Vector2(0, -1)
 sprite_frames = SubResource("SpriteFrames_u8vuu")
 animation = &"run_up"
 
-[node name="camera" type="Camera2D" parent="."]
-zoom = Vector2(5, 5)
+[node name="game_scene_camera" type="Camera2D" parent="."]
+position = Vector2(-1, 1)
+zoom = Vector2(4, 4)
 process_callback = 0
+limit_left = -136
+limit_top = -121
+limit_right = 184
+limit_bottom = 71
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
 [node name="collision" type="CollisionShape2D" parent="."]
-position = Vector2(1, 12)
-shape = SubResource("RectangleShape2D_3vyb7")
+position = Vector2(-1, 12)
+shape = SubResource("CircleShape2D_smehm")
+
+[node name="dungeon_camera" type="Camera2D" parent="."]
+position = Vector2(-1, 1)
+zoom = Vector2(4, 4)
+process_callback = 0
+limit_left = 0
+limit_top = 0
+limit_right = 527
+limit_bottom = 272
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
