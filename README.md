@@ -31,10 +31,11 @@ git clone https://github.com/0ksa1/OHTU2HIJNPW.git
 3. Press Play
 
 ## Controls
-- Move: WASD
+- Move: WASD/Arrow keys
 - Pause: Esc
 - Attack: TBD
 - Interact: E
+- Fullscreen: F11
   
 <h1 align="center">Contributors</h1>
 
