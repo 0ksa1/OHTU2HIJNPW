@@ -10,17 +10,20 @@ extends Control
 #@onready var resume_button: Button = $CenterContainer/PanelContainer/VBoxContainer/ResumeButton
 @onready var main_menu = $CenterContainer/PanelContainer/VBoxContainer
 @onready var settings_panel = $CenterContainer/PanelContainer/SettingsPanel
+@onready var controls_panel = $CenterContainer/PanelContainer/ControlsPanel
 @onready var resolutions_option_button = $CenterContainer/PanelContainer/SettingsPanel/VBoxContainer/HBoxContainer/OptionButton
 
 func _ready():
 	resolutions_option_button.item_selected.connect(_on_option_button_item_selected)
 	hide()
 	settings_panel.hide()
+	controls_panel.hide()
 	main_menu.show()
 	add_resolutions()
 	update_button_values()
 	#resume_button.pressed.connect(resume)
 
+# Resoluutio
 func add_resolutions():
 	for r in GUI.resolutions:
 		resolutions_option_button.add_item(r)
@@ -37,12 +40,23 @@ func _on_option_button_item_selected(index):
 	get_window().set_size(GUI.resolutions[key])
 	
 
+# Funktiot napeille
+
 func open_settings():
 	main_menu.hide()
 	settings_panel.show()
 
 func close_settings():
 	settings_panel.hide()
+	main_menu.show()
+
+func open_controls():
+	main_menu.hide()
+	settings_panel.hide()
+	controls_panel.show()
+
+func close_controls():
+	controls_panel.hide()
 	main_menu.show()
 
 func resume():
@@ -64,6 +78,9 @@ func esc_back_or_resume():
 	if settings_panel.visible:
 		close_settings()
 		return
+	elif controls_panel.visible:
+		close_controls()
+		return
 	resume()
 
 func _on_settings_button_pressed():
@@ -74,9 +91,8 @@ func _on_back_button_pressed():
 
 #controls nappi, ei vielä tee mitään
 func _on_controls_button_pressed() -> void:
-	pass
-	
-	
+	open_controls()
+
 func _on_restart_button_pressed() -> void:
 	resume()
 	get_tree().reload_current_scene()
