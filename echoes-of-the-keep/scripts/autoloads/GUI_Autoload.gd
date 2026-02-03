@@ -26,7 +26,16 @@ func _ready():
 
 func _input(_event):
 	if Input.is_action_just_pressed("escKey") and pause_menu:
+		print("esc press")
 		if !get_tree().paused:
 			pause_menu.pause()
 		else:
 			pause_menu.esc_back_or_resume()
+
+	if Input.is_action_just_pressed("fullscreen"):
+		print("fullscreen press")
+		if get_window().mode == Window.MODE_FULLSCREEN:
+			get_window().mode = Window.MODE_WINDOWED
+		else:
+			get_window().mode = Window.MODE_FULLSCREEN
+	
