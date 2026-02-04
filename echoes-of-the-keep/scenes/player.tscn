@@ -504,7 +504,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_smehm"]
 radius = 5.0
 
-[node name="player" type="CharacterBody2D"]
+[node name="player" type="CharacterBody2D" groups=["player"]]
 position = Vector2(29, 27)
 script = ExtResource("1_ur7pv")
 

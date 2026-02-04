@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=4 uid="uid://cltc6yg5p3ows"]
+[gd_scene load_steps=10 format=4 uid="uid://cltc6yg5p3ows"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_5112x"]
 [ext_resource type="Script" uid="uid://dike74e1j6uv8" path="res://scripts/dungeon_1.gd" id="1_pxq7g"]
 [ext_resource type="Texture2D" uid="uid://p861j0e3a6r8" path="res://tiles/dungeon_tiles.png" id="2_a0yhp"]
 [ext_resource type="PackedScene" uid="uid://dohybjnu4fth3" path="res://scenes/player.tscn" id="3_a0yhp"]
+[ext_resource type="PackedScene" uid="uid://x1fpq5splhoj" path="res://scenes/enemy/skeleton.tscn" id="5_13b8m"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pxq7g"]
 texture = ExtResource("1_5112x")
@@ -650,6 +651,12 @@ motion_mode = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="exit_bridge"]
 position = Vector2(466, 270.5)
 shape = SubResource("RectangleShape2D_a0yhp")
+
+[node name="Skeleton" parent="." instance=ExtResource("5_13b8m")]
+position = Vector2(189, 132)
+patrol_speed = 30.0
+chase_speed = 85.0
+patrol_distance = 70.0
 
 [connection signal="body_entered" from="exit_bridge" to="." method="_on_exit_bridge_body_entered"]
 [connection signal="body_exited" from="exit_bridge" to="." method="_on_exit_bridge_body_exited"]
