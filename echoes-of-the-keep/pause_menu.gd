@@ -11,7 +11,7 @@ extends Control
 @onready var main_menu = $CenterContainer/PanelContainer/VBoxContainer
 @onready var settings_panel = $CenterContainer/PanelContainer/SettingsPanel
 @onready var controls_panel = $CenterContainer/PanelContainer/ControlsPanel
-@onready var resolutions_option_button = $CenterContainer/PanelContainer/SettingsPanel/VBoxContainer/HBoxContainer/OptionButton
+@onready var resolutions_option_button: OptionButton = $CenterContainer/PanelContainer/SettingsPanel/VBoxContainer/HBoxResolution/OptionButton
 
 func _ready():
 	resolutions_option_button.item_selected.connect(_on_option_button_item_selected)
@@ -33,11 +33,11 @@ func update_button_values():
 	var resolutions_index = GUI.resolutions.keys().find(window_size_string)
 	resolutions_option_button.selected = resolutions_index
 
-#tämä osuus ilmeisesti tökkii
-#korjaan myöhemmin
+
 func _on_option_button_item_selected(index):
 	var key = resolutions_option_button.get_item_text(index)
 	get_window().set_size(GUI.resolutions[key])
+	GUI.center_window()
 
 # Funktiot napeille
 
@@ -60,7 +60,7 @@ func close_controls():
 
 func resume():
 	get_tree().paused = false
-	print("RESUME pressed")
+	#print("RESUME pressed") testi
 	$AnimationPlayer.play_backwards("blur_animation")
 	hide()
 	close_settings()
@@ -88,7 +88,6 @@ func _on_settings_button_pressed():
 func _on_back_button_pressed():
 	close_settings()
 
-#controls nappi, ei vielä tee mitään
 func _on_controls_button_pressed() -> void:
 	open_controls()
 
@@ -101,3 +100,6 @@ func _on_quit_button_pressed() -> void:
 
 func _on_resume_button_pressed() -> void:
 	resume()
+
+func _on_texture_button_toggled(toggled_on: bool) -> void:
+	get_window().mode = Window.MODE_FULLSCREEN if toggled_on else Window.MODE_WINDOWED
