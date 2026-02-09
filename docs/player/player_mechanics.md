@@ -2,7 +2,7 @@
 
 ## Pelaajan abilityt
 
--   Pelaajan saa jokaisen dungeonin jälkeen uuden korrupoituneen esineen. Esineet tekevät pelaajalle visuaalisia mutaatiota. Mutaatiot avaavat uusia abilityjä
+-   Pelaajan saa jokaisen dungeonin jälkeen uuden korruptoituneen esineen. Esineet tekevät pelaajalle visuaalisia mutaatiota. Mutaatiot avaavat uusia abilityjä
 -   Kädet (ampuu long range laserin?)
 -   Jalat (pitkä Dash joka samalla tekee damagee jos dashaat vihun päältä)
 -   Yksi siipi kasvaa selästä viitan takaa (speed boost -> puzzleen ratkasu jossa tarvii nopeutta enemmän?)
