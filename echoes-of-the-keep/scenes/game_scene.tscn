@@ -757,32 +757,11 @@ tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.06666666),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [3],
 "method": &"sfx_attack"
-}]
-}
-
-[sub_resource type="Animation" id="Animation_tcjrq"]
-resource_name = "walk_events"
-loop_mode = 1
-tracks/0/type = "method"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.2, 0.6666667),
-"transitions": PackedFloat32Array(1, 1),
-"values": [{
-"args": [&"grass"],
-"method": &"sfx_footstep"
-}, {
-"args": [&"grass"],
-"method": &"sfx_footstep"
 }]
 }
 
@@ -797,6 +776,27 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0.26666668, 0.56666666),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [&"grass"],
+"method": &"sfx_footstep"
+}, {
+"args": [&"grass"],
+"method": &"sfx_footstep"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_tcjrq"]
+resource_name = "walk_events"
+loop_mode = 1
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.2, 0.6666667),
 "transitions": PackedFloat32Array(1, 1),
 "values": [{
 "args": [&"grass"],
