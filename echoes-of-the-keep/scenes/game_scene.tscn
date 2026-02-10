@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=4 uid="uid://dp7sp7pxd1qgf"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_onqr8"]
-[ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_y3j0m"]
+[ext_resource type="Script" uid="uid://dxbkuor8cih1c" path="res://scripts/game_scene.gd" id="1_y3j0m"]
 [ext_resource type="TileSet" uid="uid://djvqms3pl5kap" path="res://tiles/collision_tileset.tres" id="2_bw6k5"]
 [ext_resource type="PackedScene" uid="uid://b7rrmwbsn41pt" path="res://scenes/pause_menu.tscn" id="3_ycayy"]
 [ext_resource type="PackedScene" uid="uid://dohybjnu4fth3" path="res://scenes/player.tscn" id="5_rurhu"]
@@ -713,7 +713,6 @@ sources/0 = SubResource("TileSetAtlasSource_onqr8")
 size = Vector2(19, 20)
 
 [node name="game_scene" type="Node2D"]
-position = Vector2(24, -25)
 script = ExtResource("1_y3j0m")
 
 [node name="background_tilemap" type="TileMapLayer" parent="."]
@@ -728,15 +727,17 @@ tile_set = ExtResource("2_bw6k5")
 tile_map_data = PackedByteArray("AAD6//7/AAAKAAsAAAD7//7/AAALAAsAAAAHAAIAAAAKAAsAAAAGAAIAAAALAAsAAAD9/wEAAAAMAA0AAAADAP3/AAAMAA0AAAD5//z/AAAMAA0AAAD3/wQAAAASAAwAAAD4/wQAAAATAAwAAAD5/wQAAAAUAAwAAAD6/wQAAAAVAAwAAAACAAAAAAASAAwAAAADAAAAAAATAAwAAAAEAAAAAAAUAAwAAAAFAAAAAAAVAAwAAAD5/wEAAAAVAAsAAAD9//7/AAAVAAsAAAAGAP7/AAAVAAsAAAAEAAQAAAAVAAsAAAD8//v/AAAVAAsAAAD8/wMAAAAVAAsAAAD2/wAAAAALAAsAAAD2////AAAKAAsAAAD2//7/AAALAAsAAAD2//3/AAALAAsAAAD2//z/AAAMAAsAAAD2//v/AAAKAAsAAAD2//r/AAALAAsAAAD4//r/AAAVAA0AABD5//r/AAAVAA0AAAD6//r/AAAVAA0AABD7//r/AAAVAA0AAAD8//r/AAAVAA0AABD9//r/AAAVAA0AAAD+//r/AAAVAA0AABD///r/AAAVAA0AAAAAAPr/AAAVAA0AABABAPr/AAAVAA0AAAACAPr/AAAVAA0AABADAPr/AAAVAA0AAAAEAPr/AAAVAA0AABAFAPr/AAAVAA0AAAAGAPr/AAAVAA0AABAHAPr/AAAVAA0AAAAIAPr/AAAVAA0AABAJAPr/AAAWAA0AAAAJAPv/AAAKAAsAAAAJAPz/AAALAAsAAAAJAP3/AAAMAAsAAAAJAP7/AAAMAAsAAAAJAAEAAAAKAAsAAAAJAAIAAAALAAsAAAAJAAMAAAALAAsAAAAJAAQAAAAKAAsAAAAJAAUAAAANAAsAAAAIAAUAAAAMAAsAAAAHAAUAAAAKAAsAAAAGAAUAAAAMAAsAAAAFAAUAAAANAAsAAAAEAAUAAAAKAAsAAAACAAUAAAALAAsAAAABAAUAAAAKAAsAAAD//wUAAAALAAsAAAD+/wUAAAAKAAsAAAD9/wUAAAALAAsAAAD8/wUAAAANAAsAAAD3//r/AAAVAA0AAAD7/wUAAAAKAAsAAAD4/wUAAAAKAAsAAAD2/wMAAAAKAAsAAAD2/wEAAAALAAsAAAD2/wUAAAALAAsAAAD5/wUAAAALAAsAAAD6/wUAAAALAAsAAAADAAUAAAALAAsAAAAAAAUAAAAMAAsAAAD2/wIAAAAMAAsAAAD3/wUAAAAMAAsAAAD2/wQAAAANAAsAAAD7/wAAAAAYAA0AAAAFAP3/AAAJAA0AAAAJAAAAAAANAAsAAAAJAP//AAADAA0AAAA=")
 tile_set = SubResource("TileSet_ycayy")
 
-
 [node name="girl_npc" parent="." instance=ExtResource("6_rurhu")]
 position = Vector2(103, -69)
 
 [node name="player" parent="." instance=ExtResource("5_rurhu")]
-position = Vector2(-89, 0)
+position = Vector2(0, 0)
+
+[node name="sprite" parent="player" index="0"]
+animation = &"idle_turn"
 
 [node name="collision" parent="player" index="2"]
-position = Vector2(1, 13)
+position = Vector2(0, 11)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://yo7kg8hpbmi6"
-path="res://.godot/imported/run_left.png-d99b1887f02e820048a9acaabcf2f2d7.ctex"
+uid="uid://cfc0ky6tahj5m"
+path="res://.godot/imported/male_hero-combo_1_end.png-c9aaaf0bc5b1fd696c50d932ab9535a8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/player/run/run_left.png"
-dest_files=["res://.godot/imported/run_left.png-d99b1887f02e820048a9acaabcf2f2d7.ctex"]
+source_file="res://art/player/attack/male_hero-combo_1_end.png"
+dest_files=["res://.godot/imported/male_hero-combo_1_end.png-c9aaaf0bc5b1fd696c50d932ab9535a8.ctex"]
 
 [params]
 
