@@ -28,8 +28,7 @@ viaton tyttö käyttääkin pelaajaa hyväkseen, jotta saisi vanhat voimansa tak
 ----
 ## Konseptit
 referenssikuva muodosta 1, jossa tyttö on, kun pelaaja hänet tapaa
-![Muoto 1](/docs/design/girl NPC/girlNPC3.jpg "Tytön muoto, kun pelaaja hänet tapaa")
-
+![Muoto1](girlNPC3.jpg)
 8-way sprite
 ![girlNPC2.png](girlNPC2.png)
 
@@ -37,11 +36,11 @@ animated idle-sprite
 
 ![tyty_idle.png](tyty_idle.png)
 
-[Idle animaatio](docs/design/girl NPC/idleAnimation.mp4)
+Idle-animaatio
 
 Konsepti/referenssikuva muodolle, jossa tyttö on, ennenkuin muuttuu final boss formiin
-![Muoto_xx](/docs/design/girl NPC/tytyFinalHumanform.jpg "Tytön viimeinen ihmismuoto")
 
+![tytyFinalHumanform.jpg](tytyFinalHumanform.jpg)
 Tytön viimeinen muoto, jota vastaan pelaaja taistelee (final boss form)
 
 ![tyty_finalform.png](tyty_finalform.png)
@@ -67,6 +66,7 @@ Acceptance criteria should be:
 
 Constraints? 
 Notes?
+
 ---
 ### Käyttäjätarina 1
 
