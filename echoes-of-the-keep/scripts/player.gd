@@ -1,9 +1,9 @@
 extends CharacterBody2D
 
-@export var walk_speed: float = 180.0
-@export var run_speed: float = 320.0
-@export var acceleration: float = 2200.0
-@export var friction: float = 2400.0
+@export var walk_speed: float = 140.0
+@export var run_speed: float = 230.0
+@export var acceleration: float = 1500.0
+@export var friction: float = 2000.0
 
 # ---------- Sprint stamina ----------
 # 1.0 = täysi sprint, 0.0 = pelkkä walk
@@ -14,7 +14,7 @@ extends CharacterBody2D
 
 # ---------- Combo ----------
 # Klikkaus hyväksytään seuraavaan iskuun vain lopussa (tiukempi ikkuna)
-@export var combo_chain_window: float = 0.18       # sekunteina (pienempi = tiukempi)
+@export var combo_chain_window: float = 0.3      # sekunteina (pienempi = tiukempi)
 @export var combo_early_click_ignored: bool = true # jos true, liian aikainen klikkaus ei queuea
 
 # Attack lunge
@@ -233,6 +233,11 @@ func _start_turn(turn_anim: StringName, after_anim: StringName) -> void:
 # ATTACK / COMBO + LUNGE (tiukempi combo window)
 # -------------------------
 
+func _update_facing_from_mouse() -> void:
+	var mx := get_global_mouse_position().x
+	facing_right = (mx >= global_position.x)
+	_apply_flip()
+
 func _handle_attack_input(delta: float) -> void:
 	if not Input.is_action_just_pressed("attack"):
 		return
@@ -343,11 +348,14 @@ func _on_attack_anim_finished() -> void:
 			combo_step += 1
 			in_attack_end = false
 
+			_update_facing_from_mouse()
+
 			lunge_dir = Vector2(1, 0) if facing_right else Vector2(-1, 0)
 			lunge_timer = lunge_duration
 
 			_play_attack_anim(_attack_name(combo_step))
 			return
+
 
 		# no next -> go end (ja tyhjennä queue varmuudeksi)
 		in_attack_end = true

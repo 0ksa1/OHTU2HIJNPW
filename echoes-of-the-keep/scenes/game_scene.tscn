@@ -713,6 +713,7 @@ sources/0 = SubResource("TileSetAtlasSource_onqr8")
 size = Vector2(19, 20)
 
 [node name="game_scene" type="Node2D"]
+position = Vector2(24, -25)
 script = ExtResource("1_y3j0m")
 
 [node name="background_tilemap" type="TileMapLayer" parent="."]
@@ -738,7 +739,6 @@ animation = &"idle_turn"
 
 [node name="game_scene_camera" parent="player" index="1"]
 position = Vector2(0, 0)
-limit_enabled = false
 
 [node name="collision" parent="player" index="2"]
 position = Vector2(0, 11)
