@@ -680,9 +680,10 @@ script = ExtResource("1_ur7pv")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(0, -1)
+position = Vector2(-2, -1)
 sprite_frames = SubResource("SpriteFrames_u8vuu")
 animation = &"attack_1"
+offset = Vector2(0, -15)
 
 [node name="game_scene_camera" type="Camera2D" parent="."]
 position = Vector2(-1, 1)
@@ -696,7 +697,7 @@ position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
 [node name="collision" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, 10.5)
+position = Vector2(0, -4)
 shape = SubResource("RectangleShape2D_f1ej7")
 
 [node name="dungeon_camera" type="Camera2D" parent="."]

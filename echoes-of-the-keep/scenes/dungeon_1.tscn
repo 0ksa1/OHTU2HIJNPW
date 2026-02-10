@@ -632,6 +632,7 @@ sources/1 = SubResource("TileSetAtlasSource_13b8m")
 size = Vector2(38.5, 27)
 
 [node name="dungeon_1" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_pxq7g")
 
 [node name="collision_world" parent="." instance=ExtResource("2_he162")]
@@ -646,6 +647,7 @@ tile_set = SubResource("TileSet_he162")
 polygon = PackedVector2Array(0, 0, 17, 27, 511, 27, 512, 255, 484, 256, 484, 281, 448, 281, 446, 257, 18, 256, 16, 27, -13, 292, 523, 287, 515, -10, 20, -5)
 
 [node name="player" parent="." instance=ExtResource("3_a0yhp")]
+y_sort_enabled = true
 position = Vector2(39, 40)
 motion_mode = 1
 

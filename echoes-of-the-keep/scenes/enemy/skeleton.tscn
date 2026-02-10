@@ -629,27 +629,31 @@ script = ExtResource("1_r4wci")
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_7osc3")
 animation = &"attack_up"
+offset = Vector2(0, -7)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 6.25)
+position = Vector2(0, -1)
 shape = SubResource("CircleShape2D_hkqn5")
 debug_color = Color(0, 0, 0, 0.41960785)
 
 [node name="DetectArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
+position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_r4wci")
 debug_color = Color(0.6094163, 0.5391529, 0.041375414, 0.41960785)
 
 [node name="LoseArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LoseArea"]
+position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_2usuh")
 debug_color = Color(0.19933051, 0.6212014, 0.46049738, 0.41960785)
 
 [node name="AttackArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_5syy0")
 debug_color = Color(0.9911818, 0, 0.27483556, 0.41960785)
 
