@@ -1,4 +1,4 @@
-[gd_scene load_steps=94 format=3 uid="uid://x1fpq5splhoj"]
+[gd_scene load_steps=95 format=3 uid="uid://x1fpq5splhoj"]
 
 [ext_resource type="Script" uid="uid://d1otphmrcifvs" path="res://scripts/enemy/enemy_base.gd" id="1_r4wci"]
 [ext_resource type="Texture2D" uid="uid://uodpl08w72bn" path="res://art/enemy/skeleton/attack/attack_down.png" id="2_2usuh"]
@@ -336,9 +336,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nl004")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack_down",
-"speed": 7.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -356,9 +356,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_fbtw1")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack_left",
-"speed": 7.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -376,9 +376,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_mtv1d")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack_right",
-"speed": 7.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -396,9 +396,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_1twye")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack_up",
-"speed": 7.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -537,7 +537,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run_down",
-"speed": 8.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -560,7 +560,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run_left",
-"speed": 8.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -583,7 +583,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run_right",
-"speed": 8.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -606,11 +606,11 @@ animations = [{
 }],
 "loop": true,
 "name": &"run_up",
-"speed": 8.0
+"speed": 6.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qpw68"]
-size = Vector2(10, 6.5)
+[sub_resource type="CircleShape2D" id="CircleShape2D_hkqn5"]
+radius = 4.01
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r4wci"]
 radius = 70.0
@@ -618,25 +618,28 @@ radius = 70.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_2usuh"]
 radius = 98.02041
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_5syy0"]
+radius = 13.0
+
 [node name="Skeleton" type="CharacterBody2D"]
+y_sort_enabled = true
 script = ExtResource("1_r4wci")
-patrol_distance = 50.0
-patrol_vertical = true
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_7osc3")
-animation = &"run_up"
+animation = &"attack_up"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 6.25)
-shape = SubResource("RectangleShape2D_qpw68")
+shape = SubResource("CircleShape2D_hkqn5")
+debug_color = Color(0, 0, 0, 0.41960785)
 
 [node name="DetectArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
 shape = SubResource("CircleShape2D_r4wci")
-debug_color = Color(0.93758327, 0.22742876, 0.2805772, 0.41960785)
+debug_color = Color(0.6094163, 0.5391529, 0.041375414, 0.41960785)
 
 [node name="LoseArea" type="Area2D" parent="."]
 
@@ -644,5 +647,14 @@ debug_color = Color(0.93758327, 0.22742876, 0.2805772, 0.41960785)
 shape = SubResource("CircleShape2D_2usuh")
 debug_color = Color(0.19933051, 0.6212014, 0.46049738, 0.41960785)
 
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_5syy0")
+debug_color = Color(0.9911818, 0, 0.27483556, 0.41960785)
+
+[connection signal="animation_finished" from="sprite" to="." method="_on_sprite_animation_finished"]
 [connection signal="body_entered" from="DetectArea" to="." method="_on_detect_area_body_entered"]
 [connection signal="body_exited" from="LoseArea" to="." method="_on_lose_area_body_exited"]
+[connection signal="body_entered" from="AttackArea" to="." method="_on_attack_area_body_entered"]
+[connection signal="body_exited" from="AttackArea" to="." method="_on_attack_area_body_exited"]
