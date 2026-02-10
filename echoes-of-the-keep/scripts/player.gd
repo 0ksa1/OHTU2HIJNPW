@@ -85,6 +85,9 @@ func _physics_process(delta: float) -> void:
 		State.ATTACK:
 			_process_attack(delta)
 
+func player() -> void:
+	pass
+
 
 # -------------------------
 # INPUT
@@ -400,6 +403,8 @@ func current_camera():
 	if global.current_scene == "game_scene":
 		$game_scene_camera.enabled = true
 		$dungeon_camera.enabled = false
+		$game_scene_camera.make_current()
 	elif global.current_scene == "dungeon_1":
 		$game_scene_camera.enabled = false
 		$dungeon_camera.enabled = true
+		$dungeon_camera.make_current()

@@ -736,6 +736,10 @@ position = Vector2(0, 0)
 [node name="sprite" parent="player" index="0"]
 animation = &"idle_turn"
 
+[node name="game_scene_camera" parent="player" index="1"]
+position = Vector2(0, 0)
+limit_enabled = false
+
 [node name="collision" parent="player" index="2"]
 position = Vector2(0, 11)
 
