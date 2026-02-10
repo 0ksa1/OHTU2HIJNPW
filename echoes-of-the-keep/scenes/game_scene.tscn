@@ -1,11 +1,16 @@
-[gd_scene load_steps=12 format=4 uid="uid://dp7sp7pxd1qgf"]
+[gd_scene load_steps=23 format=4 uid="uid://dp7sp7pxd1qgf"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_onqr8"]
 [ext_resource type="Script" uid="uid://dxbkuor8cih1c" path="res://scripts/game_scene.gd" id="1_y3j0m"]
 [ext_resource type="TileSet" uid="uid://djvqms3pl5kap" path="res://tiles/collision_tileset.tres" id="2_bw6k5"]
 [ext_resource type="PackedScene" uid="uid://b7rrmwbsn41pt" path="res://scenes/pause_menu.tscn" id="3_ycayy"]
+[ext_resource type="AudioStream" uid="uid://mty54i0hx1cm" path="res://audio/sfx/birb_sounds.mp3" id="4_tcjrq"]
 [ext_resource type="PackedScene" uid="uid://dohybjnu4fth3" path="res://scenes/player.tscn" id="5_rurhu"]
+[ext_resource type="AudioStream" uid="uid://e1lthyeffvb6" path="res://audio/sfx/attack1.mp3" id="6_kk2rg"]
 [ext_resource type="PackedScene" uid="uid://l0bac5v7t666" path="res://scenes/girl_npc.tscn" id="6_rurhu"]
+[ext_resource type="AudioStream" uid="uid://b8u8ujovo2y4s" path="res://audio/sfx/attack2.mp3" id="7_b5spy"]
+[ext_resource type="AudioStream" uid="uid://bkj3scolqa858" path="res://audio/sfx/grass.mp3" id="7_mw25s"]
+[ext_resource type="AudioStream" uid="uid://nm5rkjqxasgo" path="res://audio/sfx/attack3.mp3" id="8_utbpp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ycayy"]
 texture = ExtResource("1_onqr8")
@@ -709,6 +714,108 @@ texture = ExtResource("1_onqr8")
 [sub_resource type="TileSet" id="TileSet_ycayy"]
 sources/0 = SubResource("TileSetAtlasSource_onqr8")
 
+[sub_resource type="Animation" id="Animation_rurhu"]
+resource_name = "attack_1_events"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.06666667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [1],
+"method": &"sfx_attack"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_utbpp"]
+resource_name = "attack_2_events"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [2],
+"method": &"sfx_attack"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_mw25s"]
+resource_name = "attack_3_events"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.06666666),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [3],
+"method": &"sfx_attack"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_tcjrq"]
+resource_name = "walk_events"
+loop_mode = 1
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.2, 0.6666667),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [&"grass"],
+"method": &"sfx_footstep"
+}, {
+"args": [&"grass"],
+"method": &"sfx_footstep"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_rvs2r"]
+resource_name = "run_events"
+loop_mode = 1
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.26666668, 0.56666666),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [&"grass"],
+"method": &"sfx_footstep"
+}, {
+"args": [&"grass"],
+"method": &"sfx_footstep"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kk2rg"]
+_data = {
+&"attack_1_events": SubResource("Animation_rurhu"),
+&"attack_2_events": SubResource("Animation_utbpp"),
+&"attack_3_events": SubResource("Animation_mw25s"),
+&"run_events": SubResource("Animation_rvs2r"),
+&"walk_events": SubResource("Animation_tcjrq")
+}
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y3j0m"]
 size = Vector2(19, 20)
 
@@ -728,6 +835,11 @@ tile_set = ExtResource("2_bw6k5")
 tile_map_data = PackedByteArray("AAD6//7/AAAKAAsAAAD7//7/AAALAAsAAAAHAAIAAAAKAAsAAAAGAAIAAAALAAsAAAD9/wEAAAAMAA0AAAADAP3/AAAMAA0AAAD5//z/AAAMAA0AAAD3/wQAAAASAAwAAAD4/wQAAAATAAwAAAD5/wQAAAAUAAwAAAD6/wQAAAAVAAwAAAACAAAAAAASAAwAAAADAAAAAAATAAwAAAAEAAAAAAAUAAwAAAAFAAAAAAAVAAwAAAD5/wEAAAAVAAsAAAD9//7/AAAVAAsAAAAGAP7/AAAVAAsAAAAEAAQAAAAVAAsAAAD8//v/AAAVAAsAAAD8/wMAAAAVAAsAAAD2/wAAAAALAAsAAAD2////AAAKAAsAAAD2//7/AAALAAsAAAD2//3/AAALAAsAAAD2//z/AAAMAAsAAAD2//v/AAAKAAsAAAD2//r/AAALAAsAAAD4//r/AAAVAA0AABD5//r/AAAVAA0AAAD6//r/AAAVAA0AABD7//r/AAAVAA0AAAD8//r/AAAVAA0AABD9//r/AAAVAA0AAAD+//r/AAAVAA0AABD///r/AAAVAA0AAAAAAPr/AAAVAA0AABABAPr/AAAVAA0AAAACAPr/AAAVAA0AABADAPr/AAAVAA0AAAAEAPr/AAAVAA0AABAFAPr/AAAVAA0AAAAGAPr/AAAVAA0AABAHAPr/AAAVAA0AAAAIAPr/AAAVAA0AABAJAPr/AAAWAA0AAAAJAPv/AAAKAAsAAAAJAPz/AAALAAsAAAAJAP3/AAAMAAsAAAAJAP7/AAAMAAsAAAAJAAEAAAAKAAsAAAAJAAIAAAALAAsAAAAJAAMAAAALAAsAAAAJAAQAAAAKAAsAAAAJAAUAAAANAAsAAAAIAAUAAAAMAAsAAAAHAAUAAAAKAAsAAAAGAAUAAAAMAAsAAAAFAAUAAAANAAsAAAAEAAUAAAAKAAsAAAACAAUAAAALAAsAAAABAAUAAAAKAAsAAAD//wUAAAALAAsAAAD+/wUAAAAKAAsAAAD9/wUAAAALAAsAAAD8/wUAAAANAAsAAAD3//r/AAAVAA0AAAD7/wUAAAAKAAsAAAD4/wUAAAAKAAsAAAD2/wMAAAAKAAsAAAD2/wEAAAALAAsAAAD2/wUAAAALAAsAAAD5/wUAAAALAAsAAAD6/wUAAAALAAsAAAADAAUAAAALAAsAAAAAAAUAAAAMAAsAAAD2/wIAAAAMAAsAAAD3/wUAAAAMAAsAAAD2/wQAAAANAAsAAAD7/wAAAAAYAA0AAAAFAP3/AAAJAA0AAAAJAAAAAAANAAsAAAAJAP//AAADAA0AAAA=")
 tile_set = SubResource("TileSet_ycayy")
 
+[node name="Ambient" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_tcjrq")
+volume_db = -18.0
+autoplay = true
+
 [node name="girl_npc" parent="." instance=ExtResource("6_rurhu")]
 position = Vector2(103, -69)
 
@@ -742,6 +854,29 @@ position = Vector2(0, 0)
 
 [node name="collision" parent="player" index="2"]
 position = Vector2(0, 11)
+
+[node name="audio" type="Node2D" parent="player"]
+
+[node name="SFX_Attack" type="AudioStreamPlayer2D" parent="player/audio"]
+stream = ExtResource("6_kk2rg")
+volume_db = -2.0
+
+[node name="SFX_Footstep_Grass" type="AudioStreamPlayer2D" parent="player/audio"]
+stream = ExtResource("7_mw25s")
+volume_db = -2.0
+
+[node name="SFX_Attack2" type="AudioStreamPlayer2D" parent="player/audio"]
+stream = ExtResource("7_b5spy")
+volume_db = -2.0
+
+[node name="SFX_Attack3" type="AudioStreamPlayer2D" parent="player/audio"]
+stream = ExtResource("8_utbpp")
+volume_db = -1.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="player"]
+libraries = {
+&"": SubResource("AnimationLibrary_kk2rg")
+}
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

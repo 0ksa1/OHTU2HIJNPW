@@ -1,29 +1,48 @@
 extends Node2D
 
-func _ready() -> void:
+@onready var player := $player
+@onready var cam_game: Camera2D = $player/game_scene_camera
+@onready var cam_dungeon: Camera2D = $player/dungeon_camera
 
+func _ready() -> void:
 	$collision_tilemap.visible = false
 
+	# Spawn/return position
 	if global.firstload == true:
-		$player.position.x = global.player_start_posx
-		$player.position.y = global.player_start_posy
+		player.position.x = global.player_start_posx
+		player.position.y = global.player_start_posy
 	elif global.current_scene == "dungeon_1":
-		$player.position.x = global.player_exit_dungeon_1_posx
-		$player.position.y = global.player_exit_dungeon_1_posy
+		player.position.x = global.player_exit_dungeon_1_posx
+		player.position.y = global.player_exit_dungeon_1_posy
 
-func _process(delta):
+	global.current_scene = "game_scene"
+
+	# FORCE correct camera one frame after load
+	call_deferred("_force_game_camera")
+
+func _force_game_camera() -> void:
+	# odota 1 frame että scene on varmasti valmis
+	await get_tree().process_frame
+
+	if cam_dungeon:
+		cam_dungeon.enabled = false
+
+	if cam_game:
+		cam_game.enabled = true
+		cam_game.make_current()
+		if cam_game.has_method("reset_smoothing"):
+			cam_game.reset_smoothing()
+
+func _process(_delta: float) -> void:
 	change_scene()
-
 
 func _on_dungeon_bridge_1_body_entered(body: Node2D) -> void:
 	if body.has_method("player"):
 		global.transition_scene = true
 
-
 func _on_dungeon_bridge_1_body_exited(body: Node2D) -> void:
 	if body.has_method("player"):
 		global.transition_scene = false
-
 
 func change_scene() -> void:
 	if global.transition_scene == true:

@@ -90,6 +90,31 @@ func player() -> void:
 
 
 # -------------------------
+# AUDIO
+# -------------------------
+
+func sfx_attack(step: int) -> void:
+	var p: AudioStreamPlayer2D
+
+	match step:
+		1:
+			p = $audio/SFX_Attack
+		2:
+			p = $audio/SFX_Attack2
+		3:
+			p = $audio/SFX_Attack3
+		_:
+			return
+
+	p.pitch_scale = randf_range(0.95, 1.05)
+	p.play()
+
+func sfx_footstep(surface: StringName = &"grass") -> void:
+	$audio/SFX_Footstep_Grass.pitch_scale = randf_range(0.95, 1.05)
+	$audio/SFX_Footstep_Grass.play()
+
+
+# -------------------------
 # INPUT
 # -------------------------
 
@@ -401,10 +426,20 @@ func _play_safe(anim: StringName) -> void:
 
 	sprite.play(anim)
 	_apply_flip()
+	_play_events_for(anim)
 
+func _play_events_for(anim: StringName) -> void:
+	if not has_node("AnimationPlayer"):
+		return
+	var ap: AnimationPlayer = $AnimationPlayer
+	var ev := StringName("%s_events" % String(anim))
+	if ap.has_animation(ev):
+		ap.play(ev)
+	else:
+		ap.stop()
 
 # -------------------------
-# Team camera logic (UNCHANGED)
+# CAMERA
 # -------------------------
 
 func current_camera():
