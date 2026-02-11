@@ -15,13 +15,13 @@ var state: State = State.PATROL
 #
 # !! säädöt Inspectorissa !!
 #
-@export var patrol_speed: float = 35.0
-@export var chase_speed: float = 70.0
-@export var patrol_distance: float = 60.0
-@export var patrol_vertical: bool = false
-@export var stop_distance: float = 18.0
-@export var home_reach_distance: float = 6.0
-@export var turn_pause_time: float = 0.25
+@export var patrol_speed: float = 35.0 # nopeus partioidessa
+@export var chase_speed: float = 70.0 # nopeus jahdatessa
+@export var patrol_distance: float = 60.0 # miten kauas lähtöpisteestä partioi
+@export var patrol_vertical: bool = false # vertical vai horizontal patrol
+@export var stop_distance: float = 18.0 # kuinka lähelle pelaajaa pysähtyy
+@export var home_reach_distance: float = 6.0 # kuinka lähelle home pitää päästä että on home
+@export var turn_pause_time: float = 0.25 # kauan patrolissa kääntyessä paikallaan
 @export var attack_cooldown: float = 0.6  # kuinka kauan odotetaan iskun jälkeen ennen seuraavaa
 
 @onready var sprite: AnimatedSprite2D = $sprite
@@ -45,9 +45,6 @@ var attack_cd_left: float = 0.0
 func _ready() -> void:
 	home_pos = global_position
 	_play_anim("idle", last_dir)
-
-	# TÄRKEÄ: varmista että tämä signal on kytketty:
-	# sprite.animation_finished -> _on_sprite_animation_finished
 
 
 func _physics_process(delta: float) -> void:
@@ -100,7 +97,7 @@ func _do_chase() -> void:
 		state = State.RETURN_HOME
 		return
 
-	# Jos pelaaja on jo AttackAreassa -> hyökkää (tämä korjaa “ei enää hyökkää” -bugia)
+	# jos pelaaja on jo AttackAreassa -> hyökkää
 	if attack_in_range:
 		state = State.ATTACK
 		velocity = Vector2.ZERO
@@ -110,7 +107,6 @@ func _do_chase() -> void:
 	var dist := to_player.length()
 
 	# HUOM: jos stop_distance on isompi kuin AttackArea radius, enemy pysähtyy ennen rangea.
-	# Siksi attack_in_range-check on tärkeä yllä.
 	if dist <= stop_distance:
 		velocity = Vector2.ZERO
 		_play_anim("idle", last_dir)
@@ -147,21 +143,21 @@ func _do_return_home() -> void:
 func _do_attack() -> void:
 	velocity = Vector2.ZERO
 
-	# Jos lyönti on kesken, annetaan sen loppua rauhassa
+	# jos lyönti on kesken, annetaan sen loppua
 	if attacking:
 		return
 
-	# Lyönti ei ole käynnissä -> tarkista että pelaaja yhä rangessa
+	# lyönti ei ole käynnissä -> tarkista että pelaaja yhä rangessa
 	if not attack_in_range or not is_instance_valid(player):
 		state = State.CHASE
 		return
 
-	# Cooldown ennen uuden lyönnin aloitusta
+	# cooldown ennen uuden lyönnin aloitusta
 	if attack_cd_left > 0.0:
 		_play_anim("idle", last_dir)
 		return
 
-	# Aloita uusi lyönti
+	# aloita uusi lyönti
 	attacking = true
 	_play_anim("attack", last_dir)
 
@@ -199,7 +195,7 @@ func _on_attack_area_body_exited(body: Node2D) -> void:
 
 
 #
-# Kun hyökkäysanimaatio loppuu, päätetään mitä tehdään seuraavaksi
+# kun hyökkäysanimaatio loppuu, päätetään mitä tehdään seuraavaksi
 #
 func _on_sprite_animation_finished() -> void:
 	if not sprite.animation.begins_with("attack_"):

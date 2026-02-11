@@ -613,17 +613,22 @@ animations = [{
 radius = 4.01
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r4wci"]
-radius = 70.0
+radius = 61.008198
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2usuh"]
-radius = 98.02041
+radius = 82.006096
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5syy0"]
-radius = 13.0
+radius = 12.0
 
 [node name="Skeleton" type="CharacterBody2D"]
 y_sort_enabled = true
 script = ExtResource("1_r4wci")
+chase_speed = 60.0
+patrol_distance = 50.0
+stop_distance = 15.0
+turn_pause_time = 0.3
+attack_cooldown = 0.8
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
@@ -639,7 +644,7 @@ debug_color = Color(0, 0, 0, 0.41960785)
 [node name="DetectArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
-position = Vector2(0, -4)
+position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_r4wci")
 debug_color = Color(0.6094163, 0.5391529, 0.041375414, 0.41960785)
 
@@ -653,7 +658,7 @@ debug_color = Color(0.19933051, 0.6212014, 0.46049738, 0.41960785)
 [node name="AttackArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-position = Vector2(0, -4)
+position = Vector2(-1, -4)
 shape = SubResource("CircleShape2D_5syy0")
 debug_color = Color(0.9911818, 0, 0.27483556, 0.41960785)
 
