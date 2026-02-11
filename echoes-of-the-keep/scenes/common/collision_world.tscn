@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://mus4efnh8kp8"]
+
+[ext_resource type="Script" uid="uid://bj44qi5ws88pp" path="res://scripts/collision_world.gd" id="1_68cmx"]
+[ext_resource type="TileSet" uid="uid://djvqms3pl5kap" path="res://tiles/collision_tileset.tres" id="1_quymr"]
+
+[node name="collision_world" type="Node2D"]
+script = ExtResource("1_68cmx")
+
+[node name="collision_tilemap" type="TileMapLayer" parent="."]
+tile_set = ExtResource("1_quymr")

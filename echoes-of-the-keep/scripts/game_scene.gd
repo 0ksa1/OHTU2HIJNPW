@@ -5,8 +5,6 @@ extends Node2D
 @onready var cam_dungeon: Camera2D = $player/dungeon_camera
 
 func _ready() -> void:
-	$collision_tilemap.visible = false
-
 	# Spawn/return position
 	if global.firstload == true:
 		player.position.x = global.player_start_posx
