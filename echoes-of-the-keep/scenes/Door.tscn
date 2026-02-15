@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://b5kktxaucm7ub"]
+
+[ext_resource type="Script" uid="uid://dtxsl5ox1i611" path="res://scenes/door.gd" id="1_eyv6f"]
+[ext_resource type="Texture2D" uid="uid://cwtijoicmqwht" path="res://art/props/Furniture.png" id="2_mg2as"]
+[ext_resource type="AudioStream" uid="uid://j87vbr5k56yn" path="res://audio/sfx/door_locked.mp3" id="3_mg2as"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ebfc"]
+atlas = ExtResource("2_mg2as")
+region = Rect2(166.02077, 281.02844, 19.966827, 38.953033)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ebfc"]
+size = Vector2(52, 75)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ao1jx"]
+size = Vector2(32, 22)
+
+[node name="Door" type="Node2D"]
+script = ExtResource("1_eyv6f")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.7, 1.588)
+texture = SubResource("AtlasTexture_1ebfc")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1, -1.5)
+shape = SubResource("RectangleShape2D_1ebfc")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 19)
+shape = SubResource("RectangleShape2D_ao1jx")
+
+[node name="SFX_Locked" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_mg2as")
+
+[node name="SFX_Open" type="AudioStreamPlayer2D" parent="."]
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

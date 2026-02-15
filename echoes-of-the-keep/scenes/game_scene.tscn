@@ -868,25 +868,28 @@ position = Vector2(0, 0)
 [node name="collision" parent="player" index="2"]
 position = Vector2(-2, -4)
 
-[node name="audio" type="Node2D" parent="player"]
+[node name="dungeon_camera" parent="player" index="3"]
+zoom = Vector2(1, 1)
 
-[node name="SFX_Attack" type="AudioStreamPlayer2D" parent="player/audio"]
+[node name="audio2" type="Node2D" parent="player"]
+
+[node name="SFX_Attack" type="AudioStreamPlayer2D" parent="player/audio2"]
 stream = ExtResource("6_kk2rg")
 volume_db = -2.0
 
-[node name="SFX_Footstep_Grass" type="AudioStreamPlayer2D" parent="player/audio"]
+[node name="SFX_Footstep_Grass" type="AudioStreamPlayer2D" parent="player/audio2"]
 stream = ExtResource("7_mw25s")
 volume_db = -2.0
 
-[node name="SFX_Attack2" type="AudioStreamPlayer2D" parent="player/audio"]
+[node name="SFX_Attack2" type="AudioStreamPlayer2D" parent="player/audio2"]
 stream = ExtResource("7_b5spy")
 volume_db = -2.0
 
-[node name="SFX_Attack3" type="AudioStreamPlayer2D" parent="player/audio"]
+[node name="SFX_Attack3" type="AudioStreamPlayer2D" parent="player/audio2"]
 stream = ExtResource("8_utbpp")
 volume_db = -1.0
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="player"]
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="player"]
 libraries = {
 &"": SubResource("AnimationLibrary_kk2rg")
 }
