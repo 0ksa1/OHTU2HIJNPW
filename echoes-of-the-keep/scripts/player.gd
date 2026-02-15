@@ -72,7 +72,6 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	current_camera()
 
 	_read_movement_input()
 	_update_sprint_energy(delta)
@@ -93,6 +92,10 @@ func player() -> void:
 # AUDIO
 # -------------------------
 
+@onready var sfx_step_grass: AudioStreamPlayer2D = $audio/SFX_Footstep_Grass
+@onready var sfx_step_wood: AudioStreamPlayer2D = $audio/SFX_Footstep_Wood
+
+
 func sfx_attack(step: int) -> void:
 	var p: AudioStreamPlayer2D
 
@@ -109,9 +112,16 @@ func sfx_attack(step: int) -> void:
 	p.pitch_scale = randf_range(0.95, 1.05)
 	p.play()
 
-func sfx_footstep(surface: StringName = &"grass") -> void:
-	$audio/SFX_Footstep_Grass.pitch_scale = randf_range(0.95, 1.05)
-	$audio/SFX_Footstep_Grass.play()
+func sfx_footstep(_surface: StringName = &"grass") -> void:
+	var surface := _get_surface_under_player()
+
+	var p: AudioStreamPlayer2D = sfx_step_grass
+	if surface == &"wood":
+		p = sfx_step_wood
+
+	p.pitch_scale = randf_range(0.95, 1.05)
+	p.play()
+
 
 
 # -------------------------
@@ -404,6 +414,47 @@ func _end_combo() -> void:
 # -------------------------
 # Helpers
 # -------------------------
+
+func _get_surface_under_player() -> StringName:
+	var scene := get_tree().current_scene
+	if scene == null:
+		return &"grass"
+
+	# Tarkista vain PropsTileLayer
+	var props := scene.get_node_or_null("PropsTileLayer") as TileMapLayer
+	if props == null:
+		return &"grass"
+
+	var s := _surface_from_layer(props, global_position)
+	return (s if s != &"" else &"grass")
+
+	# Fallback: peruslattia
+	var floor := scene.get_node_or_null("FloorTileLayer") as TileMapLayer
+	if floor:
+		var s2 := _surface_from_layer(floor, global_position)
+		if s2 != &"":
+			return s2
+
+	return &"grass"
+
+
+func _surface_from_layer(layer: TileMapLayer, world_pos: Vector2) -> StringName:
+	var local_pos := layer.to_local(world_pos)
+	var cell := layer.local_to_map(local_pos)
+
+	var td := layer.get_cell_tile_data(cell)
+	if td == null:
+		return &""
+
+	# get_custom_data palauttaa Variant -> käytä explicit-tyyppiä (ei :=)
+	var v: Variant = td.get_custom_data("surface")
+	if v == null:
+		return &""
+
+	return StringName(str(v))
+
+	return StringName(str(v))
+
 
 func _apply_flip() -> void:
 	sprite.flip_h = not facing_right
