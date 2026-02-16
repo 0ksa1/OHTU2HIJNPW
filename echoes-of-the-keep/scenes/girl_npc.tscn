@@ -55,15 +55,16 @@ sprite_frames = SubResource("SpriteFrames_satta")
 animation = &"idle"
 autoplay = "idle"
 frame_progress = 0.09960685
+offset = Vector2(0, -14)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, 12)
+position = Vector2(1, -6)
 shape = SubResource("RectangleShape2D_bwauq")
 
 [node name="chat_detection" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="chat_detection"]
-position = Vector2(1, 0)
+position = Vector2(1, -14)
 shape = SubResource("CircleShape2D_4q8gf")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]

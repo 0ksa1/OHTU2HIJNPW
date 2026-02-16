@@ -1,11 +1,77 @@
-[gd_scene load_steps=7 format=3 uid="uid://b7rrmwbsn41pt"]
+[gd_scene load_steps=18 format=3 uid="uid://b7rrmwbsn41pt"]
 
 [ext_resource type="Shader" uid="uid://msui542rssr8" path="res://pause_menu.gdshader" id="1_hdmo1"]
 [ext_resource type="Script" uid="uid://dji04ov37q01t" path="res://pause_menu.gd" id="1_myx47"]
+[ext_resource type="Texture2D" uid="uid://bj6v8k3ck4nma" path="res://art/ui/pause_panel.tres" id="3_kukqi"]
+[ext_resource type="Texture2D" uid="uid://dphf3qn87ewda" path="res://art/ui/menu/button_off.tres" id="4_v4r4p"]
+[ext_resource type="Texture2D" uid="uid://beyxohers2twl" path="res://art/ui/menu/button_on.tres" id="5_1s2dm"]
+[ext_resource type="Texture2D" uid="uid://bfd7rgujwos5l" path="res://art/ui/menu/button_normal.tres" id="5_7l7mv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nwcfo"]
 shader = ExtResource("1_hdmo1")
 shader_parameter/lod = 0.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5d2l8"]
+texture = ExtResource("3_kukqi")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 20.0
+expand_margin_top = 20.0
+expand_margin_right = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7l7mv"]
+texture = ExtResource("3_kukqi")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v4r4p"]
+texture = ExtResource("5_7l7mv")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1s2dm"]
+texture = ExtResource("5_7l7mv")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_88e76"]
+texture = ExtResource("5_7l7mv")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_knqa7"]
+texture = ExtResource("5_7l7mv")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_71k7c"]
+texture = ExtResource("5_7l7mv")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+expand_margin_bottom = 5.0
 
 [sub_resource type="Animation" id="Animation_p81d2"]
 length = 0.001
@@ -96,11 +162,15 @@ offset_bottom = 649.0
 [node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
 process_mode = 2
 modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(400, 100)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_5d2l8")
 
 [node name="SettingsPanel" type="Panel" parent="CenterContainer/PanelContainer"]
 process_mode = 2
+custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_7l7mv")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/SettingsPanel"]
 process_mode = 2
@@ -113,20 +183,90 @@ grow_vertical = 2
 
 [node name="SettingsOtsikko" type="Label" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer"]
 layout_mode = 2
-text = "SETTINGS"
+text = "
+"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer"]
+[node name="HBoxResolution" type="HBoxContainer" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="Resolution" type="Label" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer/HBoxContainer"]
+[node name="Resolution" type="Label" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer/HBoxResolution"]
 layout_mode = 2
 text = "Resolution:"
 
-[node name="OptionButton" type="OptionButton" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer/HBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer/HBoxResolution"]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
+
+[node name="HBoxFullscreen" type="HBoxContainer" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Fullscreen" type="Label" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer/HBoxFullscreen"]
+layout_mode = 2
+text = "Fullscreen:"
+
+[node name="TextureButton" type="TextureButton" parent="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer/HBoxFullscreen"]
+custom_minimum_size = Vector2(44, 25)
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("4_v4r4p")
+texture_pressed = ExtResource("5_1s2dm")
+stretch_mode = 0
+
+[node name="ControlsPanel" type="Panel" parent="CenterContainer/PanelContainer"]
+process_mode = 2
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_7l7mv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/ControlsPanel"]
+process_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ControlsOtsikko" type="Label" parent="CenterContainer/PanelContainer/ControlsPanel/VBoxContainer"]
+layout_mode = 2
+text = "
+
+"
+
+[node name="GridContainer" type="GridContainer" parent="CenterContainer/PanelContainer/ControlsPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label7" type="Label" parent="CenterContainer/PanelContainer/ControlsPanel/GridContainer"]
+layout_mode = 2
+text = "CONTROLS"
+
+[node name="Label" type="Label" parent="CenterContainer/PanelContainer/ControlsPanel/GridContainer"]
+layout_mode = 2
+text = "Move - WASD"
+
+[node name="Label2" type="Label" parent="CenterContainer/PanelContainer/ControlsPanel/GridContainer"]
+layout_mode = 2
+text = "Pause - ESC"
+
+[node name="Label3" type="Label" parent="CenterContainer/PanelContainer/ControlsPanel/GridContainer"]
+layout_mode = 2
+text = "Attack - TBD"
+
+[node name="Label4" type="Label" parent="CenterContainer/PanelContainer/ControlsPanel/GridContainer"]
+layout_mode = 2
+text = "Interact - E"
+
+[node name="Label5" type="Label" parent="CenterContainer/PanelContainer/ControlsPanel/GridContainer"]
+layout_mode = 2
+text = "Fullscreen:"
+
+[node name="Label6" type="Label" parent="CenterContainer/PanelContainer/ControlsPanel/GridContainer"]
+layout_mode = 2
+text = "Alt+Enter / F11"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer"]
 process_mode = 3
@@ -135,27 +275,43 @@ layout_mode = 2
 [node name="ResumeButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
 process_mode = 3
 layout_mode = 2
+theme_override_colors/font_color = Color(0.22745098, 0.16862746, 0.11764706, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_v4r4p")
 text = "Resume"
 
 [node name="RestartButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
 process_mode = 2
 layout_mode = 2
+theme_override_colors/font_color = Color(0.22745098, 0.16862746, 0.11764706, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_1s2dm")
 text = "Restart
 "
 
 [node name="SettingsButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
 process_mode = 2
 layout_mode = 2
+theme_override_colors/font_color = Color(0.22745098, 0.16862746, 0.11764706, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_88e76")
 text = "Settings"
 
 [node name="ControlsButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
 process_mode = 2
 layout_mode = 2
+theme_override_colors/font_color = Color(0.22745098, 0.16862746, 0.11764706, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_knqa7")
 text = "Controls"
 
 [node name="QuitButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
 process_mode = 2
 layout_mode = 2
+theme_override_colors/font_color = Color(0.16862746, 0.16862746, 0.16862746, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_71k7c")
 text = "Quit"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -164,6 +320,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_2nc7s")
 }
 
+[connection signal="toggled" from="CenterContainer/PanelContainer/SettingsPanel/VBoxContainer/HBoxFullscreen/TextureButton" to="." method="_on_texture_button_toggled"]
 [connection signal="pressed" from="CenterContainer/PanelContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="CenterContainer/PanelContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="CenterContainer/PanelContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]

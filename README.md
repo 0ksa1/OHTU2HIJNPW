@@ -35,7 +35,7 @@ git clone https://github.com/0ksa1/OHTU2HIJNPW.git
 - Pause: Esc
 - Attack: TBD
 - Interact: E
-- Fullscreen: F11
+- Fullscreen: F11 / Alt + Enter
   
 <h1 align="center">Contributors</h1>
 
