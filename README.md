@@ -32,6 +32,7 @@ git clone https://github.com/0ksa1/OHTU2HIJNPW.git
 
 ## Controls
 - Move: WASD/Arrow keys
+- Run: Shift
 - Pause: Esc
 - Attack: TBD
 - Interact: E
