@@ -38,10 +38,6 @@ var facing_right: bool = true
 var input_dir: Vector2 = Vector2.ZERO
 var sprint_pressed: bool = false
 
-# Sprint stamina runtime
-var sprint_energy: float = 1.0
-var sprint_regen_timer: float = 0.0
-
 # Turn overlay
 var is_turning: bool = false
 var turn_timer: float = 0.0
@@ -502,3 +498,15 @@ func current_camera():
 		$game_scene_camera.enabled = false
 		$dungeon_camera.enabled = true
 		$dungeon_camera.make_current()
+
+# -------------------------
+# CHARACTER STATS
+# -------------------------
+
+# Sprint stamina runtime
+var sprint_energy: float = 1.0
+var sprint_regen_timer: float = 0.0
+
+# HP
+var max_hp: int = 100
+var hp: int = 100
