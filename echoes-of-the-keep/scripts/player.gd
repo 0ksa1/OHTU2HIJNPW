@@ -507,6 +507,9 @@ func current_camera():
 var sprint_energy: float = 1.0
 var sprint_regen_timer: float = 0.0
 
-# HP
+#HP
+
 var max_hp: int = 100
-var hp: int = 100
+var health: int = 100
+
+var hb: Node = null

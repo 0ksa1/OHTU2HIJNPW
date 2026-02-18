@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://dp7sp7pxd1qgf"]
+[gd_scene load_steps=24 format=4 uid="uid://dp7sp7pxd1qgf"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_onqr8"]
 [ext_resource type="Script" uid="uid://dxbkuor8cih1c" path="res://scripts/game_scene.gd" id="1_y3j0m"]
@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://b8u8ujovo2y4s" path="res://audio/sfx/attack2.mp3" id="7_b5spy"]
 [ext_resource type="AudioStream" uid="uid://bkj3scolqa858" path="res://audio/sfx/grass.mp3" id="7_mw25s"]
 [ext_resource type="AudioStream" uid="uid://nm5rkjqxasgo" path="res://audio/sfx/attack3.mp3" id="8_utbpp"]
+[ext_resource type="PackedScene" uid="uid://cdmqxa3hspt5h" path="res://art/ui/healthbar/healthbar.tscn" id="12_rvs2r"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y3j0m"]
 size = Vector2(19, 20)
@@ -852,6 +853,7 @@ volume_db = -18.0
 autoplay = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 11
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("3_ycayy")]
 
@@ -893,6 +895,19 @@ volume_db = -1.0
 libraries = {
 &"": SubResource("AnimationLibrary_kk2rg")
 }
+
+[node name="Healthbar" parent="player" instance=ExtResource("12_rvs2r")]
+custom_minimum_size = Vector2(10, 2)
+anchors_preset = 0
+anchor_top = 0.0
+anchor_bottom = 0.0
+offset_left = -25.0
+offset_top = -40.0
+offset_right = 18.0
+offset_bottom = -38.0
+grow_vertical = 1
+size_flags_horizontal = 0
+mouse_filter = 2
 
 [node name="girl_npc" parent="." instance=ExtResource("6_rurhu")]
 y_sort_enabled = true
