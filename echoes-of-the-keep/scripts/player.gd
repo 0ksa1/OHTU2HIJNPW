@@ -521,7 +521,7 @@ func _test_damage(dmg: int) -> void:
 func die() -> void:
 	# tähän funktioon kuolema animaatio
 	dead = true
-	#tähän inventaarion nollauslogiikka
+	#tähän inventaarion nollauslogiikka yms
 	var main_scene_path: String = ProjectSettings.get_setting("application/run/main_scene")
 	get_tree().change_scene_to_file(main_scene_path)
 
