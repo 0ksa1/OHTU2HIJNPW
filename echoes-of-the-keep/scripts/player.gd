@@ -66,13 +66,14 @@ func _ready() -> void:
 		sprite.animation_finished.connect(_on_animation_finished)
 	_play_safe(&"idle")
 
-
+@onready var stamina_bar = $StaminaBar
 func _physics_process(delta: float) -> void:
 
 	_read_movement_input()
 	_update_sprint_energy(delta)
 
 	_handle_attack_input(delta)
+	stamina_bar.set_stamina(sprint_energy * 100.0, 100.0)
 
 	match state:
 		State.MOVE:
@@ -498,6 +499,8 @@ func current_camera():
 		$game_scene_camera.enabled = false
 		$dungeon_camera.enabled = true
 		$dungeon_camera.make_current()
+
+
 
 # -------------------------
 # CHARACTER STATS
