@@ -71,7 +71,6 @@ func _physics_process(delta: float) -> void:
 
 	_read_movement_input()
 	_update_sprint_energy(delta)
-
 	_handle_attack_input(delta)
 	stamina_bar.set_stamina(sprint_energy * 100.0, 100.0)
 
@@ -80,6 +79,7 @@ func _physics_process(delta: float) -> void:
 			_process_move(delta)
 		State.ATTACK:
 			_process_attack(delta)
+
 
 func player() -> void:
 	pass
@@ -500,7 +500,34 @@ func current_camera():
 		$dungeon_camera.enabled = true
 		$dungeon_camera.make_current()
 
+#-------------------------
+# HEALTHBAR & DEATH LOGIC
+#-------------------------
+@onready var healthbar = $HealthBar
+var dead = false
 
+
+#funktio damagen testaamiseen
+func _test_damage(dmg: int) -> void:
+	if dead:
+		return
+		
+	health = maxi(0, health - dmg)
+	healthbar.health = health
+	
+	if health <= 0:
+		die()
+
+func die() -> void:
+	# tähän funktioon kuolema animaatio
+	dead = true
+	#tähän inventaarion nollauslogiikka
+	var main_scene_path: String = ProjectSettings.get_setting("application/run/main_scene")
+	get_tree().change_scene_to_file(main_scene_path)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("test_damage"):
+		_test_damage(10)
 
 # -------------------------
 # CHARACTER STATS
@@ -514,5 +541,3 @@ var sprint_regen_timer: float = 0.0
 
 var max_hp: int = 100
 var health: int = 100
-
-var hb: Node = null
