@@ -68,6 +68,11 @@ func _ready() -> void:
 
 @onready var stamina_bar = $StaminaBar
 func _physics_process(delta: float) -> void:
+	if dead:
+		return
+	if hurting:
+		move_and_slide()
+		return
 
 	_read_movement_input()
 	_update_sprint_energy(delta)
@@ -91,6 +96,8 @@ func player() -> void:
 
 @onready var sfx_step_grass: AudioStreamPlayer2D = $audio/SFX_Footstep_Grass
 @onready var sfx_step_wood: AudioStreamPlayer2D = $audio/SFX_Footstep_Wood
+@onready var sfx_hurt: AudioStreamPlayer2D = $audio/SFX_Hurt
+@onready var sfx_death: AudioStreamPlayer2D = $audio/SFX_Death
 
 
 func sfx_attack(step: int) -> void:
@@ -425,16 +432,6 @@ func _get_surface_under_player() -> StringName:
 	var s := _surface_from_layer(props, global_position)
 	return (s if s != &"" else &"grass")
 
-	# Fallback: peruslattia
-	var floor := scene.get_node_or_null("FloorTileLayer") as TileMapLayer
-	if floor:
-		var s2 := _surface_from_layer(floor, global_position)
-		if s2 != &"":
-			return s2
-
-	return &"grass"
-
-
 func _surface_from_layer(layer: TileMapLayer, world_pos: Vector2) -> StringName:
 	var local_pos := layer.to_local(world_pos)
 	var cell := layer.local_to_map(local_pos)
@@ -443,15 +440,12 @@ func _surface_from_layer(layer: TileMapLayer, world_pos: Vector2) -> StringName:
 	if td == null:
 		return &""
 
-	# get_custom_data palauttaa Variant -> käytä explicit-tyyppiä (ei :=)
 	var v: Variant = td.get_custom_data("surface")
 	if v == null:
 		return &""
 
 	return StringName(str(v))
-
-	return StringName(str(v))
-
+	
 
 func _apply_flip() -> void:
 	sprite.flip_h = not facing_right
@@ -503,9 +497,28 @@ func current_camera():
 #-------------------------
 # HEALTHBAR & DEATH LOGIC
 #-------------------------
+func play_hurt() -> void:
+	if dead or hurting:
+		return
+	if not _has_anim(&"hurt"):
+		return
+
+	hurting = true
+	velocity = Vector2.ZERO
+	
+	if sfx_hurt:
+		sfx_hurt.pitch_scale = randf_range(0.98, 1.02)
+		sfx_hurt.play()
+	
+	_play_safe(&"hurt")
+
+	await get_tree().create_timer(hurt_lock_time).timeout
+	hurting = false
+
 @onready var healthbar = $HealthBar
 var dead = false
-
+var hurting: bool = false
+@export var hurt_lock_time: float = 0.25
 
 #funktio damagen testaamiseen
 func _test_damage(dmg: int) -> void:
@@ -517,11 +530,26 @@ func _test_damage(dmg: int) -> void:
 	
 	if health <= 0:
 		die()
+	else:
+		play_hurt()
 
 func die() -> void:
-	# tähän funktioon kuolema animaatio
+	if dead:
+		return
+
 	dead = true
-	#tähän inventaarion nollauslogiikka yms
+	hurting = false
+	velocity = Vector2.ZERO
+
+	if sfx_death:
+		sfx_death.play()
+
+	if _has_anim(&"death"):
+		_play_safe(&"death")
+		await sprite.animation_finished
+
+		await get_tree().create_timer(0.3).timeout
+
 	var main_scene_path: String = ProjectSettings.get_setting("application/run/main_scene")
 	get_tree().change_scene_to_file(main_scene_path)
 
