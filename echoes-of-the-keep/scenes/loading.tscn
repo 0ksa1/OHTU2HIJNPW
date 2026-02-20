@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://cts0fvlxpeox8"]
+
+[ext_resource type="Script" uid="uid://12pl4i8wcyl1" path="res://scenes/loading.gd" id="1_yc7uc"]
+[ext_resource type="Texture2D" uid="uid://cj7fspvqh1pwk" path="res://art/loading/e20a233c-3f8e-4262-b306-cc9c8fe99b4b.png" id="2_dhqfv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_101rs"]
+atlas = ExtResource("2_dhqfv")
+region = Rect2(0, 0, 512, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yt702"]
+atlas = ExtResource("2_dhqfv")
+region = Rect2(512, 0, 512, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ytni"]
+atlas = ExtResource("2_dhqfv")
+region = Rect2(1024, 0, 512, 1024)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nxo4k"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_101rs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yt702")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ytni")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="loading" type="Node2D"]
+script = ExtResource("1_yc7uc")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 480.0
+offset_top = 350.5
+offset_right = 799.0
+offset_bottom = 377.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(646.00006, 259)
+scale = Vector2(0.3515625, 0.2421875)
+sprite_frames = SubResource("SpriteFrames_nxo4k")
+frame_progress = 0.6535912
