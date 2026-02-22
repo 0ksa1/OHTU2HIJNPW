@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://dp7sp7pxd1qgf"]
+[gd_scene load_steps=23 format=4 uid="uid://dp7sp7pxd1qgf"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_onqr8"]
 [ext_resource type="Script" uid="uid://dxbkuor8cih1c" path="res://scripts/game_scene.gd" id="1_y3j0m"]
@@ -11,7 +11,6 @@
 [ext_resource type="AudioStream" uid="uid://b8u8ujovo2y4s" path="res://audio/sfx/attack2.mp3" id="7_b5spy"]
 [ext_resource type="AudioStream" uid="uid://bkj3scolqa858" path="res://audio/sfx/grass.mp3" id="7_mw25s"]
 [ext_resource type="AudioStream" uid="uid://nm5rkjqxasgo" path="res://audio/sfx/attack3.mp3" id="8_utbpp"]
-[ext_resource type="PackedScene" uid="uid://yodmjtnngho5" path="res://scenes/item/item_upgrade_1.tscn" id="12_rvs2r"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y3j0m"]
 size = Vector2(19, 20)
@@ -898,9 +897,6 @@ libraries = {
 [node name="girl_npc" parent="." instance=ExtResource("6_rurhu")]
 y_sort_enabled = true
 position = Vector2(103, -69)
-
-[node name="ItemUpgrade1" parent="." instance=ExtResource("12_rvs2r")]
-position = Vector2(23, 46)
 
 [connection signal="body_entered" from="dungeon_bridge_1" to="." method="_on_dungeon_bridge_1_body_entered"]
 [connection signal="body_exited" from="dungeon_bridge_1" to="." method="_on_dungeon_bridge_1_body_exited"]

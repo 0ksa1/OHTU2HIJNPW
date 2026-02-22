@@ -1,10 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://yodmjtnngho5"]
+[gd_scene load_steps=5 format=3 uid="uid://yodmjtnngho5"]
 
 [ext_resource type="Texture2D" uid="uid://djaj5c182w7ql" path="res://art/items/bottle.png" id="1_6bldj"]
 [ext_resource type="Script" uid="uid://b8cflqh7w6c0t" path="res://scripts/item/item_pickup.gd" id="1_pwbsv"]
+[ext_resource type="PackedScene" uid="uid://b2up7eeemadak" path="res://dialogue/dialogue.tscn" id="3_dyt2e"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ck8uk"]
-size = Vector2(7, 10)
+[sub_resource type="CircleShape2D" id="CircleShape2D_pwbsv"]
+radius = 16.530275
 
 [node name="ItemUpgrade1" type="Area2D"]
 script = ExtResource("1_pwbsv")
@@ -15,4 +16,8 @@ texture = ExtResource("1_6bldj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, 1)
-shape = SubResource("RectangleShape2D_ck8uk")
+shape = SubResource("CircleShape2D_pwbsv")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Dialogue" parent="CanvasLayer" instance=ExtResource("3_dyt2e")]

@@ -1,6 +1,9 @@
 extends Area2D
 
 @onready var sprite = $Sprite2D
+@export var next_scene: String = "res://scenes/hub1.tscn"
+@onready var dialogue = $CanvasLayer/Dialogue
+
 var player_in_range: bool = false
 
 func _ready():
@@ -13,7 +16,18 @@ func _process(_delta):
 		collect()
 
 func collect():
-	queue_free() 
+	if not dialogue.d_active:
+		sprite.visible = false
+		player_in_range = false  
+
+		dialogue.start("res://dialogue/item_dialogue1.json")
+
+		await dialogue.dialogue_finished
+
+		await get_tree().create_timer(0.2).timeout
+
+		queue_free()
+		get_tree().change_scene_to_file(next_scene)
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
