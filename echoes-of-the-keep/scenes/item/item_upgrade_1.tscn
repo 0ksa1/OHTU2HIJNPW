@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://yodmjtnngho5"]
+
+[ext_resource type="Texture2D" uid="uid://djaj5c182w7ql" path="res://art/items/bottle.png" id="1_6bldj"]
+[ext_resource type="Script" uid="uid://b8cflqh7w6c0t" path="res://scripts/item/item_pickup.gd" id="1_pwbsv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ck8uk"]
+size = Vector2(7, 10)
+
+[node name="ItemUpgrade1" type="Area2D"]
+script = ExtResource("1_pwbsv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2, -5)
+texture = ExtResource("1_6bldj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 1)
+shape = SubResource("RectangleShape2D_ck8uk")
