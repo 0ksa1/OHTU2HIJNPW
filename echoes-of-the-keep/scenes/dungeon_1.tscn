@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://cltc6yg5p3ows"]
+[gd_scene load_steps=37 format=4 uid="uid://cltc6yg5p3ows"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_5112x"]
 [ext_resource type="Script" uid="uid://dike74e1j6uv8" path="res://scripts/dungeon_1.gd" id="1_pxq7g"]
@@ -9,8 +9,11 @@
 [ext_resource type="Texture2D" uid="uid://8ckdmipr22g8" path="res://tiles/Dungeon/Dungeon1/MainLev2.0.png" id="5_xtwae"]
 [ext_resource type="Texture2D" uid="uid://cvce4lb2qjpwg" path="res://tiles/Dungeon/Dungeon1/decorative.png" id="6_7egf0"]
 [ext_resource type="PackedScene" uid="uid://b5kktxaucm7ub" path="res://scenes/Door.tscn" id="9_7egf0"]
+[ext_resource type="PackedScene" uid="uid://dqq7xqsycpugb" path="res://scenes/enemy/rat.tscn" id="9_7ire7"]
+[ext_resource type="PackedScene" uid="uid://b8a5t2oxqb5bx" path="res://scenes/enemy/bat.tscn" id="10_jnhlp"]
 [ext_resource type="PackedScene" uid="uid://dybmk2gqucb4n" path="res://scenes/DoorBoss1.tscn" id="10_xomw0"]
 [ext_resource type="Script" uid="uid://b70ltjbcduls1" path="res://scenes/dungeon_audio.gd" id="11_11v3s"]
+[ext_resource type="PackedScene" uid="uid://7hl26bp4n4bi" path="res://scenes/enemy/slime.tscn" id="11_wxlf4"]
 [ext_resource type="AudioStream" uid="uid://cq4upfwotglgd" path="res://audio/sfx/mavopix-forgotten-cave-159880.mp3" id="12_elh8m"]
 [ext_resource type="AudioStream" uid="uid://chvud1chodydi" path="res://audio/sfx/universfield-dark-mystery-intro-352303.mp3" id="13_v23nj"]
 
@@ -48058,6 +48061,30 @@ chase_speed = 55.0
 patrol_vertical = true
 turn_pause_time = 0.35
 attack_cooldown = 0.7
+
+[node name="Rat" parent="." instance=ExtResource("9_7ire7")]
+position = Vector2(731, 712)
+
+[node name="Rat2" parent="." instance=ExtResource("9_7ire7")]
+position = Vector2(1148, 712)
+
+[node name="Bat" parent="." instance=ExtResource("10_jnhlp")]
+position = Vector2(341, 1189)
+
+[node name="Bat2" parent="." instance=ExtResource("10_jnhlp")]
+position = Vector2(232, 1269)
+
+[node name="Bat3" parent="." instance=ExtResource("10_jnhlp")]
+position = Vector2(142, 1395)
+
+[node name="Slime" parent="." instance=ExtResource("11_wxlf4")]
+position = Vector2(1093, 1229)
+
+[node name="Slime2" parent="." instance=ExtResource("11_wxlf4")]
+position = Vector2(1077, 1389)
+
+[node name="Slime3" parent="." instance=ExtResource("11_wxlf4")]
+position = Vector2(1171, 1317)
 
 [node name="Spawn" type="Marker2D" parent="."]
 position = Vector2(943, 281)
