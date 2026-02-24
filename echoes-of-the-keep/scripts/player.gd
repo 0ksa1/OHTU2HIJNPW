@@ -5,6 +5,11 @@ extends CharacterBody2D
 @export var acceleration: float = 1500.0
 @export var friction: float = 2000.0
 
+# ---------- DEV TOOLS ----------
+@export var dev_allow_noclip: bool = true
+var noclip: bool = false
+@onready var player_collider: CollisionShape2D = get_node_or_null("collision") as CollisionShape2D
+
 # ---------- Sprint stamina ----------
 # 1.0 = täysi sprint, 0.0 = pelkkä walk
 @export var sprint_drain_per_sec: float = 0.55     # isompi = nopeammin väsyy
@@ -19,7 +24,7 @@ extends CharacterBody2D
 
 # Attack lunge
 @export var lunge_speed: float = 260.0
-@export var lunge_duration: float = 0.08
+@export var lunge_duration: float = 0.035
 
 # Turn feel (pehmeä)
 @export var turn_duration: float = 0.10
@@ -556,7 +561,15 @@ func die() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("test_damage"):
 		_test_damage(10)
-
+	
+	if dev_allow_noclip and event.is_action_pressed("toggle_noclip"):
+		noclip = !noclip
+		if player_collider:
+			player_collider.disabled = noclip
+		else:
+			push_warning("NOCLIP: CollisionShape2D not found at 'collision/CollisionShape2D'. Check node path.")
+		print("NOCLIP:", noclip)
+		
 # -------------------------
 # CHARACTER STATS
 # -------------------------
