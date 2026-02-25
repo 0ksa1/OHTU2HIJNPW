@@ -1,7 +1,8 @@
 extends CanvasLayer
 
 var gui_components = [
-	"res://scenes/pause_menu.tscn"
+	"res://scenes/pause_menu.tscn",
+	"res://scenes/inventory_ui.tscn"
 ]
 
 # Resoluutiot listana
@@ -13,6 +14,7 @@ var resolutions = {
 }
 
 var pause_menu: Node = null
+var inventory_ui: Node = null
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -24,15 +26,33 @@ func _ready():
 		if new_scene.name == "PauseMenu":
 			pause_menu = new_scene
 
+		if new_scene.name == "Inventory":
+			inventory_ui = new_scene
+
 func _input(_event):
 	if Input.is_action_just_pressed("escKey") and pause_menu:
 		#print("esc press") testi
+		if inventory_ui and inventory_ui.visible:
+			inventory_ui.hide()
+			get_tree().paused = false
+			return
+
 		if !get_tree().paused:
 			pause_menu.pause()
 		else:
 			pause_menu.esc_back_or_resume()
 
-# Fullscreen on/off
+	if Input.is_action_just_pressed("inventory") and inventory_ui:
+		if pause_menu and pause_menu.visible:
+			return
+
+		inventory_ui.visible = !inventory_ui.visible
+		get_tree().paused = inventory_ui.visible
+
+		if inventory_ui.visible and inventory_ui.has_method("refresh_ui"):
+			inventory_ui.refresh_ui()
+
+	# Fullscreen on/off
 	if Input.is_action_just_pressed("fullscreen"):
 		#print("fullscreen press") testi
 		if get_window().mode == Window.MODE_FULLSCREEN:

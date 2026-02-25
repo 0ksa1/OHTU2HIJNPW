@@ -3,6 +3,7 @@ extends Area2D
 @onready var sprite = $Sprite2D
 @export var next_scene: String = "res://scenes/hub1.tscn"
 @onready var dialogue = $CanvasLayer/Dialogue
+@export var item_id: StringName = &"potion"
 
 var player_in_range: bool = false
 
@@ -28,6 +29,17 @@ func collect():
 
 		queue_free()
 		get_tree().change_scene_to_file(next_scene)
+
+func collect_item():
+	var added := Inventory.add_item(item_id)
+
+	if not added:
+		print("Inventory full")
+		return
+
+	sprite.visible = false
+	player_in_range = false
+	queue_free()
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):

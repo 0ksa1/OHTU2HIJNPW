@@ -1,9 +1,8 @@
-[gd_scene load_steps=23 format=4 uid="uid://dp7sp7pxd1qgf"]
+[gd_scene load_steps=22 format=4 uid="uid://dp7sp7pxd1qgf"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_onqr8"]
 [ext_resource type="Script" uid="uid://dxbkuor8cih1c" path="res://scripts/game_scene.gd" id="1_y3j0m"]
 [ext_resource type="PackedScene" uid="uid://mus4efnh8kp8" path="res://scenes/common/collision_world.tscn" id="3_tcjrq"]
-[ext_resource type="PackedScene" uid="uid://b7rrmwbsn41pt" path="res://scenes/pause_menu.tscn" id="3_ycayy"]
 [ext_resource type="AudioStream" uid="uid://mty54i0hx1cm" path="res://audio/sfx/birb_sounds.mp3" id="4_tcjrq"]
 [ext_resource type="PackedScene" uid="uid://dohybjnu4fth3" path="res://scenes/player.tscn" id="5_rurhu"]
 [ext_resource type="AudioStream" uid="uid://e1lthyeffvb6" path="res://audio/sfx/attack1.mp3" id="6_kk2rg"]
@@ -851,15 +850,12 @@ stream = ExtResource("4_tcjrq")
 volume_db = -18.0
 autoplay = true
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("3_ycayy")]
-
 [node name="player" parent="." instance=ExtResource("5_rurhu")]
 y_sort_enabled = true
 position = Vector2(0, 0)
 
 [node name="sprite" parent="player" index="0"]
+position = Vector2(-16, -5)
 animation = &"idle_turn"
 
 [node name="game_scene_camera" parent="player" index="1"]
@@ -902,5 +898,4 @@ position = Vector2(103, -69)
 [connection signal="body_exited" from="dungeon_bridge_1" to="." method="_on_dungeon_bridge_1_body_exited"]
 
 [editable path="collision_world"]
-[editable path="CanvasLayer/PauseMenu"]
 [editable path="player"]
