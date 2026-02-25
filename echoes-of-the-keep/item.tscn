@@ -10,6 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
 script = ExtResource("1_ttk8k")
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -17,8 +18,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 10.0
+offset_right = 7.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_kg5e7")
-stretch_mode = 4
+stretch_mode = 5

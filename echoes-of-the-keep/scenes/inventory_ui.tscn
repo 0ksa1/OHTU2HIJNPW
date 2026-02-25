@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://6hfc5udusvir"]
+[gd_scene load_steps=6 format=3 uid="uid://6hfc5udusvir"]
 
+[ext_resource type="Script" uid="uid://d01t34ufxujlr" path="res://scenes/inventory_ui.gd" id="1_iradw"]
 [ext_resource type="Texture2D" uid="uid://namp5fdkfvm8" path="res://art/ui/menu/inventoryScreen.tres" id="1_mdwe3"]
 [ext_resource type="Texture2D" uid="uid://dj3bkicompomt" path="res://art/ui/menu/inventorySlot.tres" id="2_iradw"]
 [ext_resource type="Script" uid="uid://vcv4v4mqfvpv" path="res://scenes/inventory_slot.gd" id="3_eifbp"]
@@ -15,6 +16,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_iradw")
 
 [node name="InventoryWindow" type="Control" parent="."]
 custom_minimum_size = Vector2(120, 100)

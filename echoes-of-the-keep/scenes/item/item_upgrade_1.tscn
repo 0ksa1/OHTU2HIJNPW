@@ -9,6 +9,7 @@ radius = 16.530275
 
 [node name="ItemUpgrade1" type="Area2D"]
 script = ExtResource("1_pwbsv")
+is_inventory_item = false
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(2, -5)

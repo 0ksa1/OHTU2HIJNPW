@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://cltc6yg5p3ows"]
+[gd_scene load_steps=36 format=4 uid="uid://cltc6yg5p3ows"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_5112x"]
 [ext_resource type="Script" uid="uid://dike74e1j6uv8" path="res://scripts/dungeon_1.gd" id="1_pxq7g"]
@@ -14,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://cq4upfwotglgd" path="res://audio/sfx/mavopix-forgotten-cave-159880.mp3" id="12_elh8m"]
 [ext_resource type="AudioStream" uid="uid://chvud1chodydi" path="res://audio/sfx/universfield-dark-mystery-intro-352303.mp3" id="13_v23nj"]
 [ext_resource type="PackedScene" uid="uid://yodmjtnngho5" path="res://scenes/item/item_upgrade_1.tscn" id="14_7ire7"]
+[ext_resource type="Texture2D" uid="uid://bdhfj8qysubur" path="res://art/items/potion-0002.png" id="15_jnhlp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xtwae"]
 texture = ExtResource("5_xtwae")
@@ -48097,7 +48098,15 @@ volume_db = 1.0
 [node name="ItemUpgrade1" parent="." instance=ExtResource("14_7ire7")]
 position = Vector2(1041, 350)
 
+[node name="ItemUpgrade2" parent="." instance=ExtResource("14_7ire7")]
+position = Vector2(1040, 399)
+is_inventory_item = true
+
+[node name="Sprite2D" parent="ItemUpgrade2" index="0"]
+texture = ExtResource("15_jnhlp")
+
 [connection signal="body_entered" from="exit_bridge" to="." method="_on_exit_bridge_body_entered"]
 [connection signal="body_exited" from="exit_bridge" to="." method="_on_exit_bridge_body_exited"]
 
 [editable path="collision_world"]
+[editable path="ItemUpgrade2"]

@@ -1,3 +1,7 @@
+# slotin tyhjennys ja täyttö
+#
+#
+
 extends Panel
 
 var ItemClass = preload("res://item.tscn")

@@ -4,6 +4,7 @@ extends Area2D
 @export var next_scene: String = "res://scenes/hub1.tscn"
 @onready var dialogue = $CanvasLayer/Dialogue
 @export var item_id: StringName = &"potion"
+@export var is_inventory_item: bool = true
 
 var player_in_range: bool = false
 
@@ -14,7 +15,10 @@ func _ready():
 
 func _process(_delta):
 	if player_in_range and Input.is_action_just_pressed("interact"):
-		collect()
+		if is_inventory_item:
+			collect_item()
+		else:
+			collect()
 
 func collect():
 	if not dialogue.d_active:
@@ -32,11 +36,9 @@ func collect():
 
 func collect_item():
 	var added := Inventory.add_item(item_id)
-
 	if not added:
 		print("Inventory full")
 		return
-
 	sprite.visible = false
 	player_in_range = false
 	queue_free()
