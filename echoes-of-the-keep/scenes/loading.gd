@@ -7,6 +7,7 @@ var progress: Array[float] = []
 
 func _ready() -> void:
 	print(global.next_scene)
+	$AnimatedSprite2D.play()
 	ResourceLoader.load_threaded_request(next_scene_path)
 	
 func _process(delta: float) -> void:
