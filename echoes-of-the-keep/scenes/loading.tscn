@@ -1,7 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://cts0fvlxpeox8"]
+[gd_scene load_steps=9 format=3 uid="uid://cts0fvlxpeox8"]
 
 [ext_resource type="Script" uid="uid://12pl4i8wcyl1" path="res://scenes/loading.gd" id="1_yc7uc"]
 [ext_resource type="Texture2D" uid="uid://cj7fspvqh1pwk" path="res://art/loading/e20a233c-3f8e-4262-b306-cc9c8fe99b4b.png" id="2_dhqfv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yc7uc"]
+bg_color = Color(0.01945975, 0.13650727, 0, 0.24313726)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.06837237, 0.11648775, 0.029983291, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dhqfv"]
+bg_color = Color(0.08017626, 0.20892668, 4.813075e-08, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_101rs"]
 atlas = ExtResource("2_dhqfv")
@@ -47,9 +58,11 @@ offset_right = 799.0
 offset_bottom = 377.5
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_yc7uc")
+theme_override_styles/fill = SubResource("StyleBoxFlat_dhqfv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(646.00006, 259)
 scale = Vector2(0.3515625, 0.2421875)
 sprite_frames = SubResource("SpriteFrames_nxo4k")
-frame_progress = 0.6535912
+frame_progress = 0.29274917
