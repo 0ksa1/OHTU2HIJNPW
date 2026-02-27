@@ -60,6 +60,7 @@ func change_scene() -> void:
 
 		# merkkaa että poistutaan dungeonista
 		global.current_scene = "dungeon_1"
-
+		
+		
 		get_tree().change_scene_to_file("res://scenes/game_scene.tscn")
 		global.finish_scene_change()
