@@ -5,6 +5,11 @@ extends CharacterBody2D
 @export var acceleration: float = 1500.0
 @export var friction: float = 2000.0
 
+# ---------- DEV TOOLS ----------
+@export var dev_allow_noclip: bool = true
+var noclip: bool = false
+@onready var player_collider: CollisionShape2D = get_node_or_null("collision") as CollisionShape2D
+
 # ---------- Sprint stamina ----------
 # 1.0 = täysi sprint, 0.0 = pelkkä walk
 @export var sprint_drain_per_sec: float = 0.55     # isompi = nopeammin väsyy
@@ -19,7 +24,7 @@ extends CharacterBody2D
 
 # Attack lunge
 @export var lunge_speed: float = 260.0
-@export var lunge_duration: float = 0.08
+@export var lunge_duration: float = 0.035
 
 # Turn feel (pehmeä)
 @export var turn_duration: float = 0.10
@@ -37,10 +42,6 @@ var facing_right: bool = true
 # Input cache
 var input_dir: Vector2 = Vector2.ZERO
 var sprint_pressed: bool = false
-
-# Sprint stamina runtime
-var sprint_energy: float = 1.0
-var sprint_regen_timer: float = 0.0
 
 # Turn overlay
 var is_turning: bool = false
@@ -70,19 +71,25 @@ func _ready() -> void:
 		sprite.animation_finished.connect(_on_animation_finished)
 	_play_safe(&"idle")
 
-
+@onready var stamina_bar = $StaminaBar
 func _physics_process(delta: float) -> void:
+	if dead:
+		return
+	if hurting:
+		move_and_slide()
+		return
 
 	_read_movement_input()
 	_update_sprint_energy(delta)
-
 	_handle_attack_input(delta)
+	stamina_bar.set_stamina(sprint_energy * 100.0, 100.0)
 
 	match state:
 		State.MOVE:
 			_process_move(delta)
 		State.ATTACK:
 			_process_attack(delta)
+
 
 func player() -> void:
 	pass
@@ -94,6 +101,8 @@ func player() -> void:
 
 @onready var sfx_step_grass: AudioStreamPlayer2D = $audio/SFX_Footstep_Grass
 @onready var sfx_step_wood: AudioStreamPlayer2D = $audio/SFX_Footstep_Wood
+@onready var sfx_hurt: AudioStreamPlayer2D = $audio/SFX_Hurt
+@onready var sfx_death: AudioStreamPlayer2D = $audio/SFX_Death
 
 
 func sfx_attack(step: int) -> void:
@@ -428,16 +437,6 @@ func _get_surface_under_player() -> StringName:
 	var s := _surface_from_layer(props, global_position)
 	return (s if s != &"" else &"grass")
 
-	# Fallback: peruslattia
-	var floor := scene.get_node_or_null("FloorTileLayer") as TileMapLayer
-	if floor:
-		var s2 := _surface_from_layer(floor, global_position)
-		if s2 != &"":
-			return s2
-
-	return &"grass"
-
-
 func _surface_from_layer(layer: TileMapLayer, world_pos: Vector2) -> StringName:
 	var local_pos := layer.to_local(world_pos)
 	var cell := layer.local_to_map(local_pos)
@@ -446,15 +445,12 @@ func _surface_from_layer(layer: TileMapLayer, world_pos: Vector2) -> StringName:
 	if td == null:
 		return &""
 
-	# get_custom_data palauttaa Variant -> käytä explicit-tyyppiä (ei :=)
 	var v: Variant = td.get_custom_data("surface")
 	if v == null:
 		return &""
 
 	return StringName(str(v))
-
-	return StringName(str(v))
-
+	
 
 func _apply_flip() -> void:
 	sprite.flip_h = not facing_right
@@ -502,3 +498,87 @@ func current_camera():
 		$game_scene_camera.enabled = false
 		$dungeon_camera.enabled = true
 		$dungeon_camera.make_current()
+
+#-------------------------
+# HEALTHBAR & DEATH LOGIC
+#-------------------------
+func play_hurt() -> void:
+	if dead or hurting:
+		return
+	if not _has_anim(&"hurt"):
+		return
+
+	hurting = true
+	velocity = Vector2.ZERO
+	
+	if sfx_hurt:
+		sfx_hurt.pitch_scale = randf_range(0.98, 1.02)
+		sfx_hurt.play()
+	
+	_play_safe(&"hurt")
+
+	await get_tree().create_timer(hurt_lock_time).timeout
+	hurting = false
+
+@onready var healthbar = $HealthBar
+var dead = false
+var hurting: bool = false
+@export var hurt_lock_time: float = 0.25
+
+#funktio damagen testaamiseen
+func _test_damage(dmg: int) -> void:
+	if dead:
+		return
+		
+	health = maxi(0, health - dmg)
+	healthbar.health = health
+	
+	if health <= 0:
+		die()
+	else:
+		play_hurt()
+
+func die() -> void:
+	if dead:
+		return
+
+	dead = true
+	hurting = false
+	velocity = Vector2.ZERO
+
+	if sfx_death:
+		sfx_death.play()
+
+	if _has_anim(&"death"):
+		_play_safe(&"death")
+		await sprite.animation_finished
+
+		await get_tree().create_timer(0.3).timeout
+
+	var main_scene_path: String = ProjectSettings.get_setting("application/run/main_scene")
+	get_tree().change_scene_to_file(main_scene_path)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("test_damage"):
+		_test_damage(10)
+	
+	if dev_allow_noclip and event.is_action_pressed("toggle_noclip"):
+		noclip = !noclip
+		if player_collider:
+			player_collider.disabled = noclip
+		else:
+			push_warning("NOCLIP: CollisionShape2D not found at 'collision/CollisionShape2D'. Check node path.")
+		print("NOCLIP:", noclip)
+		
+# -------------------------
+# CHARACTER STATS
+# -------------------------
+
+# Sprint stamina runtime
+var sprint_energy: float = 1.0
+var sprint_regen_timer: float = 0.0
+
+#HP
+
+var max_hp: int = 100
+var health: int = 100
