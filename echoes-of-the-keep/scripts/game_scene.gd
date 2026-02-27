@@ -8,6 +8,7 @@ var switching_scene: bool = false
 
 
 func _ready() -> void:
+
 	# Spawn/return position
 	if global.firstload == true:
 		player.position.x = global.player_start_posx
@@ -64,4 +65,5 @@ func change_scene() -> void:
 		global.current_scene = "game_scene"
 
 		get_tree().change_scene_to_file("res://scenes/loading.tscn")
+		
 		global.finish_scene_change()
