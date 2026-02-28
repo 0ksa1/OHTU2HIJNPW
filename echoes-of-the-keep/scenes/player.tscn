@@ -1041,6 +1041,10 @@ limit_bottom = 272
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
+[node name="hub1_camera" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
+process_callback = 0
+
 [node name="audio" type="Node2D" parent="."]
 
 [node name="SFX_Attack" type="AudioStreamPlayer2D" parent="audio"]

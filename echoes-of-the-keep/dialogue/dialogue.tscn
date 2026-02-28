@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b2up7eeemadak"]
 
 [ext_resource type="Script" uid="uid://ye7p01vrvden" path="res://dialogue/dialogueplayer.gd" id="1_vigd0"]
-[ext_resource type="Texture2D" uid="uid://c7rsiu6ulfb2e" path="res://art/dialogue_box.png" id="2_mwwob"]
+[ext_resource type="Texture2D" uid="uid://dk7rl4yeq67x7" path="res://art/ui/dialogue_box.png" id="2_mwwob"]
 
 [node name="Dialogue" type="Control"]
 layout_mode = 3
@@ -33,6 +33,7 @@ offset_top = 5.0
 offset_right = 97.0
 offset_bottom = 27.0
 text = "Name:"
+scroll_active = false
 
 [node name="Text" type="RichTextLabel" parent="NinePatchRect"]
 layout_mode = 0
@@ -41,3 +42,4 @@ offset_top = 31.999992
 offset_right = 226.49997
 offset_bottom = 94.499985
 text = "Chatting..."
+scroll_active = false

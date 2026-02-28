@@ -493,92 +493,16 @@ func current_camera():
 	if global.current_scene == "game_scene":
 		$game_scene_camera.enabled = true
 		$dungeon_camera.enabled = false
+		$hub1_camera.enabled = false
 		$game_scene_camera.make_current()
 	elif global.current_scene == "dungeon_1":
 		$game_scene_camera.enabled = false
 		$dungeon_camera.enabled = true
+		$hub1_camera.enabled = false
 		$dungeon_camera.make_current()
-
-#-------------------------
-# HEALTHBAR & DEATH LOGIC
-#-------------------------
-func play_hurt() -> void:
-	if dead or hurting:
-		return
-	if not _has_anim(&"hurt"):
-		return
-
-	hurting = true
-	velocity = Vector2.ZERO
-	
-	if sfx_hurt:
-		sfx_hurt.pitch_scale = randf_range(0.98, 1.02)
-		sfx_hurt.play()
-	
-	_play_safe(&"hurt")
-
-	await get_tree().create_timer(hurt_lock_time).timeout
-	hurting = false
-
-@onready var healthbar = $HealthBar
-var dead = false
-var hurting: bool = false
-@export var hurt_lock_time: float = 0.25
-
-#funktio damagen testaamiseen
-func _test_damage(dmg: int) -> void:
-	if dead:
-		return
+	elif global.current_scene == "hub1":
+		$game_scene_camera.enabled = false
+		$dungeon_camera.enabled = false
+		$hub1_camera.enabled = true
+		$hub1_camera.make_current()
 		
-	health = maxi(0, health - dmg)
-	healthbar.health = health
-	
-	if health <= 0:
-		die()
-	else:
-		play_hurt()
-
-func die() -> void:
-	if dead:
-		return
-
-	dead = true
-	hurting = false
-	velocity = Vector2.ZERO
-
-	if sfx_death:
-		sfx_death.play()
-
-	if _has_anim(&"death"):
-		_play_safe(&"death")
-		await sprite.animation_finished
-
-		await get_tree().create_timer(0.3).timeout
-
-	var main_scene_path: String = ProjectSettings.get_setting("application/run/main_scene")
-	get_tree().change_scene_to_file(main_scene_path)
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("test_damage"):
-		_test_damage(10)
-	
-	if dev_allow_noclip and event.is_action_pressed("toggle_noclip"):
-		noclip = !noclip
-		if player_collider:
-			player_collider.disabled = noclip
-		else:
-			push_warning("NOCLIP: CollisionShape2D not found at 'collision/CollisionShape2D'. Check node path.")
-		print("NOCLIP:", noclip)
-		
-# -------------------------
-# CHARACTER STATS
-# -------------------------
-
-# Sprint stamina runtime
-var sprint_energy: float = 1.0
-var sprint_regen_timer: float = 0.0
-
-#HP
-
-var max_hp: int = 100
-var health: int = 100
