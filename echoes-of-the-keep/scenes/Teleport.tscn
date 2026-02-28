@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cs43io0cs2uaa"]
+[gd_scene load_steps=0 format=3 uid="uid://cs43io0cs2uaa"]
 
 [node name="Teleport" type="Area2D"]
 
