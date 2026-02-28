@@ -5,6 +5,11 @@ extends CharacterBody2D
 @export var acceleration: float = 1500.0
 @export var friction: float = 2000.0
 
+# ---------- DEV TOOLS ----------
+@export var dev_allow_noclip: bool = true
+var noclip: bool = false
+@onready var player_collider: CollisionShape2D = get_node_or_null("collision") as CollisionShape2D
+
 # ---------- Sprint stamina ----------
 # 1.0 = täysi sprint, 0.0 = pelkkä walk
 @export var sprint_drain_per_sec: float = 0.55     # isompi = nopeammin väsyy
@@ -19,7 +24,7 @@ extends CharacterBody2D
 
 # Attack lunge
 @export var lunge_speed: float = 260.0
-@export var lunge_duration: float = 0.08
+@export var lunge_duration: float = 0.035
 
 # Turn feel (pehmeä)
 @export var turn_duration: float = 0.10
@@ -37,10 +42,6 @@ var facing_right: bool = true
 # Input cache
 var input_dir: Vector2 = Vector2.ZERO
 var sprint_pressed: bool = false
-
-# Sprint stamina runtime
-var sprint_energy: float = 1.0
-var sprint_regen_timer: float = 0.0
 
 # Turn overlay
 var is_turning: bool = false
@@ -70,19 +71,25 @@ func _ready() -> void:
 		sprite.animation_finished.connect(_on_animation_finished)
 	_play_safe(&"idle")
 
-
+@onready var stamina_bar = $StaminaBar
 func _physics_process(delta: float) -> void:
+	if dead:
+		return
+	if hurting:
+		move_and_slide()
+		return
 
 	_read_movement_input()
 	_update_sprint_energy(delta)
-
 	_handle_attack_input(delta)
+	stamina_bar.set_stamina(sprint_energy * 100.0, 100.0)
 
 	match state:
 		State.MOVE:
 			_process_move(delta)
 		State.ATTACK:
 			_process_attack(delta)
+
 
 func player() -> void:
 	pass
@@ -94,6 +101,8 @@ func player() -> void:
 
 @onready var sfx_step_grass: AudioStreamPlayer2D = $audio/SFX_Footstep_Grass
 @onready var sfx_step_wood: AudioStreamPlayer2D = $audio/SFX_Footstep_Wood
+@onready var sfx_hurt: AudioStreamPlayer2D = $audio/SFX_Hurt
+@onready var sfx_death: AudioStreamPlayer2D = $audio/SFX_Death
 
 
 func sfx_attack(step: int) -> void:
@@ -428,16 +437,6 @@ func _get_surface_under_player() -> StringName:
 	var s := _surface_from_layer(props, global_position)
 	return (s if s != &"" else &"grass")
 
-	# Fallback: peruslattia
-	var floor := scene.get_node_or_null("FloorTileLayer") as TileMapLayer
-	if floor:
-		var s2 := _surface_from_layer(floor, global_position)
-		if s2 != &"":
-			return s2
-
-	return &"grass"
-
-
 func _surface_from_layer(layer: TileMapLayer, world_pos: Vector2) -> StringName:
 	var local_pos := layer.to_local(world_pos)
 	var cell := layer.local_to_map(local_pos)
@@ -446,15 +445,12 @@ func _surface_from_layer(layer: TileMapLayer, world_pos: Vector2) -> StringName:
 	if td == null:
 		return &""
 
-	# get_custom_data palauttaa Variant -> käytä explicit-tyyppiä (ei :=)
 	var v: Variant = td.get_custom_data("surface")
 	if v == null:
 		return &""
 
 	return StringName(str(v))
-
-	return StringName(str(v))
-
+	
 
 func _apply_flip() -> void:
 	sprite.flip_h = not facing_right
