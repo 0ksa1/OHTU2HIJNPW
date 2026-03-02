@@ -8,6 +8,7 @@ var switching_scene: bool = false
 
 
 func _ready() -> void:
+
 	# Spawn/return position
 	if global.firstload == true:
 		player.position.x = global.player_start_posx
@@ -42,7 +43,9 @@ func _process(_delta: float) -> void:
 
 func _on_dungeon_bridge_1_body_entered(body: Node2D) -> void:
 	if body.has_method("player"):
+		global.next_scene = "res://scenes/dungeon_1.tscn"
 		global.transition_scene = true
+		
 
 
 func _on_dungeon_bridge_1_body_exited(body: Node2D) -> void:
@@ -61,5 +64,6 @@ func change_scene() -> void:
 		# TÄRKEÄ: merkkaa että poistutaan game_scenestä
 		global.current_scene = "game_scene"
 
-		get_tree().change_scene_to_file("res://scenes/dungeon_1.tscn")
+		get_tree().change_scene_to_file("res://scenes/loading.tscn")
+		
 		global.finish_scene_change()

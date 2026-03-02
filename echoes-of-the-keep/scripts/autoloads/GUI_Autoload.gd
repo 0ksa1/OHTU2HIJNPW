@@ -22,7 +22,7 @@ func _ready():
 		var new_scene = (load(path) as PackedScene).instantiate()
 		add_child(new_scene)
 		new_scene.hide()
-
+		
 		if new_scene.name == "PauseMenu":
 			pause_menu = new_scene
 
