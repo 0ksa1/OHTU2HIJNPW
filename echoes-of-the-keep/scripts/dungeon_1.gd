@@ -42,11 +42,13 @@ func _process(_delta: float) -> void:
 
 func _on_exit_bridge_body_entered(body: Node2D) -> void:
 	if body.has_method("player"):
+		global.next_scene = "res://scenes/game_scene.tscn"
 		global.transition_scene = true
 
 
 func _on_exit_bridge_body_exited(body: Node2D) -> void:
 	if body.has_method("player"):
+		global.next_scene = "res://scenes/game_scene.tscn"
 		global.transition_scene = false
 
 
@@ -56,11 +58,10 @@ func change_scene() -> void:
 
 	if global.transition_scene == true:
 		switching_scene = true
-		global.transition_scene = false
 
-		# merkkaa että poistutaan dungeonista
+		# TÄRKEÄ: merkkaa että poistutaan game_scenestä
 		global.current_scene = "dungeon_1"
+
+		get_tree().change_scene_to_file("res://scenes/loading.tscn")
 		
-		
-		get_tree().change_scene_to_file("res://scenes/game_scene.tscn")
 		global.finish_scene_change()
