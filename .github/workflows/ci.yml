@@ -24,4 +24,8 @@ jobs:
       # Tämä ei ole täydellinen testi, mutta nappaa monia rikkinäisiä mergejä.
       - name: Godot headless import/sanity
         run: |
-          godot --headless --path echoes-of-the-keep --quit --verbose
+          godot --headless --path echoes-of-the-keep --quit --verbose 
+
+      - name: Run unit tests (GUT)
+        run: |
+          godot --headless --path echoes-of-the-keep -s res://addons/gut/gut_cmdln.gd -gexit
