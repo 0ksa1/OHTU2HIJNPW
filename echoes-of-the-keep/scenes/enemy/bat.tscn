@@ -1,6 +1,7 @@
-[gd_scene load_steps=47 format=3 uid="uid://b8a5t2oxqb5bx"]
+[gd_scene load_steps=48 format=3 uid="uid://b8a5t2oxqb5bx"]
 
 [ext_resource type="Texture2D" uid="uid://142wudqe6q7t" path="res://art/enemy/bat/attack/Bat_Attack.png" id="1_c1ts6"]
+[ext_resource type="Script" uid="uid://d1otphmrcifvs" path="res://scripts/enemy/enemy_base.gd" id="1_yxo54"]
 [ext_resource type="Texture2D" uid="uid://71aih3ralt0t" path="res://art/enemy/bat/death/Bat_Death.png" id="2_yxo54"]
 [ext_resource type="Texture2D" uid="uid://ch7rveeqlocly" path="res://art/enemy/bat/fly/Bat_Fly.png" id="3_0iyve"]
 [ext_resource type="Texture2D" uid="uid://dduenyeqi5uls" path="res://art/enemy/bat/hit/Bat_Hit.png" id="4_rj5wm"]
@@ -293,8 +294,9 @@ radius = 82.006096
 [sub_resource type="CircleShape2D" id="CircleShape2D_5syy0"]
 radius = 12.0
 
-[node name="Bat" type="CharacterBody2D"]
+[node name="Bat" type="CharacterBody2D" groups=["enemy"]]
 y_sort_enabled = true
+script = ExtResource("1_yxo54")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
@@ -305,7 +307,6 @@ frame_progress = 0.059925564
 offset = Vector2(0, -7)
 
 [node name="fx" type="AnimatedSprite2D" parent="."]
-visible = false
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_2lvrx")
 animation = &"bat_death_fx"

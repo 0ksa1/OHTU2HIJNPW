@@ -708,7 +708,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hrkfm")
 }],
-"loop": true,
+"loop": false,
 "name": &"hurt",
 "speed": 9.0
 }, {
@@ -1015,7 +1015,7 @@ script = ExtResource("1_ur7pv")
 unique_name_in_owner = true
 position = Vector2(-2, -1)
 sprite_frames = SubResource("SpriteFrames_u8vuu")
-animation = &"death"
+animation = &"walk_turn"
 offset = Vector2(0, -15)
 
 [node name="game_scene_camera" type="Camera2D" parent="."]

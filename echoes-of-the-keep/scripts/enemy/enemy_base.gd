@@ -1,5 +1,4 @@
 extends CharacterBody2D
-
 #
 # enemy states
 #
@@ -7,7 +6,9 @@ enum State {
 	PATROL,
 	CHASE,
 	RETURN_HOME,
-	ATTACK
+	ATTACK,
+	HIT,
+	DEAD
 }
 
 var state: State = State.PATROL
@@ -15,33 +16,42 @@ var state: State = State.PATROL
 #
 # !! säädöt Inspectorissa !!
 #
-@export var patrol_speed: float = 35.0 # nopeus partioidessa
-@export var chase_speed: float = 70.0 # nopeus jahdatessa
-@export var patrol_distance: float = 60.0 # miten kauas lähtöpisteestä partioi
-@export var patrol_vertical: bool = false # vertical vai horizontal patrol
-@export var stop_distance: float = 18.0 # kuinka lähelle pelaajaa pysähtyy
-@export var home_reach_distance: float = 6.0 # kuinka lähelle home pitää päästä että on home
-@export var turn_pause_time: float = 0.25 # kauan patrolissa kääntyessä paikallaan
-@export var attack_cooldown: float = 0.6  # kuinka kauan odotetaan iskun jälkeen ennen seuraavaa
+@export var patrol_speed: float = 35.0
+@export var chase_speed: float = 70.0
+@export var patrol_distance: float = 60.0
+@export var patrol_vertical: bool = false
+@export var stop_distance: float = 18.0
+@export var home_reach_distance: float = 6.0
+@export var turn_pause_time: float = 0.25
+@export var attack_cooldown: float = 0.6
 
 @export var max_hp: int = 30
 @export var attack_damage: int = 10
-@export var attack_hit_time: float = 0.12 # sekuntia lyönnin alusta -> osumahetki
+@export var attack_hit_time: float = 0.12
+
+# HIT / STUN
+@export var hit_stun_time: float = 0.18
+
+# kuoleeko pois vai jääkö corpse
+@export var despawn_on_death: bool = false
 
 @onready var sprite: AnimatedSprite2D = $sprite
 @onready var detect_area: Area2D = $DetectArea
 @onready var lose_area: Area2D = $LoseArea
 @onready var attack_area: Area2D = $AttackArea
+@onready var body_collider: CollisionShape2D = $CollisionShape2D
 
 var hp: int
 var player: Node2D = null
 var home_pos: Vector2
 var patrol_dir: int = 1
-var last_dir: Vector2 = Vector2.DOWN
+
+# left/right facing
+var facing_right: bool = true
 
 var turn_pause_left: float = 0.0
 
-# attack state
+# attack
 var attack_in_range: bool = false
 var attacking: bool = false
 var attack_cd_left: float = 0.0
@@ -50,14 +60,17 @@ var attack_cd_left: float = 0.0
 var hit_timer_left: float = 0.0
 var did_hit_this_swing: bool = false
 
+# hit state
+var hit_stun_left: float = 0.0
+
 var dead: bool = false
+
 
 func _ready() -> void:
 	hp = max_hp
 	home_pos = global_position
-	_play_anim("idle", last_dir)
+	_play_anim("idle")
 
-# varmistus: attack-finish callback
 	if not sprite.animation_finished.is_connected(_on_sprite_animation_finished):
 		sprite.animation_finished.connect(_on_sprite_animation_finished)
 
@@ -78,6 +91,8 @@ func _physics_process(delta: float) -> void:
 			_do_return_home()
 		State.ATTACK:
 			_do_attack(delta)
+		State.HIT:
+			_do_hit(delta)
 
 	move_and_slide()
 
@@ -86,11 +101,10 @@ func _physics_process(delta: float) -> void:
 # PATROL
 #
 func _do_patrol(delta: float) -> void:
-	# kääntyessä seiso hetki
 	if turn_pause_left > 0.0:
 		turn_pause_left -= delta
 		velocity = Vector2.ZERO
-		_play_anim("idle", last_dir)
+		_play_anim("idle")
 		return
 
 	var axis := Vector2.UP if patrol_vertical else Vector2.RIGHT
@@ -102,8 +116,8 @@ func _do_patrol(delta: float) -> void:
 
 	var dir := axis * patrol_dir
 	velocity = dir * patrol_speed
-	last_dir = _to_cardinal(dir)
-	_play_anim("run", last_dir)
+	_set_facing_from_dir(dir)
+	_play_anim("run")
 
 
 #
@@ -115,7 +129,6 @@ func _do_chase() -> void:
 		state = State.RETURN_HOME
 		return
 
-	# jos pelaaja on jo AttackAreassa -> hyökkää
 	if attack_in_range:
 		state = State.ATTACK
 		velocity = Vector2.ZERO
@@ -124,16 +137,15 @@ func _do_chase() -> void:
 	var to_player := player.global_position - global_position
 	var dist := to_player.length()
 
-	# HUOM: jos stop_distance on isompi kuin AttackArea radius, enemy pysähtyy ennen rangea
 	if dist <= stop_distance:
 		velocity = Vector2.ZERO
-		_play_anim("idle", last_dir)
+		_play_anim("idle")
 		return
 
 	var dir := to_player.normalized()
 	velocity = dir * chase_speed
-	last_dir = _to_cardinal(dir)
-	_play_anim("run", last_dir)
+	_set_facing_from_dir(dir)
+	_play_anim("run")
 
 
 #
@@ -146,13 +158,13 @@ func _do_return_home() -> void:
 	if dist <= home_reach_distance:
 		velocity = Vector2.ZERO
 		state = State.PATROL
-		_play_anim("idle", last_dir)
+		_play_anim("idle")
 		return
 
 	var dir := to_home.normalized()
 	velocity = dir * patrol_speed
-	last_dir = _to_cardinal(dir)
-	_play_anim("run", last_dir)
+	_set_facing_from_dir(dir)
+	_play_anim("run")
 
 
 #
@@ -161,7 +173,6 @@ func _do_return_home() -> void:
 func _do_attack(delta: float) -> void:
 	velocity = Vector2.ZERO
 
-	# jos lyönti on kesken, odotetaan osumahetki + animaation loppu
 	if attacking:
 		if not did_hit_this_swing:
 			hit_timer_left -= delta
@@ -170,41 +181,58 @@ func _do_attack(delta: float) -> void:
 				did_hit_this_swing = true
 		return
 
-	# lyönti ei ole käynnissä -> tarkista että pelaaja yhä rangessa
 	if not attack_in_range or not is_instance_valid(player):
 		state = State.CHASE
 		return
 
-	# cooldown ennen uuden lyönnin aloitusta
 	if attack_cd_left > 0.0:
-		_play_anim("idle", last_dir)
+		_play_anim("idle")
 		return
 
-	# aloita uusi lyönti
+	# aloita lyönti
 	attacking = true
 	did_hit_this_swing = false
 	hit_timer_left = attack_hit_time
-	_play_anim("attack", last_dir)
+
+	# käänny pelaajaan päin ennen lyöntiä
+	_face_player_if_any()
+	_play_anim("attack")
 
 
 func _try_deal_damage() -> void:
-	# tarkistetaan overlap juuri osumahetkellä
 	for b in attack_area.get_overlapping_bodies():
 		if b != null and b is Node and b.is_in_group("player"):
 			_deal_damage_to(b)
 
 func _deal_damage_to(target: Node) -> void:
-	# jos take_damage, käytä
 	if target.has_method("take_damage"):
 		target.call("take_damage", attack_damage)
 		return
-	# fallback _test_damageen
 	if target.has_method("_test_damage"):
 		target.call("_test_damage", attack_damage)
 
 
 #
-# SIGNALS: detect / lose / attack range
+# HIT
+#
+func _do_hit(delta: float) -> void:
+	velocity = Vector2.ZERO
+	hit_stun_left -= delta
+	if hit_stun_left <= 0.0:
+		# palataan järkevästi
+		if is_instance_valid(player):
+			state = State.CHASE
+		else:
+			state = State.RETURN_HOME
+		_play_anim("idle")
+		return
+
+	# pidä hit-animaatio päällä stun aikana
+	_play_anim("hit")
+
+
+#
+# SIGNALS
 #
 func _on_detect_area_body_entered(body: Node2D) -> void:
 	if dead:
@@ -220,7 +248,6 @@ func _on_lose_area_body_exited(body: Node2D) -> void:
 	if player != null and body == player:
 		player = null
 		attack_in_range = false
-		# ei keskeytä lyöntiä jos kesken
 		state = State.RETURN_HOME
 
 
@@ -230,7 +257,6 @@ func _on_attack_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		player = body
 		attack_in_range = true
-		# jos ollaan jahdissa, voidaan vaihtaa heti attackiin
 		if state == State.CHASE:
 			state = State.ATTACK
 
@@ -240,25 +266,35 @@ func _on_attack_area_body_exited(body: Node2D) -> void:
 		return
 	if player != null and body == player:
 		attack_in_range = false
-		# ei state-muutosta
 
 
 #
-# kun hyökkäysanimaatio loppuu, päätetään mitä tehdään seuraavaksi
+# kun animaatio loppuu
 #
 func _on_sprite_animation_finished() -> void:
 	if dead:
 		return
-	if not sprite.animation.begins_with("attack_"):
+
+	# attack valmis
+	if sprite.animation.begins_with("attack_"):
+		attacking = false
+		attack_cd_left = attack_cooldown
+		if attack_in_range and is_instance_valid(player):
+			state = State.ATTACK
+		else:
+			state = State.CHASE
 		return
 
-	attacking = false
-	attack_cd_left = attack_cooldown
-
-	if attack_in_range and is_instance_valid(player):
-		state = State.ATTACK
-	else:
-		state = State.CHASE
+	# hit valmis -> älä jää viimeiseen frameen
+	if sprite.animation.begins_with("hit_"):
+		# jos stun jo ohi, palataan heti
+		if hit_stun_left <= 0.0:
+			if is_instance_valid(player):
+				state = State.CHASE
+			else:
+				state = State.RETURN_HOME
+			_play_anim("idle")
+		return
 
 
 #
@@ -267,42 +303,61 @@ func _on_sprite_animation_finished() -> void:
 func take_damage(dmg: int) -> void:
 	if dead:
 		return
+
 	hp = maxi(0, hp - dmg)
+
 	if hp <= 0:
 		_die()
+		return
+
+	# keskeytä lyönti & mene hit-tilaan
+	attacking = false
+	did_hit_this_swing = true
+	hit_timer_left = 0.0
+
+	hit_stun_left = hit_stun_time
+	_face_player_if_any()
+	state = State.HIT
+	_play_anim("hit")
+
 
 func _die() -> void:
 	dead = true
+	state = State.DEAD
 	velocity = Vector2.ZERO
-	state = State.PATROL
-	
-	if sprite.sprite_frames != null and sprite.sprite_frames.has_animation("death"):
-		sprite.play("death")
-		await sprite.animation_finished
-	
-	queue_free()
+
+	# disable kaikki käytös ja collisionit ettei blokkaa pelaajaa
+	if detect_area: detect_area.monitoring = false
+	if lose_area: lose_area.monitoring = false
+	if attack_area: attack_area.monitoring = false
+	if body_collider: body_collider.disabled = true
+
+	_face_player_if_any()
+	_play_anim("death")
+	await sprite.animation_finished
+
+	if despawn_on_death:
+		queue_free()
+		return
+
+	# jätä corpse ruutuun pysäytä viimeiseen frameen ja lopeta prosessointi
+	sprite.stop()
+	set_physics_process(false)
+	set_process(false)
+
 
 #
-# animaatiot
+# helpers (left/right)
 #
-func _to_cardinal(v: Vector2) -> Vector2:
-	if abs(v.x) > abs(v.y):
-		return Vector2.RIGHT if v.x > 0.0 else Vector2.LEFT
-	else:
-		return Vector2.DOWN if v.y > 0.0 else Vector2.UP
+func _face_player_if_any() -> void:
+	if is_instance_valid(player):
+		facing_right = (player.global_position.x >= global_position.x)
 
+func _set_facing_from_dir(dir: Vector2) -> void:
+	if absf(dir.x) > 0.01:
+		facing_right = dir.x >= 0.0
 
-func _play_anim(prefix: String, dir: Vector2) -> void:
-	var anim := "%s_%s" % [prefix, _dir_to_suffix(dir)]
+func _play_anim(prefix: String) -> void:
+	var anim := "%s_%s" % [prefix, ("right" if facing_right else "left")]
 	if sprite.animation != anim or not sprite.is_playing():
 		sprite.play(anim)
-
-
-func _dir_to_suffix(dir: Vector2) -> String:
-	if dir == Vector2.UP:
-		return "up"
-	if dir == Vector2.DOWN:
-		return "down"
-	if dir == Vector2.LEFT:
-		return "left"
-	return "right"

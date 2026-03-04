@@ -534,15 +534,22 @@ func play_hurt() -> void:
 
 	hurting = true
 	velocity = Vector2.ZERO
-	
+
 	if sfx_hurt:
 		sfx_hurt.pitch_scale = randf_range(0.98, 1.02)
 		sfx_hurt.play()
-	
+
 	_play_safe(&"hurt")
 
-	await get_tree().create_timer(hurt_lock_time).timeout
+	# odota että hurt animaatio loppuu
+	await sprite.animation_finished
+
 	hurting = false
+
+	# palauta järkevä animaatio heti kun vapautuu
+	if state == State.MOVE:
+		_play_safe(&"idle")
+
 
 @onready var healthbar = $HealthBar
 var dead = false

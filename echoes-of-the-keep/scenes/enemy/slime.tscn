@@ -1,5 +1,6 @@
-[gd_scene load_steps=58 format=3 uid="uid://7hl26bp4n4bi"]
+[gd_scene load_steps=59 format=3 uid="uid://7hl26bp4n4bi"]
 
+[ext_resource type="Script" uid="uid://d1otphmrcifvs" path="res://scripts/enemy/enemy_base.gd" id="1_a3p1x"]
 [ext_resource type="Texture2D" uid="uid://ruttbau4tsrq" path="res://art/enemy/slime/attack/Slime_Spiked_Ability.png" id="1_xrg7s"]
 [ext_resource type="Texture2D" uid="uid://d1kvy3ok6pncr" path="res://art/enemy/slime/death/Slime_Spiked_Death.png" id="2_8tyiq"]
 [ext_resource type="Texture2D" uid="uid://1b64hmjbd5oy" path="res://art/enemy/slime/hit/Slime_Spiked_Hit.png" id="3_eh4rw"]
@@ -368,19 +369,17 @@ radius = 82.006096
 [sub_resource type="CircleShape2D" id="CircleShape2D_5syy0"]
 radius = 12.0
 
-[node name="Slime" type="CharacterBody2D"]
+[node name="Slime" type="CharacterBody2D" groups=["enemy"]]
 y_sort_enabled = true
+script = ExtResource("1_a3p1x")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_7osc3")
-animation = &"slime_run"
-frame = 3
-frame_progress = 0.22261448
+animation = &"slime_attack"
 offset = Vector2(0, -7)
 
 [node name="fx" type="AnimatedSprite2D" parent="."]
-visible = false
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_mcxug")
 animation = &"slime_jump_fx"
