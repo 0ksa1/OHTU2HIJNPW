@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  sanity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Godot (headless)
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: "4.5.0"
+          use-dotnet: false
+          include-templates: false
+
+      # Perus “avaa projekti headlessina” -tyyppinen check.
+      # Tämä ei ole täydellinen testi, mutta nappaa monia rikkinäisiä mergejä.
+      - name: Godot headless import/sanity
+        run: |
+          godot --headless --path echoes-of-the-keep --quit --verbose
