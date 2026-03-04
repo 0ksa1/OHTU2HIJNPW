@@ -331,12 +331,28 @@ func _process_attack(delta: float) -> void:
 
 	# timing (combo window)
 	attack_elapsed += delta
+	
+	# ---- HIT TIMING ----
+	if hit_timer_left > 0.0 and not did_hit_this_swing:
+		hit_timer_left -= delta
+		if hit_timer_left <= 0.0:
+			_try_deal_damage()
+			did_hit_this_swing = true
 
 
 func _play_attack_anim(anim: StringName) -> void:
 	_play_safe(anim)
 	attack_elapsed = 0.0
 	attack_duration = _estimate_anim_duration(anim)
+	
+	# Resetoi osuma vain varsinaisille attack_1/2/3 (ei _end)
+	var s := String(anim)
+	if s.begins_with("attack_") and not s.ends_with("_end"):
+		hit_timer_left = attack_hit_time
+		did_hit_this_swing = false
+	else:
+		hit_timer_left = -1.0
+		did_hit_this_swing = false
 
 
 func _estimate_anim_duration(anim: StringName) -> float:
@@ -556,6 +572,29 @@ func die() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("test_damage"):
 		_test_damage(10)
+
+
+# -------------------------
+# DAMAGING
+# -------------------------
+
+@export var attack_damage: int = 12
+@export var attack_hit_time: float = 0.12 # sekuntia iskun alusta -> osuma
+
+@onready var attack_area: Area2D = $AttackArea
+
+var hit_timer_left: float = -1.0
+var did_hit_this_swing: bool = false
+
+func _try_deal_damage() -> void:
+	if attack_area == null:
+		return
+
+	for b in attack_area.get_overlapping_bodies():
+		if b != null and b is Node and b.is_in_group("enemy"):
+			if b.has_method("take_damage"):
+				b.call("take_damage", attack_damage)
+				
 
 # -------------------------
 # CHARACTER STATS

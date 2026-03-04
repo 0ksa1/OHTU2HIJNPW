@@ -24,11 +24,16 @@ var state: State = State.PATROL
 @export var turn_pause_time: float = 0.25 # kauan patrolissa kääntyessä paikallaan
 @export var attack_cooldown: float = 0.6  # kuinka kauan odotetaan iskun jälkeen ennen seuraavaa
 
+@export var max_hp: int = 30
+@export var attack_damage: int = 10
+@export var attack_hit_time: float = 0.12 # sekuntia lyönnin alusta -> osumahetki
+
 @onready var sprite: AnimatedSprite2D = $sprite
 @onready var detect_area: Area2D = $DetectArea
 @onready var lose_area: Area2D = $LoseArea
 @onready var attack_area: Area2D = $AttackArea
 
+var hp: int
 var player: Node2D = null
 var home_pos: Vector2
 var patrol_dir: int = 1
@@ -41,13 +46,26 @@ var attack_in_range: bool = false
 var attacking: bool = false
 var attack_cd_left: float = 0.0
 
+# attack hit timing
+var hit_timer_left: float = 0.0
+var did_hit_this_swing: bool = false
+
+var dead: bool = false
 
 func _ready() -> void:
+	hp = max_hp
 	home_pos = global_position
 	_play_anim("idle", last_dir)
 
+# varmistus: attack-finish callback
+	if not sprite.animation_finished.is_connected(_on_sprite_animation_finished):
+		sprite.animation_finished.connect(_on_sprite_animation_finished)
+
 
 func _physics_process(delta: float) -> void:
+	if dead:
+		return
+
 	if attack_cd_left > 0.0:
 		attack_cd_left -= delta
 
@@ -59,7 +77,7 @@ func _physics_process(delta: float) -> void:
 		State.RETURN_HOME:
 			_do_return_home()
 		State.ATTACK:
-			_do_attack()
+			_do_attack(delta)
 
 	move_and_slide()
 
@@ -106,7 +124,7 @@ func _do_chase() -> void:
 	var to_player := player.global_position - global_position
 	var dist := to_player.length()
 
-	# HUOM: jos stop_distance on isompi kuin AttackArea radius, enemy pysähtyy ennen rangea.
+	# HUOM: jos stop_distance on isompi kuin AttackArea radius, enemy pysähtyy ennen rangea
 	if dist <= stop_distance:
 		velocity = Vector2.ZERO
 		_play_anim("idle", last_dir)
@@ -140,11 +158,16 @@ func _do_return_home() -> void:
 #
 # ATTACK
 #
-func _do_attack() -> void:
+func _do_attack(delta: float) -> void:
 	velocity = Vector2.ZERO
 
-	# jos lyönti on kesken, annetaan sen loppua
+	# jos lyönti on kesken, odotetaan osumahetki + animaation loppu
 	if attacking:
+		if not did_hit_this_swing:
+			hit_timer_left -= delta
+			if hit_timer_left <= 0.0:
+				_try_deal_damage()
+				did_hit_this_swing = true
 		return
 
 	# lyönti ei ole käynnissä -> tarkista että pelaaja yhä rangessa
@@ -159,27 +182,51 @@ func _do_attack() -> void:
 
 	# aloita uusi lyönti
 	attacking = true
+	did_hit_this_swing = false
+	hit_timer_left = attack_hit_time
 	_play_anim("attack", last_dir)
+
+
+func _try_deal_damage() -> void:
+	# “varma” tapa: tarkistetaan overlap juuri osumahetkellä
+	for b in attack_area.get_overlapping_bodies():
+		if b != null and b is Node and b.is_in_group("player"):
+			_deal_damage_to(b)
+
+func _deal_damage_to(target: Node) -> void:
+	# support: jos playerissä on public take_damage, käytä sitä
+	if target.has_method("take_damage"):
+		target.call("take_damage", attack_damage)
+		return
+	# fallback teidän nykyiseen (player.gd) _test_damageen
+	if target.has_method("_test_damage"):
+		target.call("_test_damage", attack_damage)
 
 
 #
 # SIGNALS: detect / lose / attack range
 #
 func _on_detect_area_body_entered(body: Node2D) -> void:
+	if dead:
+		return
 	if body.is_in_group("player"):
 		player = body
 		state = State.CHASE
 
 
 func _on_lose_area_body_exited(body: Node2D) -> void:
+	if dead:
+		return
 	if player != null and body == player:
 		player = null
 		attack_in_range = false
-		attacking = false
+		# ei keskeytä lyöntiä jos kesken
 		state = State.RETURN_HOME
 
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
+	if dead:
+		return
 	if body.is_in_group("player"):
 		player = body
 		attack_in_range = true
@@ -189,6 +236,8 @@ func _on_attack_area_body_entered(body: Node2D) -> void:
 
 
 func _on_attack_area_body_exited(body: Node2D) -> void:
+	if dead:
+		return
 	if player != null and body == player:
 		attack_in_range = false
 		# ei state-muutosta
@@ -198,6 +247,8 @@ func _on_attack_area_body_exited(body: Node2D) -> void:
 # kun hyökkäysanimaatio loppuu, päätetään mitä tehdään seuraavaksi
 #
 func _on_sprite_animation_finished() -> void:
+	if dead:
+		return
 	if not sprite.animation.begins_with("attack_"):
 		return
 
@@ -209,6 +260,27 @@ func _on_sprite_animation_finished() -> void:
 	else:
 		state = State.CHASE
 
+
+#
+# DAMAGE TAKING
+#
+func take_damage(dmg: int) -> void:
+	if dead:
+		return
+	hp = maxi(0, hp - dmg)
+	if hp <= 0:
+		_die()
+
+func _die() -> void:
+	dead = true
+	velocity = Vector2.ZERO
+	state = State.PATROL
+	
+	if sprite.sprite_frames != null and sprite.sprite_frames.has_animation("death"):
+		sprite.play("death")
+		await sprite.animation_finished
+	
+	queue_free()
 
 #
 # animaatiot
