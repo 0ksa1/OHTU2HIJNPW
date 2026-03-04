@@ -188,17 +188,17 @@ func _do_attack(delta: float) -> void:
 
 
 func _try_deal_damage() -> void:
-	# “varma” tapa: tarkistetaan overlap juuri osumahetkellä
+	# tarkistetaan overlap juuri osumahetkellä
 	for b in attack_area.get_overlapping_bodies():
 		if b != null and b is Node and b.is_in_group("player"):
 			_deal_damage_to(b)
 
 func _deal_damage_to(target: Node) -> void:
-	# support: jos playerissä on public take_damage, käytä sitä
+	# jos take_damage, käytä
 	if target.has_method("take_damage"):
 		target.call("take_damage", attack_damage)
 		return
-	# fallback teidän nykyiseen (player.gd) _test_damageen
+	# fallback _test_damageen
 	if target.has_method("_test_damage"):
 		target.call("_test_damage", attack_damage)
 
