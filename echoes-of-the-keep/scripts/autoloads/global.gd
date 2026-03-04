@@ -2,6 +2,7 @@ extends Node
 
 var current_scene = "game_scene"
 var last_scene = "game_scene"
+var next_scene = ""
 var transition_scene = false
 
 var player_exit_dungeon_1_posx = 129

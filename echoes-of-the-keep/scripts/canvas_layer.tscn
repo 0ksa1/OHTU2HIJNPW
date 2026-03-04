@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbrkjx4e0pupo"]
+
+[ext_resource type="Script" uid="uid://bwd7mma4koe85" path="res://canvas_fadeIn.gd" id="1_bfx32"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+layer = 1000
+follow_viewport_enabled = true
+script = ExtResource("1_bfx32")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)
