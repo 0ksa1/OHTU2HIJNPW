@@ -20,8 +20,7 @@ jobs:
           use-dotnet: false
           include-templates: false
 
-      # Perus “avaa projekti headlessina” -tyyppinen check.
-      # Tämä ei ole täydellinen testi, mutta nappaa monia rikkinäisiä mergejä.
-      - name: Godot headless import/sanity
+      # GUT testing
+      - name: Run unit tests (GUT)
         run: |
-          godot --headless --path echoes-of-the-keep --quit --verbose
+          godot --headless --path echoes-of-the-keep -s res://addons/gut/gut_cmdln.gd -gexit
