@@ -48063,7 +48063,7 @@ patrol_distance = 20.0
 stop_distance = 10.0
 turn_pause_time = 0.4
 attack_damage = 5
-hit_stun_time = 0.65
+hit_stun_time = 0.8
 
 [node name="Rat2" parent="." instance=ExtResource("9_7ire7")]
 position = Vector2(1148, 712)
@@ -48076,7 +48076,7 @@ stop_distance = 8.0
 turn_pause_time = 0.5
 max_hp = 40
 attack_damage = 8
-hit_stun_time = 0.75
+hit_stun_time = 0.8
 
 [node name="Bat" parent="." instance=ExtResource("10_jnhlp")]
 position = Vector2(341, 1189)

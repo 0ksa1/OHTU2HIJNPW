@@ -326,22 +326,27 @@ func _die() -> void:
 	state = State.DEAD
 	velocity = Vector2.ZERO
 
-	# disable kaikki käytös ja collisionit ettei blokkaa pelaajaa
-	if detect_area: detect_area.monitoring = false
-	if lose_area: lose_area.monitoring = false
-	if attack_area: attack_area.monitoring = false
-	if body_collider: body_collider.disabled = true
+	# pois käytöstä, ettei ruumis blokkaa tai triggeröi mitään
+	if detect_area:
+		detect_area.monitoring = false
+	if lose_area:
+		lose_area.monitoring = false
+	if attack_area:
+		attack_area.monitoring = false
+	if body_collider:
+		body_collider.disabled = true
 
 	_face_player_if_any()
+
+	# kuolemaanimaatio ensin
 	_play_anim("death")
 	await sprite.animation_finished
 
-	if despawn_on_death:
-		queue_free()
-		return
-
-	# jätä corpse ruutuun pysäytä viimeiseen frameen ja lopeta prosessointi
+	# vaihda corpseen
+	_play_anim("corpse")
 	sprite.stop()
+
+	# lopeta logiikka
 	set_physics_process(false)
 	set_process(false)
 

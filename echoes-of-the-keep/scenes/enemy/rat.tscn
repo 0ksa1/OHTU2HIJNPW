@@ -1,18 +1,18 @@
-[gd_scene load_steps=84 format=3 uid="uid://dqq7xqsycpugb"]
+[gd_scene load_steps=86 format=3 uid="uid://dqq7xqsycpugb"]
 
 [ext_resource type="Script" uid="uid://d1otphmrcifvs" path="res://scripts/enemy/enemy_base.gd" id="1_igjoa"]
-[ext_resource type="Texture2D" uid="uid://q87w3xjoakru" path="res://art/enemy/rat/attack/attack_right.png" id="1_oidbh"]
-[ext_resource type="Texture2D" uid="uid://c7ay4l2y81oox" path="res://art/enemy/rat/attack/attack_left.png" id="1_xu85s"]
-[ext_resource type="Texture2D" uid="uid://ot3rko8fl082" path="res://art/enemy/rat/death/Rat_Death.png" id="2_m8urk"]
-[ext_resource type="Texture2D" uid="uid://b60kmwir4ck1y" path="res://art/enemy/rat/hit/Rat_Hit.png" id="3_aau2g"]
-[ext_resource type="Texture2D" uid="uid://djkjk0vjl4kra" path="res://art/enemy/rat/death/death_left.png" id="3_igjoa"]
-[ext_resource type="Texture2D" uid="uid://dx11r0gkt5top" path="res://art/enemy/rat/idle/Rat_Idle.png" id="4_i36dh"]
-[ext_resource type="Texture2D" uid="uid://cxvlgvybb8rlj" path="res://art/enemy/rat/hit/hit_left.png" id="5_unxvb"]
-[ext_resource type="Texture2D" uid="uid://c8ug0hqdtyr6e" path="res://art/enemy/rat/run/Rat_Run.png" id="5_xf106"]
+[ext_resource type="Texture2D" uid="uid://q87w3xjoakru" path="res://art/enemy/rat/attack/rat_attack_right.png" id="1_oidbh"]
+[ext_resource type="Texture2D" uid="uid://c7ay4l2y81oox" path="res://art/enemy/rat/attack/rat_attack_left.png" id="1_xu85s"]
+[ext_resource type="Texture2D" uid="uid://ot3rko8fl082" path="res://art/enemy/rat/death/rat_death_right.png" id="2_m8urk"]
+[ext_resource type="Texture2D" uid="uid://b60kmwir4ck1y" path="res://art/enemy/rat/hit/rat_hit_right.png" id="3_aau2g"]
+[ext_resource type="Texture2D" uid="uid://djkjk0vjl4kra" path="res://art/enemy/rat/death/rat_death_left.png" id="3_igjoa"]
+[ext_resource type="Texture2D" uid="uid://dx11r0gkt5top" path="res://art/enemy/rat/idle/rat_idle_right.png" id="4_i36dh"]
+[ext_resource type="Texture2D" uid="uid://cxvlgvybb8rlj" path="res://art/enemy/rat/hit/rat_hit_left.png" id="5_unxvb"]
+[ext_resource type="Texture2D" uid="uid://c8ug0hqdtyr6e" path="res://art/enemy/rat/run/rat_run_right.png" id="5_xf106"]
 [ext_resource type="Texture2D" uid="uid://dg2teowb6ilko" path="res://art/enemy/rat/attack/Rat_Attack_FX.png" id="6_aau2g"]
 [ext_resource type="Texture2D" uid="uid://d3u5yej5x1f63" path="res://art/enemy/rat/death/Rat_Death_FX.png" id="7_i36dh"]
-[ext_resource type="Texture2D" uid="uid://tyai4630rpwp" path="res://art/enemy/rat/idle/idle_left.png" id="7_sirtw"]
-[ext_resource type="Texture2D" uid="uid://sr20u0hu4xqy" path="res://art/enemy/rat/run/run_left.png" id="9_j056d"]
+[ext_resource type="Texture2D" uid="uid://tyai4630rpwp" path="res://art/enemy/rat/idle/rat_idle_left.png" id="7_sirtw"]
+[ext_resource type="Texture2D" uid="uid://sr20u0hu4xqy" path="res://art/enemy/rat/run/rat_run_left.png" id="9_j056d"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x55ru"]
 atlas = ExtResource("1_xu85s")
@@ -77,6 +77,14 @@ region = Rect2(128, 64, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_7be8g"]
 atlas = ExtResource("1_oidbh")
 region = Rect2(192, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2kw5v"]
+atlas = ExtResource("3_igjoa")
+region = Rect2(192, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d1032"]
+atlas = ExtResource("2_m8urk")
+region = Rect2(0, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5sktk"]
 atlas = ExtResource("3_igjoa")
@@ -289,6 +297,22 @@ animations = [{
 "loop": false,
 "name": &"attack_right",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2kw5v")
+}],
+"loop": false,
+"name": &"corpse_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d1032")
+}],
+"loop": false,
+"name": &"corpse_right",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -547,7 +571,7 @@ script = ExtResource("1_igjoa")
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_7osc3")
-animation = &"death_left"
+animation = &"corpse_left"
 offset = Vector2(0, -7)
 
 [node name="fx" type="AnimatedSprite2D" parent="."]
