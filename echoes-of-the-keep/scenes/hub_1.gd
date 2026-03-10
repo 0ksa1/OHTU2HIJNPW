@@ -1,5 +1,11 @@
 extends Node2D
 
+
+
+var current_scene: String = "hub1"
+var firstload: bool = true
+var transition_scene: bool = false
+
 @onready var player: Node2D = $player
 # FIX: Find the camera INSIDE the player node
 @onready var cam: Camera2D = $player/Camera2D
@@ -14,16 +20,19 @@ func _ready() -> void:
 		player.position = Vector2(global.player_exit_dungeon_1_posx, global.player_exit_dungeon_1_posy)
 
 	# 2. Set current scene name
-	global.current_scene = "game_scene"
+	global.current_scene = "hub1"
 
 	# 3. Force the camera to wake up
 	call_deferred("_force_game_camera")
 
 func _force_game_camera() -> void:
 	await get_tree().process_frame
+
 	if is_instance_valid(cam):
 		cam.enabled = true
+		cam.limit_enabled = false
 		cam.make_current()
+		cam.global_position = player.global_position
 		if cam.has_method("reset_smoothing"):
 			cam.reset_smoothing()
 
@@ -48,7 +57,7 @@ func change_scene() -> void:
 	global.firstload = false
 	
 	# Set this to the current scene so the next scene knows where you came from
-	global.current_scene = "game_scene"
+	global.current_scene = "hub1"
 
 	get_tree().change_scene_to_file("res://scenes/loading.tscn")
 	
