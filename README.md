@@ -34,9 +34,10 @@ git clone https://github.com/0ksa1/OHTU2HIJNPW.git
 - Move: WASD/Arrow keys
 - Run: Shift
 - Pause: Esc
-- Attack: TBD
+- Attack: Mouse1
 - Interact: E
 - Fullscreen: F11 / Alt + Enter
+
   
 <h1 align="center">Contributors</h1>
 
