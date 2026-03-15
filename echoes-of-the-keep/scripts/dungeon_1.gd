@@ -37,14 +37,15 @@ func _force_dungeon_camera() -> void:
 # REMOVED _process entirely to prevent the infinite scene-switch crash
 
 func _on_exit_bridge_body_entered(body: Node2D) -> void:
-	if body.has_method("player") and not switching_scene:
+	if body.has_method("player"):
+		global.next_scene = "res://scenes/hub1.tscn"
 		global.transition_scene = true
 		# TRIGGER the change immediately on contact
 		change_scene()
 
 func _on_exit_bridge_body_exited(body: Node2D) -> void:
 	if body.has_method("player"):
-		global.next_scene = "res://scenes/game_scene.tscn"
+		global.next_scene = "res://scenes/hub1.tscn"
 		global.transition_scene = false
 
 func change_scene() -> void:
@@ -59,5 +60,5 @@ func change_scene() -> void:
 
 		get_tree().change_scene_to_file("res://scenes/loading.tscn")
 		
-    if global.has_method("finish_scene_change"):
-		  global.finish_scene_change()
+	if global.has_method("finish_scene_change"):
+		global.finish_scene_change()
