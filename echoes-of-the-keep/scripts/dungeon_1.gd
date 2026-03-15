@@ -44,19 +44,20 @@ func _on_exit_bridge_body_entered(body: Node2D) -> void:
 
 func _on_exit_bridge_body_exited(body: Node2D) -> void:
 	if body.has_method("player"):
+		global.next_scene = "res://scenes/game_scene.tscn"
 		global.transition_scene = false
 
 func change_scene() -> void:
 	if switching_scene:
 		return
 
-	switching_scene = true
-	
-	# Update global so game_scene knows where you are coming from
-	global.current_scene = "dungeon_1"
+	if global.transition_scene == true:
+		switching_scene = true
 
-	# Go back to the main game scene
-	get_tree().change_scene_to_file("res://scenes/hub1.tscn")
-	
-	if global.has_method("finish_scene_change"):
-		global.finish_scene_change()
+		# TÄRKEÄ: merkkaa että poistutaan game_scenestä
+		global.current_scene = "dungeon_1"
+
+		get_tree().change_scene_to_file("res://scenes/loading.tscn")
+		
+    if global.has_method("finish_scene_change"):
+		  global.finish_scene_change()
