@@ -100,6 +100,7 @@ func test_damage_negative() -> void:
 	# Tästä tuleekin false sillä damagen koodissa -10 tekee siitä positiivisen
 	# -(-10) = 10, eli siitä tulee heal funktio.
 	# voisi periaatteessa käydä jos esim jokin itemi/debuff asettaa damagen negatiiviseksi
+	# health = maxi(0, health - dmg) = health - (-10)
 
 #yli/ali menevät testit:
 
