@@ -535,6 +535,18 @@ func _test_damage(dmg: int) -> void:
 	else:
 		play_hurt()
 
+#funktio hahmon parantamiseen
+func heal(amount: int) -> void:
+	if dead:
+		return
+	if amount <= 0:
+		return
+
+	health = mini(max_hp, health + amount)
+
+	if healthbar:
+		healthbar.health = health
+
 func die() -> void:
 	if dead:
 		return
