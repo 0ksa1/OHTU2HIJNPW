@@ -156,5 +156,3 @@ polygon = PackedVector2Array(-96, 128, -56, 128, -55, 81, 56, 81, 57, -56, -55, 
 
 [connection signal="body_entered" from="dungeon_bridge_1" to="." method="_on_dungeon_bridge_1_body_entered"]
 [connection signal="body_exited" from="dungeon_bridge_1" to="." method="_on_dungeon_bridge_1_body_exited"]
-
-[editable path="player"]
