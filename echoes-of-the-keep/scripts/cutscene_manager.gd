@@ -19,7 +19,7 @@ func pan_camera(target_position: Vector2):
 
 func start_cutscene():
 	cutscene_active = true
-	
+	player.can_move = false 
 	cutscene_camera.global_position = player_camera.global_position
 	cutscene_camera.zoom = player_camera.zoom 
 	
@@ -37,4 +37,5 @@ func start_cutscene():
 func end_cutscene():
 	cutscene_camera.enabled = false
 	player_camera.enabled = true
+	player.can_move = true
 	cutscene_active = false

@@ -72,14 +72,21 @@ func _ready() -> void:
 	_play_safe(&"idle")
 	current_camera()
 
+# Variable for disabling movement during cutscenes
+var can_move = true
 @onready var stamina_bar = $StaminaBar
+
 func _physics_process(delta: float) -> void:
 	if dead:
 		return
 	if hurting:
 		move_and_slide()
 		return
-
+	if not can_move:
+		velocity = Vector2.ZERO 
+		move_and_slide() 
+		return
+		
 	_read_movement_input()
 	_update_sprint_energy(delta)
 	_handle_attack_input(delta)
