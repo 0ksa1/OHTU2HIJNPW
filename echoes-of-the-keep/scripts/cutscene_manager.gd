@@ -35,6 +35,8 @@ func start_cutscene():
 	end_cutscene()
 
 func end_cutscene():
+	if get_owner() and "entrance_active" in get_owner():
+		get_owner().entrance_active = true
 	cutscene_camera.enabled = false
 	player_camera.enabled = true
 	player.can_move = true
