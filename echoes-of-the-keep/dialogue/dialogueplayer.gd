@@ -36,7 +36,6 @@ func _input(event):
 			get_viewport().set_input_as_handled()
 		
 
-
 func next_script ():
 	current_dialogue_id += 1
 	if current_dialogue_id >= len(dialogue):
