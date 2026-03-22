@@ -29,6 +29,9 @@ func start_cutscene():
 	await pan_camera(Vector2(560, 155))
 	
 	await get_tree().create_timer(2.0).timeout
+	EffectPlayer.play_impact(Vector2(560, 132))
+	await get_tree().create_timer(2.0).timeout
+
 	end_cutscene()
 
 func end_cutscene():

@@ -138,6 +138,9 @@ position = Vector2(-144, 21)
 
 [node name="CutsceneManager" parent="." instance=ExtResource("11_tp6a1")]
 
+[node name="effect" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2, -7)
+
 [node name="cutscene_camera" type="Camera2D" parent="."]
 
 [node name="collisions" type="StaticBody2D" parent="."]
