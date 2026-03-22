@@ -1,14 +1,11 @@
 extends CharacterBody2D
 
 @onready var cutscene_manager = $"../CutsceneManager"
+@onready var dialogue = $CanvasLayer/Dialogue
 
 var player = null
 var player_in_chat_zone = false
-
-@onready var dialogue = $CanvasLayer/Dialogue
-
-func _ready():
-	print("CutsceneManager node:", $"../CutsceneManager")  # adjust path
+var cutscene_played = false
 
 func _on_chat_detection_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
@@ -28,5 +25,6 @@ func _start_dialoque():
 	dialogue.start("res://dialogue/girl_dialogue1.json")
 
 func _on_dialogue_dialogue_finished():
-	print("Dialogue finished")
-	cutscene_manager.start_cutscene()
+	if not cutscene_played:
+		cutscene_manager.start_cutscene()
+		cutscene_played = true
