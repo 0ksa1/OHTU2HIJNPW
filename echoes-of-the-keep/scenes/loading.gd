@@ -2,13 +2,16 @@ extends Node2D
 
 
 @onready var progres = $ProgressBar
-@export var next_scene_path = global.next_scene
+var next_scene_path: String
 var progress: Array[float] = []
 @onready var sprite = %character
 var run_speed = 500.0
+var pct
 
 func _ready() -> void:
-	print(global.next_scene)
+	next_scene_path = global.next_scene
+	print(next_scene_path)
+
 	$character.play()
 	ResourceLoader.load_threaded_request(next_scene_path)
 	
@@ -17,9 +20,11 @@ func _process(delta: float) -> void:
 	
 	match status:
 		ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-			var pct = progress[0] * 100
+			pct = progress[0] * 100
 			progres.value = pct
+		
 		ResourceLoader.THREAD_LOAD_LOADED:
+			progres.value = 100
 			sprite.position.x += run_speed * delta
 			if sprite.position.x > get_viewport_rect().size.x:
 				print(next_scene_path)
