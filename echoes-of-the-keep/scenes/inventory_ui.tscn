@@ -1,0 +1,121 @@
+[gd_scene load_steps=6 format=3 uid="uid://6hfc5udusvir"]
+
+[ext_resource type="Script" uid="uid://d01t34ufxujlr" path="res://scenes/inventory_ui.gd" id="1_iradw"]
+[ext_resource type="Texture2D" uid="uid://namp5fdkfvm8" path="res://art/ui/menu/inventoryScreen.tres" id="1_mdwe3"]
+[ext_resource type="Texture2D" uid="uid://dj3bkicompomt" path="res://art/ui/menu/inventorySlot.tres" id="2_iradw"]
+[ext_resource type="Script" uid="uid://vcv4v4mqfvpv" path="res://scenes/inventory_slot.gd" id="3_eifbp"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ldkr4"]
+texture = ExtResource("2_iradw")
+
+[node name="Inventory" type="Control"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_iradw")
+
+[node name="InventoryWindow" type="Control" parent="."]
+custom_minimum_size = Vector2(120, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -145.0
+offset_top = -130.0
+offset_right = -25.0
+offset_bottom = -29.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+
+[node name="TextureRect" type="TextureRect" parent="InventoryWindow"]
+layout_mode = 1
+texture = ExtResource("1_mdwe3")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="InventoryContainer" type="GridContainer" parent="InventoryWindow"]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 24.5
+offset_right = 261.0
+offset_bottom = 180.0
+columns = 4
+
+[node name="InventorySlot1" type="Panel" parent="InventoryWindow/InventoryContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
+script = ExtResource("3_eifbp")
+
+[node name="InventorySlot2" type="Panel" parent="InventoryWindow/InventoryContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
+script = ExtResource("3_eifbp")
+
+[node name="InventorySlot3" type="Panel" parent="InventoryWindow/InventoryContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
+script = ExtResource("3_eifbp")
+
+[node name="InventorySlot4" type="Panel" parent="InventoryWindow/InventoryContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
+script = ExtResource("3_eifbp")
+
+[node name="InventorySlot5" type="Panel" parent="InventoryWindow/InventoryContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
+script = ExtResource("3_eifbp")
+
+[node name="InventorySlot6" type="Panel" parent="InventoryWindow/InventoryContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
+script = ExtResource("3_eifbp")
+
+[node name="InventorySlot7" type="Panel" parent="InventoryWindow/InventoryContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
+script = ExtResource("3_eifbp")
+
+[node name="InventorySlot8" type="Panel" parent="InventoryWindow/InventoryContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
+script = ExtResource("3_eifbp")
+
+[node name="InventorySlot9" type="Panel" parent="InventoryWindow/InventoryContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
+script = ExtResource("3_eifbp")
+
+[node name="InventorySlot10" type="Panel" parent="InventoryWindow/InventoryContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
+script = ExtResource("3_eifbp")
+
+[node name="InventorySlot11" type="Panel" parent="InventoryWindow/InventoryContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
+script = ExtResource("3_eifbp")
+
+[node name="InventorySlot12" type="Panel" parent="InventoryWindow/InventoryContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
+script = ExtResource("3_eifbp")

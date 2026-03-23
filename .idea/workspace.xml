@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8edb03a2-5740-460d-8c45-daa09bbcab8b" name="Changes" comment="Tytön dokumentaatio, fixes" />
+    <list default="true" id="8edb03a2-5740-460d-8c45-daa09bbcab8b" name="Changes" comment="Tytön dokumentaatio, fixes">
+      <change beforePath="$PROJECT_DIR$/echoes-of-the-keep/scenes/hub1.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/echoes-of-the-keep/scenes/hub1.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/echoes-of-the-keep/tiles/HUB/hub_layout1/tilesetEdited/vegetation.tres" beforeDir="false" afterPath="$PROJECT_DIR$/echoes-of-the-keep/tiles/HUB/hub_layout1/tilesetEdited/vegetation.tres" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,21 +16,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "mazzhz"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;mazzhz&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/0ksa1/OHTU2HIJNPW.git",
-    "accountId": "ac2c18b0-dda7-4008-ab63-904c05c17d60"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/0ksa1/OHTU2HIJNPW.git&quot;,
+    &quot;accountId&quot;: &quot;ac2c18b0-dda7-4008-ab63-904c05c17d60&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="39TRrPYhSLuX8qnsy8vlVwweWN9" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -39,7 +42,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "hub__layout",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/mazzu/OneDrive - University of Eastern Finland/Tiedostot/GitHub/OHTU2HIJNPW/docs/design/girl NPC",
