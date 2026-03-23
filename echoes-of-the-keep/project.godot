@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Echoes of the Keep"
-run/main_scene="uid://dp7sp7pxd1qgf"
+run/main_scene="uid://ctht0jnmxygkx"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -33,6 +33,10 @@ window/per_pixel_transparency/allowed=true
 [global_group]
 
 enemy=""
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
 
 [input]
 

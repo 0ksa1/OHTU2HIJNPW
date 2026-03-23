@@ -1018,7 +1018,7 @@ sprite_frames = SubResource("SpriteFrames_u8vuu")
 animation = &"walk_turn"
 offset = Vector2(0, -15)
 
-[node name="game_scene_camera" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-1, 1)
 zoom = Vector2(4, 4)
 process_callback = 0
@@ -1032,22 +1032,6 @@ position_smoothing_speed = 10.0
 [node name="collision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)
 shape = SubResource("RectangleShape2D_f1ej7")
-
-[node name="dungeon_camera" type="Camera2D" parent="."]
-position = Vector2(-1, 1)
-zoom = Vector2(3, 3)
-process_callback = 0
-limit_enabled = false
-limit_left = 0
-limit_top = 0
-limit_right = 527
-limit_bottom = 272
-position_smoothing_enabled = true
-position_smoothing_speed = 10.0
-
-[node name="hub1_camera" type="Camera2D" parent="."]
-zoom = Vector2(3, 3)
-process_callback = 0
 
 [node name="audio" type="Node2D" parent="."]
 
