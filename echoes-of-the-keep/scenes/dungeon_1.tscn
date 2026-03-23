@@ -48074,7 +48074,7 @@ chase_speed = 35.0
 patrol_distance = 15.0
 stop_distance = 8.0
 turn_pause_time = 0.5
-max_hp = 40
+max_hp = 20
 attack_damage = 8
 hit_stun_time = 0.8
 

@@ -30,13 +30,13 @@ window/subwindows/embed_subwindows=false
 window/stretch/mode="viewport"
 window/per_pixel_transparency/allowed=true
 
-[global_group]
-
-enemy=""
-
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
+[global_group]
+
+enemy=""
 
 [input]
 
