@@ -24,6 +24,9 @@ func pan_camera(target_position: Vector2):
 	await tween.finished
 
 func start_cutscene():
+	if global.dungeon_activated:
+		return
+		
 	cutscene_active = true
 	player.can_move = false 
 	cutscene_camera.global_position = player_camera.global_position
@@ -42,8 +45,7 @@ func start_cutscene():
 	end_cutscene()
 
 func end_cutscene():
-	if get_owner() and "entrance_active" in get_owner():
-		get_owner().entrance_active = true
+	global.dungeon_activated = true
 	cutscene_camera.enabled = false
 	player_camera.enabled = true
 	player.can_move = true

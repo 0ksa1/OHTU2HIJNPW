@@ -36,7 +36,7 @@ func _force_game_camera() -> void:
 			cam.reset_smoothing()
 
 func _on_dungeon_bridge_1_body_entered(body: Node2D) -> void:
-	if body.has_method("player") and not switching_scene and entrance_active:
+	if body.has_method("player") and not switching_scene and global.dungeon_activated:
 		global.next_scene = "res://scenes/dungeon_1.tscn"
 		global.transition_scene = true
 		# TRIGGER THE CHANGE HERE instead of in _process
