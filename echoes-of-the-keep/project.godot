@@ -35,6 +35,10 @@ window/per_pixel_transparency/allowed=true
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg")
 
+[global_group]
+
+enemy=""
+
 [input]
 
 move_up={

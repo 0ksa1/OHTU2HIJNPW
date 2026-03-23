@@ -1,11 +1,10 @@
-[gd_scene load_steps=39 format=4 uid="uid://cltc6yg5p3ows"]
+[gd_scene load_steps=38 format=4 uid="uid://cltc6yg5p3ows"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_5112x"]
 [ext_resource type="Script" uid="uid://dike74e1j6uv8" path="res://scripts/dungeon_1.gd" id="1_pxq7g"]
 [ext_resource type="Texture2D" uid="uid://p861j0e3a6r8" path="res://tiles/dungeon_tiles.png" id="2_a0yhp"]
 [ext_resource type="PackedScene" uid="uid://mus4efnh8kp8" path="res://scenes/common/collision_world.tscn" id="2_he162"]
 [ext_resource type="PackedScene" uid="uid://dohybjnu4fth3" path="res://scenes/player.tscn" id="3_a0yhp"]
-[ext_resource type="PackedScene" uid="uid://x1fpq5splhoj" path="res://scenes/enemy/skeleton.tscn" id="5_13b8m"]
 [ext_resource type="Texture2D" uid="uid://8ckdmipr22g8" path="res://tiles/Dungeon/Dungeon1/MainLev2.0.png" id="5_xtwae"]
 [ext_resource type="Texture2D" uid="uid://cvce4lb2qjpwg" path="res://tiles/Dungeon/Dungeon1/decorative.png" id="6_7egf0"]
 [ext_resource type="PackedScene" uid="uid://b5kktxaucm7ub" path="res://scenes/Door.tscn" id="9_7egf0"]
@@ -48054,21 +48053,30 @@ polygon = PackedVector2Array(1982, 101, 1983, 166, 1782, 169, 1762, 189, 1753, 2
 position = Vector2(941.875, 237)
 shape = SubResource("RectangleShape2D_a0yhp")
 
-[node name="Skeleton" parent="." instance=ExtResource("5_13b8m")]
-position = Vector2(189, 132)
-collision_layer = 2
-collision_mask = 2
-patrol_speed = 30.0
-chase_speed = 55.0
-patrol_vertical = true
-turn_pause_time = 0.35
-attack_cooldown = 0.7
-
 [node name="Rat" parent="." instance=ExtResource("9_7ire7")]
 position = Vector2(731, 712)
+collision_layer = 3
+collision_mask = 3
+patrol_speed = 25.0
+chase_speed = 40.0
+patrol_distance = 20.0
+stop_distance = 10.0
+turn_pause_time = 0.4
+attack_damage = 5
+hit_stun_time = 0.8
 
 [node name="Rat2" parent="." instance=ExtResource("9_7ire7")]
 position = Vector2(1148, 712)
+collision_layer = 3
+collision_mask = 3
+patrol_speed = 25.0
+chase_speed = 35.0
+patrol_distance = 15.0
+stop_distance = 8.0
+turn_pause_time = 0.5
+max_hp = 20
+attack_damage = 8
+hit_stun_time = 0.8
 
 [node name="Bat" parent="." instance=ExtResource("10_jnhlp")]
 position = Vector2(341, 1189)
