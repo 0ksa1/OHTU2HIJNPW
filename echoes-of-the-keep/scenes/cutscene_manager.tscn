@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6uwdaq2c0iq6"]
+
+[ext_resource type="Script" uid="uid://dc8jum82pk77y" path="res://scripts/cutscene_manager.gd" id="1_af8s6"]
+[ext_resource type="AudioStream" uid="uid://b7t6fq6hxlon8" path="res://audio/sfx/explosion.mp3" id="2_q6k2a"]
+
+[node name="CutsceneManager" type="Node"]
+script = ExtResource("1_af8s6")
+
+[node name="cutscene_sfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_q6k2a")

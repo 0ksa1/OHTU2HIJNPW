@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GUI="*res://scripts/autoloads/GUI_Autoload.gd"
 global="*res://scripts/autoloads/global.gd"
+EffectPlayer="*res://scripts/effect/effect_player.gd"
 Inventory="*res://scripts/autoloads/inventory.gd"
 ItemDB="*res://scripts/autoloads/item_db.gd"
 

@@ -1,7 +1,5 @@
 extends Node2D
 
-
-
 var current_scene: String = "hub1"
 var firstload: bool = true
 var transition_scene: bool = false
@@ -11,6 +9,7 @@ var transition_scene: bool = false
 @onready var cam: Camera2D = $player/Camera2D
 
 var switching_scene: bool = false
+var entrance_active: bool = false
 
 func _ready() -> void:
 	# 1. Handle Spawn Position
@@ -36,10 +35,8 @@ func _force_game_camera() -> void:
 		if cam.has_method("reset_smoothing"):
 			cam.reset_smoothing()
 
-# DELETE the _process function entirely. You don't need it for scene switching!
-
 func _on_dungeon_bridge_1_body_entered(body: Node2D) -> void:
-	if body.has_method("player") and not switching_scene:
+	if body.has_method("player") and not switching_scene and global.dungeon_activated:
 		global.next_scene = "res://scenes/dungeon_1.tscn"
 		global.transition_scene = true
 		# TRIGGER THE CHANGE HERE instead of in _process
