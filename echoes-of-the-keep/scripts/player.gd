@@ -69,10 +69,36 @@ var lunge_dir: Vector2 = Vector2.ZERO
 func _ready() -> void:
 	if not sprite.animation_finished.is_connected(_on_animation_finished):
 		sprite.animation_finished.connect(_on_animation_finished)
+
+	await get_tree().process_frame
+
+	max_hp = global.player_max_hp
+	health = global.player_health
+
+# haetaan hp ja staminapalkit hahmolle
+	stamina_bar = GUI.get_node_or_null("HUD/Staminabar")
+	healthbar = GUI.get_node_or_null("HUD/Healthbar")
+	health_label = GUI.get_node_or_null("HUD/HealthLabel")
+	stamina_label = GUI.get_node_or_null("HUD/StaminaLabel")
+	
+	if stamina_bar:
+		stamina_bar.show()
+		stamina_bar.set_stamina(sprint_energy * 100.0, 100.0)
+	
+	if healthbar:
+		healthbar.show()
+		healthbar.health = health
+	
+	if stamina_label:
+		stamina_label.show()
+	
+	if health_label:
+		health_label.show()
+
+
 	_play_safe(&"idle")
 	current_camera()
 
-@onready var stamina_bar = $StaminaBar
 func _physics_process(delta: float) -> void:
 	if dead:
 		return
@@ -83,7 +109,8 @@ func _physics_process(delta: float) -> void:
 	_read_movement_input()
 	_update_sprint_energy(delta)
 	_handle_attack_input(delta)
-	stamina_bar.set_stamina(sprint_energy * 100.0, 100.0)
+	if stamina_bar:
+		stamina_bar.set_stamina(sprint_energy * 100.0, 100.0)
 
 	match state:
 		State.MOVE:
@@ -321,6 +348,7 @@ func _start_combo(step: int) -> void:
 	lunge_dir = Vector2(1, 0) if facing_right else Vector2(-1, 0)
 	lunge_timer = lunge_duration
 
+
 	velocity = Vector2.ZERO
 	_play_attack_anim(_attack_name(combo_step))
 
@@ -517,7 +545,7 @@ func play_hurt() -> void:
 	await get_tree().create_timer(hurt_lock_time).timeout
 	hurting = false
 
-@onready var healthbar = $HealthBar
+
 var dead = false
 var hurting: bool = false
 @export var hurt_lock_time: float = 0.25
@@ -528,7 +556,9 @@ func _test_damage(dmg: int) -> void:
 		return
 		
 	health = maxi(0, health - dmg)
-	healthbar.health = health
+	global.player_health = health
+	if healthbar:
+		healthbar.health = health
 	
 	if health <= 0:
 		die()
@@ -543,6 +573,8 @@ func heal(amount: int) -> void:
 		return
 
 	health = mini(max_hp, health + amount)
+	global.player_health = health
+
 
 	if healthbar:
 		healthbar.health = health
@@ -562,10 +594,25 @@ func die() -> void:
 		_play_safe(&"death")
 		await sprite.animation_finished
 
+# piilotetaan stamina ja hp palkit kun hahmo kuolee + labelit
+	if stamina_bar:
+		stamina_bar.hide()
+
+	if healthbar:
+		healthbar.hide()
+
+	if stamina_label:
+		stamina_label.hide()
+
+	if health_label:
+		health_label.hide()
+
 		await get_tree().create_timer(0.3).timeout
 
 	var main_scene_path: String = ProjectSettings.get_setting("application/run/main_scene")
 	get_tree().change_scene_to_file(main_scene_path)
+
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("test_damage"):
@@ -591,3 +638,10 @@ var sprint_regen_timer: float = 0.0
 
 var max_hp: int = 100
 var health: int = 100
+
+
+#haetaan hp ja staminapalkki sekä tekstit/labelit
+var stamina_bar = null
+var healthbar = null
+var health_label = null
+var stamina_label = null

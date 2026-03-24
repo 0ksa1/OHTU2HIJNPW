@@ -12,6 +12,9 @@ var player_exit_dungeon_1_posy: float = 21.0
 
 var firstload = true
 
+var player_max_hp: int = 100
+var player_health: int = 100
+
 func finish_scene_change():
 	if transition_scene == true:
 		transition_scene = false

@@ -1,12 +1,14 @@
-[gd_scene load_steps=22 format=4 uid="uid://dp7sp7pxd1qgf"]
+[gd_scene load_steps=24 format=4 uid="uid://dp7sp7pxd1qgf"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_onqr8"]
 [ext_resource type="Script" uid="uid://dxbkuor8cih1c" path="res://scripts/game_scene.gd" id="1_y3j0m"]
 [ext_resource type="PackedScene" uid="uid://mus4efnh8kp8" path="res://scenes/common/collision_world.tscn" id="3_tcjrq"]
 [ext_resource type="AudioStream" uid="uid://mty54i0hx1cm" path="res://audio/sfx/birb_sounds.mp3" id="4_tcjrq"]
 [ext_resource type="PackedScene" uid="uid://dohybjnu4fth3" path="res://scenes/player.tscn" id="5_rurhu"]
+[ext_resource type="PackedScene" uid="uid://cdmqxa3hspt5h" path="res://art/ui/healthbar/healthbar.tscn" id="5_rvs2r"]
 [ext_resource type="AudioStream" uid="uid://e1lthyeffvb6" path="res://audio/sfx/attack1.mp3" id="6_kk2rg"]
 [ext_resource type="PackedScene" uid="uid://l0bac5v7t666" path="res://scenes/girl_npc.tscn" id="6_rurhu"]
+[ext_resource type="Script" uid="uid://wpvixkkab2ub" path="res://art/ui/healthbar/staminabar.gd" id="6_tqxxy"]
 [ext_resource type="AudioStream" uid="uid://b8u8ujovo2y4s" path="res://audio/sfx/attack2.mp3" id="7_b5spy"]
 [ext_resource type="AudioStream" uid="uid://bkj3scolqa858" path="res://audio/sfx/grass.mp3" id="7_mw25s"]
 [ext_resource type="AudioStream" uid="uid://nm5rkjqxasgo" path="res://audio/sfx/attack3.mp3" id="8_utbpp"]
@@ -855,22 +857,49 @@ layer = 11
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("3_tcjrq")]
 
+[node name="HUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Healthbar" parent="CanvasLayer/HUD" instance=ExtResource("5_rvs2r")]
+layout_mode = 0
+anchors_preset = 0
+
+[node name="Staminabar" parent="CanvasLayer/HUD" instance=ExtResource("5_rvs2r")]
+layout_mode = 1
+offset_top = 4.0
+offset_bottom = 8.0
+script = ExtResource("6_tqxxy")
+
 [node name="player" parent="." instance=ExtResource("5_rurhu")]
 y_sort_enabled = true
 position = Vector2(0, 0)
+walk_speed = null
+run_speed = null
+acceleration = null
+friction = null
+dev_allow_noclip = null
+sprint_drain_per_sec = null
+sprint_regen_per_sec = null
+sprint_regen_delay = null
+run_anim_threshold = null
+combo_chain_window = null
+combo_early_click_ignored = null
+lunge_speed = null
+lunge_duration = null
+turn_duration = null
+turn_speed_multiplier = null
+use_idle_turn = null
+hurt_lock_time = null
 
 [node name="sprite" parent="player" index="0"]
 position = Vector2(-16, -5)
 animation = &"idle_turn"
 
-[node name="game_scene_camera" parent="player" index="1"]
-position = Vector2(0, 0)
-
 [node name="collision" parent="player" index="2"]
 position = Vector2(-2, -4)
-
-[node name="dungeon_camera" parent="player" index="3"]
-zoom = Vector2(1, 1)
 
 [node name="audio2" type="Node2D" parent="player"]
 

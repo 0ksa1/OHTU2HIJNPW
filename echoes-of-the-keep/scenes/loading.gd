@@ -11,6 +11,9 @@ var pct
 func _ready() -> void:
 	next_scene_path = global.next_scene
 	print(next_scene_path)
+	
+	if GUI.has_node("HUD"):
+		GUI.get_node("HUD").hide()
 
 	$character.play()
 	ResourceLoader.load_threaded_request(next_scene_path)
@@ -28,6 +31,8 @@ func _process(delta: float) -> void:
 			sprite.position.x += run_speed * delta
 			if sprite.position.x > get_viewport_rect().size.x:
 				print(next_scene_path)
+				if GUI.has_node("HUD"):
+					GUI.get_node("HUD").show()
 				var scene = ResourceLoader.load_threaded_get(next_scene_path)
 				get_tree().change_scene_to_packed(scene)
 		

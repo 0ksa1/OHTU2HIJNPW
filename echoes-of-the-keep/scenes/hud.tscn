@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://cm0pibyalnkr7"]
+
+[ext_resource type="PackedScene" uid="uid://cdmqxa3hspt5h" path="res://art/ui/healthbar/healthbar.tscn" id="1_oo0fn"]
+[ext_resource type="Script" uid="uid://wpvixkkab2ub" path="res://art/ui/healthbar/staminabar.gd" id="2_5ysmq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oo0fn"]
+bg_color = Color(0.78039217, 0, 0.18039216, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ysmq"]
+bg_color = Color(0.29803923, 0.73333335, 0.18039216, 1)
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Healthbar" parent="." instance=ExtResource("1_oo0fn")]
+layout_mode = 1
+offset_left = 77.0
+offset_top = -705.0
+offset_right = 527.0
+offset_bottom = -687.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_oo0fn")
+
+[node name="Staminabar" parent="." instance=ExtResource("1_oo0fn")]
+layout_mode = 1
+offset_left = 76.0
+offset_top = -681.0
+offset_right = 526.0
+offset_bottom = -663.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_5ysmq")
+script = ExtResource("2_5ysmq")
+
+[node name="HealthLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 12.0
+offset_right = 84.0
+offset_bottom = 35.0
+text = "HP:"
+
+[node name="StaminaLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 36.0
+offset_right = 71.0
+offset_bottom = 59.0
+text = "Stamina:"
