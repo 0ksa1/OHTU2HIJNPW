@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=4 uid="uid://cltc6yg5p3ows"]
+[gd_scene load_steps=39 format=4 uid="uid://cltc6yg5p3ows"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_5112x"]
 [ext_resource type="Script" uid="uid://dike74e1j6uv8" path="res://scripts/dungeon_1.gd" id="1_pxq7g"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dohybjnu4fth3" path="res://scenes/player.tscn" id="3_a0yhp"]
 [ext_resource type="Texture2D" uid="uid://8ckdmipr22g8" path="res://tiles/Dungeon/Dungeon1/MainLev2.0.png" id="5_xtwae"]
 [ext_resource type="Texture2D" uid="uid://cvce4lb2qjpwg" path="res://tiles/Dungeon/Dungeon1/decorative.png" id="6_7egf0"]
+[ext_resource type="PackedScene" uid="uid://b2up7eeemadak" path="res://dialogue/dialogue.tscn" id="8_to6r5"]
 [ext_resource type="PackedScene" uid="uid://b5kktxaucm7ub" path="res://scenes/Door.tscn" id="9_7egf0"]
 [ext_resource type="PackedScene" uid="uid://dqq7xqsycpugb" path="res://scenes/enemy/rat.tscn" id="9_7ire7"]
 [ext_resource type="PackedScene" uid="uid://b8a5t2oxqb5bx" path="res://scenes/enemy/bat.tscn" id="10_jnhlp"]
@@ -48052,6 +48053,10 @@ polygon = PackedVector2Array(1982, 101, 1983, 166, 1782, 169, 1762, 189, 1753, 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="exit_bridge"]
 position = Vector2(941.875, 237)
 shape = SubResource("RectangleShape2D_a0yhp")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="exit_bridge"]
+
+[node name="Dialogue" parent="exit_bridge/CanvasLayer" instance=ExtResource("8_to6r5")]
 
 [node name="Rat" parent="." instance=ExtResource("9_7ire7")]
 position = Vector2(731, 712)

@@ -83,8 +83,13 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 	if not can_move:
-		velocity = Vector2.ZERO 
-		move_and_slide() 
+		velocity = Vector2.ZERO
+		if sprite:
+			sprite.play(&"idle")
+		if has_node("AnimationPlayer"):
+			var ap: AnimationPlayer = $AnimationPlayer
+			ap.stop()
+		move_and_slide()
 		return
 		
 	_read_movement_input()

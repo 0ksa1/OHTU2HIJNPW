@@ -4,6 +4,7 @@ extends Node2D
 # FIX: Points to the universal camera name inside the player
 @onready var cam: Camera2D = $player/Camera2D 
 @onready var spawn: Marker2D = $Spawn
+@onready var dialogue = $exit_bridge/CanvasLayer/Dialogue
 
 var switching_scene: bool = false
 
@@ -38,10 +39,14 @@ func _force_dungeon_camera() -> void:
 
 func _on_exit_bridge_body_entered(body: Node2D) -> void:
 	if body.has_method("player"):
-		global.next_scene = "res://scenes/hub1.tscn"
-		global.transition_scene = true
+		player.can_move = false
+		dialogue.start("res://dialogue/dungeon_dialogue.json")
+		await dialogue.dialogue_finished
+		player.can_move = true
+		#global.next_scene = "res://scenes/hub1.tscn"
+		#global.transition_scene = true
 		# TRIGGER the change immediately on contact
-		change_scene()
+		#change_scene()
 
 func _on_exit_bridge_body_exited(body: Node2D) -> void:
 	if body.has_method("player"):
