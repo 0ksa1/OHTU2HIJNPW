@@ -4,3 +4,6 @@
 
 # Godot import files
 *.import
+
+# Windows shortcut files
+*.lnk
