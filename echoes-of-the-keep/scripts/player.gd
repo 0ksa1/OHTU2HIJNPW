@@ -71,10 +71,24 @@ func _ready() -> void:
 		sprite.animation_finished.connect(_on_animation_finished)
 	_play_safe(&"idle")
 	current_camera()
+	# use call_deferred to make sure spawn runs correctly
+	call_deferred("_spawn")
+	
+# handles spawning to correct spot after death
+func _spawn():
+	spawn_controller.update_spawn()
+	var spawn = spawn_controller.current_spawn
+	var marker = get_tree().current_scene.find_child(spawn, true, false)
+	
+	if marker is Marker2D:
+		global_position = marker.global_position
+	else:
+		print("Marker2D not found: ", spawn)
 
 # Variable for disabling movement during cutscenes
 var can_move = true
 @onready var stamina_bar = $StaminaBar
+
 
 func _physics_process(delta: float) -> void:
 	if dead:
@@ -83,8 +97,13 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 	if not can_move:
-		velocity = Vector2.ZERO 
-		move_and_slide() 
+		velocity = Vector2.ZERO
+		if sprite:
+			sprite.play(&"idle")
+		if has_node("AnimationPlayer"):
+			var ap: AnimationPlayer = $AnimationPlayer
+			ap.stop()
+		move_and_slide()
 		return
 		
 	_read_movement_input()
@@ -290,7 +309,7 @@ func _update_facing_from_mouse() -> void:
 	facing_right = (mx >= global_position.x)
 	_apply_flip()
 
-func _handle_attack_input(delta: float) -> void:
+func _handle_attack_input(_delta: float) -> void:
 	if not Input.is_action_just_pressed("attack"):
 		return
 
@@ -581,9 +600,9 @@ func die() -> void:
 		await sprite.animation_finished
 
 		await get_tree().create_timer(0.3).timeout
-
-	var main_scene_path: String = ProjectSettings.get_setting("application/run/main_scene")
-	get_tree().change_scene_to_file(main_scene_path)
+	
+	var current_scene_path = get_tree().current_scene.scene_file_path
+	get_tree().change_scene_to_file(current_scene_path)
 
 
 func _unhandled_input(event: InputEvent) -> void:
