@@ -4,7 +4,7 @@
 
 extends Panel
 
-var ItemClass = preload("res://item.tscn")
+var ItemClass = preload("res://scenes/item/item.tscn")
 var item = null
 var slot_index: int = -1
 
