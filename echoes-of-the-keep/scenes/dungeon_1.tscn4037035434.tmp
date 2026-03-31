@@ -48151,7 +48151,7 @@ texture = ExtResource("15_jnhlp")
 position = Vector2(639, 1529)
 
 [node name="dungeon_room2_sp" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(644, 951)
+position = Vector2(642, 1079)
 
 [node name="dungeon_room1_sp" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(944, 284)
