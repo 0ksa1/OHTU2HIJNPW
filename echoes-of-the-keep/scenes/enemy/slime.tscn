@@ -614,7 +614,6 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hkqn5"]
-radius = 4.01
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r4wci"]
 radius = 61.008198
@@ -632,7 +631,7 @@ script = ExtResource("1_a3p1x")
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_7osc3")
-animation = &"corpse_left"
+animation = &"run_left"
 offset = Vector2(0, -7)
 
 [node name="fx" type="AnimatedSprite2D" parent="."]
@@ -641,18 +640,21 @@ sprite_frames = SubResource("SpriteFrames_mcxug")
 animation = &"slime_jump_fx"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -1)
+visible = false
+position = Vector2(-1, 0)
 shape = SubResource("CircleShape2D_hkqn5")
 debug_color = Color(0, 0, 0, 0.41960785)
 
 [node name="DetectArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
+visible = false
 position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_r4wci")
 debug_color = Color(0.6094163, 0.5391529, 0.041375414, 0.41960785)
 
 [node name="LoseArea" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LoseArea"]
 position = Vector2(0, -4)
@@ -661,8 +663,8 @@ debug_color = Color(0.19933051, 0.6212014, 0.46049738, 0.41960785)
 
 [node name="AttackArea" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-position = Vector2(-1, -4)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" groups=["enemy"]]
+position = Vector2(1, 1)
 shape = SubResource("CircleShape2D_5syy0")
 debug_color = Color(0.9911818, 0, 0.27483556, 0.41960785)
 

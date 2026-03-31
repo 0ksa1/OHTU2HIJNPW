@@ -29,6 +29,9 @@ var state: State = State.PATROL
 @export var attack_damage: int = 10
 @export var attack_hit_time: float = 0.12
 
+@export var knockback_force: float = 140.0
+@export var knockback_friction: float = 900.0
+
 # HIT / STUN
 @export var hit_stun_time: float = 0.18
 
@@ -216,14 +219,22 @@ func _deal_damage_to(target: Node) -> void:
 # HIT
 #
 func _do_hit(delta: float) -> void:
-	velocity = Vector2.ZERO
 	hit_stun_left -= delta
+
+	# knockback hidastuu vähitellen
+	velocity = velocity.move_toward(Vector2.ZERO, knockback_friction * delta)
+	# jos stun loppuu, palataan takaisin normaaliin logiikkaan
 	if hit_stun_left <= 0.0:
-		# palataan järkevästi
+		velocity = Vector2.ZERO
+
 		if is_instance_valid(player):
-			state = State.CHASE
+			if attack_in_range:
+				state = State.ATTACK
+			else:
+				state = State.CHASE
 		else:
 			state = State.RETURN_HOME
+
 		_play_anim("idle")
 		return
 
@@ -305,18 +316,32 @@ func take_damage(dmg: int) -> void:
 		return
 
 	hp = maxi(0, hp - dmg)
-
 	if hp <= 0:
 		_die()
 		return
 
-	# keskeytä lyönti & mene hit-tilaan
+	# keskeytä hyökkäys
 	attacking = false
 	did_hit_this_swing = true
 	hit_timer_left = 0.0
+	attack_cd_left = 0.0
 
+	# knockback poispäin pelaajasta
+	var kb_dir := Vector2.ZERO
+
+	if is_instance_valid(player):
+		var x_dir: float = signf(global_position.x - player.global_position.x)
+		if x_dir == 0.0:
+			x_dir = 1.0 if facing_right else -1.0
+		kb_dir = Vector2(x_dir, 0.0)
+
+		# päivitä facing sen mukaan mihin suuntaan lentää
+		facing_right = kb_dir.x > 0.0
+	else:
+		kb_dir = Vector2.RIGHT if facing_right else Vector2.LEFT
+
+	velocity = kb_dir * knockback_force
 	hit_stun_left = hit_stun_time
-	_face_player_if_any()
 	state = State.HIT
 	_play_anim("hit")
 
