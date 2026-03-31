@@ -374,8 +374,22 @@ func _die() -> void:
 	# lopeta logiikka
 	set_physics_process(false)
 	set_process(false)
+	
+	# tarkastetaan onko kaikki mobit kuolleet
+	if is_in_group("rats"):
+		remove_from_group("rats")
+		if get_tree().get_nodes_in_group("rats").size() == 0:
+			spawn_controller.rats_dead = true 
+	elif is_in_group("bats"):
+		remove_from_group("bats")
+		if get_tree().get_nodes_in_group("bats").size() == 0:
+			spawn_controller.bats_dead = true 
+	elif is_in_group("slimes"):
+		remove_from_group("slimes")
+		if get_tree().get_nodes_in_group("slimes").size() == 0:
+			spawn_controller.slimes_dead = true 
 
-
+		
 #
 # helpers (left/right)
 #

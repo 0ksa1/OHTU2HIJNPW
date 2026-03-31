@@ -48067,10 +48067,7 @@ chase_speed = 40.0
 patrol_distance = 20.0
 stop_distance = 10.0
 turn_pause_time = 0.4
-attack_cooldown = 1.0
 attack_damage = 5
-knockback_force = 170.0
-knockback_friction = 600.0
 hit_stun_time = 0.8
 
 [node name="Rat2" parent="." groups=["rats"] instance=ExtResource("9_7ire7")]
@@ -48081,13 +48078,9 @@ patrol_speed = 25.0
 chase_speed = 35.0
 patrol_distance = 15.0
 stop_distance = 8.0
-home_reach_distance = 0.0
-turn_pause_time = 0.8
-attack_cooldown = 0.7
-max_hp = 40
+turn_pause_time = 0.5
+max_hp = 20
 attack_damage = 8
-knockback_force = 170.0
-knockback_friction = 600.0
 hit_stun_time = 0.8
 
 [node name="Bat" parent="." groups=["bats"] instance=ExtResource("10_jnhlp")]
@@ -48158,7 +48151,7 @@ texture = ExtResource("15_jnhlp")
 position = Vector2(639, 1529)
 
 [node name="dungeon_room2_sp" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(644, 951)
+position = Vector2(642, 1079)
 
 [node name="dungeon_room1_sp" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(944, 284)
