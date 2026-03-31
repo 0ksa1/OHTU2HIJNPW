@@ -20,6 +20,7 @@ func _ready() -> void:
 	#testi jolla lisäsin itemejä tavaraluetteloon
 	add_item(&"potion")
 	add_item(&"potion") 
+	add_item(&"teleport_flask") 
 	#add_item(&"potion")
 
 #itemin lisäys
