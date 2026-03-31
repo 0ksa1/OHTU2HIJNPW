@@ -48092,21 +48092,72 @@ hit_stun_time = 0.8
 
 [node name="Bat" parent="." groups=["bats"] instance=ExtResource("10_jnhlp")]
 position = Vector2(341, 1189)
+collision_layer = 3
+collision_mask = 3
+patrol_speed = 25.0
+chase_speed = 60.0
+patrol_distance = 30.0
+turn_pause_time = 0.55
+attack_cooldown = 0.8
+knockback_force = 170.0
+knockback_friction = 600.0
+hit_stun_time = 0.8
 
 [node name="Bat2" parent="." groups=["bats"] instance=ExtResource("10_jnhlp")]
 position = Vector2(232, 1269)
+collision_layer = 3
+collision_mask = 3
+patrol_distance = 40.0
+knockback_force = 160.0
+knockback_friction = 600.0
+hit_stun_time = 0.8
 
 [node name="Bat3" parent="." groups=["bats"] instance=ExtResource("10_jnhlp")]
 position = Vector2(142, 1395)
+collision_layer = 3
+collision_mask = 3
+attack_cooldown = 0.7
+knockback_force = 170.0
+knockback_friction = 600.0
+hit_stun_time = 0.8
 
 [node name="Slime" parent="." groups=["slimes"] instance=ExtResource("11_wxlf4")]
 position = Vector2(1093, 1229)
+collision_layer = 3
+collision_mask = 3
+chase_speed = 60.0
+patrol_distance = 20.0
+turn_pause_time = 0.4
+attack_cooldown = 0.7
+knockback_force = 150.0
+knockback_friction = 700.0
+hit_stun_time = 0.7
 
 [node name="Slime2" parent="." groups=["slimes"] instance=ExtResource("11_wxlf4")]
 position = Vector2(1077, 1389)
+collision_layer = 3
+collision_mask = 3
+patrol_speed = 25.0
+chase_speed = 50.0
+patrol_distance = 20.0
+turn_pause_time = 0.5
+attack_cooldown = 0.8
+knockback_force = 150.0
+knockback_friction = 700.0
+hit_stun_time = 0.8
 
 [node name="Slime3" parent="." groups=["slimes"] instance=ExtResource("11_wxlf4")]
 position = Vector2(1171, 1317)
+collision_layer = 3
+collision_mask = 3
+chase_speed = 50.0
+patrol_distance = 30.0
+patrol_vertical = true
+turn_pause_time = 2.0
+attack_cooldown = 0.8
+knockback_force = 170.0
+knockback_friction = 600.0
+hit_stun_time = 0.8
 
 [node name="Spawn" type="Marker2D" parent="."]
 position = Vector2(943, 281)
