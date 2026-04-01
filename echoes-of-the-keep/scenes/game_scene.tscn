@@ -863,14 +863,8 @@ position = Vector2(0, 0)
 position = Vector2(-16, -5)
 animation = &"idle_turn"
 
-[node name="game_scene_camera" parent="player" index="1"]
-position = Vector2(0, 0)
-
 [node name="collision" parent="player" index="2"]
 position = Vector2(-2, -4)
-
-[node name="dungeon_camera" parent="player" index="3"]
-zoom = Vector2(1, 1)
 
 [node name="audio2" type="Node2D" parent="player"]
 
