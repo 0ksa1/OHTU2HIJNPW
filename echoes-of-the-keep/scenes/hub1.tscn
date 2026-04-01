@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://ctht0jnmxygkx"]
+[gd_scene load_steps=14 format=4 uid="uid://ctht0jnmxygkx"]
 
 [ext_resource type="TileSet" uid="uid://bbg4oqmcpflyk" path="res://tiles/HUB/hub_layout1/tilesetEdited/background.tres" id="1_h85u0"]
 [ext_resource type="Script" uid="uid://cwrw4dq5cdusr" path="res://scenes/hub_1.gd" id="1_m50xw"]
@@ -11,6 +11,7 @@
 [ext_resource type="TileSet" uid="uid://d1dqkmilsua07" path="res://tiles/HUB/hub_layout1/tilesetEdited/furniture.tres" id="9_cetnd"]
 [ext_resource type="PackedScene" uid="uid://dohybjnu4fth3" path="res://scenes/player.tscn" id="9_m50xw"]
 [ext_resource type="PackedScene" uid="uid://b6uwdaq2c0iq6" path="res://scenes/cutscene_manager.tscn" id="11_tp6a1"]
+[ext_resource type="AudioStream" uid="uid://mty54i0hx1cm" path="res://audio/sfx/birb_sounds.mp3" id="12_3ykl4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m50xw"]
 size = Vector2(19, 20)
@@ -135,6 +136,9 @@ shape = SubResource("RectangleShape2D_m50xw")
 [node name="player" parent="." instance=ExtResource("9_m50xw")]
 position = Vector2(-144, 21)
 
+[node name="Camera2D" parent="player" index="1"]
+zoom = Vector2(3.2, 3.2)
+
 [node name="CutsceneManager" parent="." instance=ExtResource("11_tp6a1")]
 
 [node name="effect" type="AnimatedSprite2D" parent="."]
@@ -155,6 +159,11 @@ polygon = PackedVector2Array(-584, 362, -568, 366, -550, 358, -522, 379, -523, 3
 
 [node name="CollisionPolygon2Daltar" type="CollisionPolygon2D" parent="collisions"]
 polygon = PackedVector2Array(-96, 128, -56, 128, -55, 81, 56, 81, 57, -56, -55, -56, -56, -105, -233, -105, -233, -57, -345, -57, -345, 81, -234, 80, -232, 128, -185, 128, -184, 223, -191, 223, -192, 191, -237, 190, -237, 146, -242, 144, -350, 144, -350, 98, -353, 97, -352, -65, -241, -64, -240, -112, -48, -112, -48, -63, 64, -64, 64, 97, 62, 99, 62, 144, -47, 144, -50, 147, -50, 191, -95, 192, -96, 223, -103, 223, -102, 128)
+
+[node name="Ambient" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_3ykl4")
+volume_db = -18.0
+autoplay = true
 
 [connection signal="body_entered" from="dungeon_bridge_1" to="." method="_on_dungeon_bridge_1_body_entered"]
 [connection signal="body_exited" from="dungeon_bridge_1" to="." method="_on_dungeon_bridge_1_body_exited"]
