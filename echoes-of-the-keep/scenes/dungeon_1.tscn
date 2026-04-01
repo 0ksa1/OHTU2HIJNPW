@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://cltc6yg5p3ows"]
+[gd_scene load_steps=47 format=4 uid="uid://cltc6yg5p3ows"]
 
 [ext_resource type="Texture2D" uid="uid://estr7sv3i3ea" path="res://tiles/grass.png" id="1_5112x"]
 [ext_resource type="Script" uid="uid://dike74e1j6uv8" path="res://scripts/dungeon_1.gd" id="1_pxq7g"]
@@ -16,8 +16,15 @@
 [ext_resource type="PackedScene" uid="uid://7hl26bp4n4bi" path="res://scenes/enemy/slime.tscn" id="11_wxlf4"]
 [ext_resource type="AudioStream" uid="uid://cq4upfwotglgd" path="res://audio/sfx/mavopix-forgotten-cave-159880.mp3" id="12_elh8m"]
 [ext_resource type="AudioStream" uid="uid://chvud1chodydi" path="res://audio/sfx/universfield-dark-mystery-intro-352303.mp3" id="13_v23nj"]
-[ext_resource type="PackedScene" uid="uid://yodmjtnngho5" path="res://scenes/item/item_upgrade_1.tscn" id="14_7ire7"]
+[ext_resource type="PackedScene" uid="uid://yodmjtnngho5" path="res://scenes/item_upgrade_1.tscn" id="14_7ire7"]
 [ext_resource type="Texture2D" uid="uid://bdhfj8qysubur" path="res://art/items/potion-0002.png" id="15_jnhlp"]
+[ext_resource type="Script" uid="uid://clncqlj0kqt60" path="res://scenes/boss_encounter.gd" id="19_h76no"]
+[ext_resource type="PackedScene" uid="uid://datahiu6b0rfh" path="res://scenes/enemy/boss_slime.tscn" id="20_gmnqs"]
+[ext_resource type="PackedScene" uid="uid://b6uwdaq2c0iq6" path="res://scenes/cutscene_manager.tscn" id="21_nad25"]
+[ext_resource type="AudioStream" uid="uid://coyqmvtbdo068" path="res://audio/sfx/Boss_Slime_OST.mp3" id="22_pxj46"]
+[ext_resource type="AudioStream" uid="uid://ndhhip7v8rs5" path="res://audio/sfx/IntroBossSfx.mp3" id="23_q3bdn"]
+[ext_resource type="Script" uid="uid://cqmtcyvpj8tef" path="res://scenes/boss_name_ui.gd" id="24_mwene"]
+[ext_resource type="Script" uid="uid://b1wok6r8vs5on" path="res://scenes/boss_health_ui.gd" id="25_vue6v"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xtwae"]
 texture = ExtResource("5_xtwae")
@@ -47993,12 +48000,18 @@ sources/0 = SubResource("TileSetAtlasSource_to6r5")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a0yhp"]
 size = Vector2(58.25, 27)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gmnqs"]
+size = Vector2(53.94998, 31.550037)
+
 [node name="dungeon_1" type="Node2D"]
 y_sort_enabled = true
 position = Vector2(0, 5)
 script = ExtResource("1_pxq7g")
 
 [node name="collision_world" parent="." instance=ExtResource("2_he162")]
+
+[node name="collision_tilemap" parent="collision_world" index="0"]
+position = Vector2(10, 15)
 
 [node name="WallTileLayer" type="TileMapLayer" parent="."]
 z_index = 2
@@ -48213,6 +48226,102 @@ position = Vector2(644, 951)
 
 [node name="dungeon_room1_sp" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(944, 284)
+
+[node name="CutsceneManager" parent="." instance=ExtResource("21_nad25")]
+
+[node name="cutscene_camera" type="Camera2D" parent="."]
+enabled = false
+
+[node name="BossNameUI" type="CanvasLayer" parent="."]
+script = ExtResource("24_mwene")
+
+[node name="NameLabel" type="Label" parent="BossNameUI"]
+z_index = 4
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = 3.0
+offset_right = -4.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.98039216, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 100
+text = "Forgotten Slime"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BossEncounter" type="Node2D" parent="."]
+z_index = 3
+position = Vector2(2004, -230)
+script = ExtResource("19_h76no")
+boss_scene = ExtResource("20_gmnqs")
+
+[node name="TriggerArea" type="Area2D" parent="BossEncounter"]
+z_index = 3
+position = Vector2(52, -14)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BossEncounter/TriggerArea"]
+position = Vector2(-56, 418)
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_gmnqs")
+
+[node name="BossSpawnPoint" type="Marker2D" parent="BossEncounter"]
+position = Vector2(2.0000153, 645)
+
+[node name="CameraFocusPoint" type="Marker2D" parent="BossEncounter"]
+position = Vector2(2.0000038, 610)
+
+[node name="BossPondSpawnPoint" type="Marker2D" parent="BossEncounter"]
+position = Vector2(-63, 575)
+
+[node name="BossContainer" type="Node2D" parent="BossEncounter"]
+position = Vector2(46, 12)
+
+[node name="IntroSfxPlayer" type="AudioStreamPlayer" parent="BossEncounter"]
+stream = ExtResource("23_q3bdn")
+volume_db = -4.0
+
+[node name="BossMusicPlayer" type="AudioStreamPlayer" parent="BossEncounter"]
+stream = ExtResource("22_pxj46")
+volume_db = -6.5
+
+[node name="BossUIAnchor" type="Node2D" parent="BossEncounter"]
+position = Vector2(25, 2)
+
+[node name="BossHealthUI" type="CanvasLayer" parent="."]
+script = ExtResource("25_vue6v")
+
+[node name="MarginContainer" type="MarginContainer" parent="BossHealthUI"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 54.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BossHealthUI/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="BossLabel" type="Label" parent="BossHealthUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/font_size = 26
+text = "Forgotten Slime"
+horizontal_alignment = 1
+
+[node name="HealthBar" type="ProgressBar" parent="BossHealthUI/MarginContainer/VBoxContainer"]
+modulate = Color(0.8082067, 0, 0.006699223, 1)
+self_modulate = Color(1, 0.9372549, 1, 1)
+custom_minimum_size = Vector2(700, 28)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9372549, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+value = 100.0
 
 [connection signal="body_entered" from="exit_bridge" to="." method="_on_exit_bridge_body_entered"]
 [connection signal="body_exited" from="exit_bridge" to="." method="_on_exit_bridge_body_exited"]

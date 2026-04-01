@@ -12,15 +12,15 @@ var noclip: bool = false
 
 # ---------- Sprint stamina ----------
 # 1.0 = täysi sprint, 0.0 = pelkkä walk
-@export var sprint_drain_per_sec: float = 0.55     # isompi = nopeammin väsyy
-@export var sprint_regen_per_sec: float = 0.43     # isompi = nopeammin palautuu
-@export var sprint_regen_delay: float = 0.4       # viive ennen kuin palautuminen alkaa
-@export var run_anim_threshold: float = 25.0       # jos current_speed > walk_speed + tämä -> käytä run animaatiota
+@export var sprint_drain_per_sec: float = 0.55
+@export var sprint_regen_per_sec: float = 0.43
+@export var sprint_regen_delay: float = 0.4
+@export var run_anim_threshold: float = 25.0
 
 # ---------- Combo ----------
 # Klikkaus hyväksytään seuraavaan iskuun vain lopussa (tiukempi ikkuna)
-@export var combo_chain_window: float = 0.3      # sekunteina (pienempi = tiukempi)
-@export var combo_early_click_ignored: bool = true # jos true, liian aikainen klikkaus ei queuea
+@export var combo_chain_window: float = 0.3
+@export var combo_early_click_ignored: bool = true
 
 # Attack lunge
 @export var lunge_speed: float = 260.0
@@ -30,6 +30,16 @@ var noclip: bool = false
 @export var turn_duration: float = 0.10
 @export var turn_speed_multiplier: float = 0.80
 @export var use_idle_turn: bool = false
+
+# Multi-hit timings
+@export var attack_1_hit_times: Array[float] = [0.12]
+@export var attack_2_hit_times: Array[float] = [0.12]
+@export var attack_3_hit_times: Array[float] = [0.12, 0.45, 1.0]
+
+# Full combo stun
+@export var combo_boss_stun_duration: float = 1.0
+@export var full_combo_required_hits: int = 5
+@export var full_combo_required_attack3_hits: int = 3
 
 @onready var sprite: AnimatedSprite2D = %sprite
 
@@ -65,21 +75,30 @@ var attack_duration: float = 0.0
 var lunge_timer: float = 0.0
 var lunge_dir: Vector2 = Vector2.ZERO
 
+# Multi-hit runtime
+var current_hit_times: Array[float] = []
+var current_hit_index: int = 0
+var targets_hit_this_window: Dictionary = {}
+
+# Full combo tracking
+var combo_target_id: int = -1
+var combo_hits_landed_on_target: int = 0
+var combo_attack3_hits_on_target: int = 0
+var combo_sequence_valid: bool = false
 
 func _ready() -> void:
 	if not sprite.animation_finished.is_connected(_on_animation_finished):
 		sprite.animation_finished.connect(_on_animation_finished)
 	_play_safe(&"idle")
 	current_camera()
-	# use call_deferred to make sure spawn runs correctly
 	call_deferred("_spawn")
-	
+
 # handles spawning to correct spot after death
 func _spawn():
 	spawn_controller.update_spawn()
 	var spawn = spawn_controller.current_spawn
 	var marker = get_tree().current_scene.find_child(spawn, true, false)
-	
+
 	if marker is Marker2D:
 		global_position = marker.global_position
 	else:
@@ -88,7 +107,6 @@ func _spawn():
 # Variable for disabling movement during cutscenes
 var can_move = true
 @onready var stamina_bar = $StaminaBar
-
 
 func _physics_process(delta: float) -> void:
 	if dead:
@@ -105,7 +123,7 @@ func _physics_process(delta: float) -> void:
 			ap.stop()
 		move_and_slide()
 		return
-		
+
 	_read_movement_input()
 	_update_sprint_energy(delta)
 	_handle_attack_input(delta)
@@ -117,10 +135,8 @@ func _physics_process(delta: float) -> void:
 		State.ATTACK:
 			_process_attack(delta)
 
-
 func player() -> void:
 	pass
-
 
 # -------------------------
 # AUDIO
@@ -130,7 +146,6 @@ func player() -> void:
 @onready var sfx_step_wood: AudioStreamPlayer2D = $audio/SFX_Footstep_Wood
 @onready var sfx_hurt: AudioStreamPlayer2D = $audio/SFX_Hurt
 @onready var sfx_death: AudioStreamPlayer2D = $audio/SFX_Death
-
 
 func sfx_attack(step: int) -> void:
 	var p: AudioStreamPlayer2D
@@ -158,8 +173,6 @@ func sfx_footstep(_surface: StringName = &"grass") -> void:
 	p.pitch_scale = randf_range(0.95, 1.05)
 	p.play()
 
-
-
 # -------------------------
 # INPUT
 # -------------------------
@@ -174,7 +187,6 @@ func _read_movement_input() -> void:
 
 	sprint_pressed = Input.is_action_pressed("move_run")
 
-
 # -------------------------
 # SPRINT STAMINA
 # -------------------------
@@ -183,47 +195,37 @@ func _update_sprint_energy(delta: float) -> void:
 	var moving := (input_dir != Vector2.ZERO)
 
 	if sprint_pressed and moving and sprint_energy > 0.0:
-		# sprinting drains
 		sprint_energy = maxf(0.0, sprint_energy - sprint_drain_per_sec * delta)
 		sprint_regen_timer = sprint_regen_delay
 	else:
-		# regen after delay
 		if sprint_regen_timer > 0.0:
 			sprint_regen_timer = maxf(0.0, sprint_regen_timer - delta)
 		else:
 			sprint_energy = minf(1.0, sprint_energy + sprint_regen_per_sec * delta)
 
-
 func _current_move_speed() -> float:
-	# jos shift ei painettuna -> always walk
 	if not sprint_pressed:
 		return walk_speed
 
-	# shift painettuna -> speed laskee energian mukaan kohti walkia
 	return lerpf(walk_speed, run_speed, sprint_energy)
-
 
 func _should_use_run_anim(current_speed: float) -> bool:
 	return current_speed > (walk_speed + run_anim_threshold)
-
 
 # -------------------------
 # MOVE (turn + run_to_idle overlays)
 # -------------------------
 
 func _process_move(delta: float) -> void:
-	# Turn overlay timer
 	if is_turning:
 		turn_timer -= delta
 		if turn_timer <= 0.0:
 			is_turning = false
 			_play_safe(pending_after_turn)
 
-	# run_to_idle voidaan keskeyttää heti kun tulee input
 	if is_run_to_idle and input_dir != Vector2.ZERO:
 		is_run_to_idle = false
 
-	# Facing päivitys vain x:n mukaan
 	if absf(input_dir.x) > 0.01:
 		_set_facing_right(input_dir.x > 0.0)
 
@@ -231,7 +233,6 @@ func _process_move(delta: float) -> void:
 	var speed := base_speed * (turn_speed_multiplier if is_turning else 1.0)
 	var target_velocity := input_dir * speed
 
-	# accelerate / friction
 	if input_dir != Vector2.ZERO:
 		velocity = velocity.move_toward(target_velocity, acceleration * delta)
 	else:
@@ -239,7 +240,6 @@ func _process_move(delta: float) -> void:
 
 	move_and_slide()
 
-	# ---- Animations päätellään INPUTISTA (seinä-case) ----
 	if input_dir != Vector2.ZERO:
 		is_run_to_idle = false
 
@@ -252,7 +252,6 @@ func _process_move(delta: float) -> void:
 
 		last_move_was_run_anim = use_run_anim
 	else:
-		# no input -> idle / run_to_idle
 		if last_move_was_run_anim and not is_run_to_idle and _has_anim(&"run_to_idle"):
 			is_run_to_idle = true
 			last_move_was_run_anim = false
@@ -263,7 +262,6 @@ func _process_move(delta: float) -> void:
 			pending_after_turn = &"idle"
 			if not is_turning and not is_run_to_idle:
 				_play_safe(&"idle")
-
 
 func _set_facing_right(new_right: bool) -> void:
 	if new_right == facing_right:
@@ -276,20 +274,17 @@ func _set_facing_right(new_right: bool) -> void:
 	if state != State.MOVE:
 		return
 
-	# idle_turn pois
 	if input_dir == Vector2.ZERO:
 		if use_idle_turn and _has_anim(&"idle_turn"):
 			_start_turn(&"idle_turn", &"idle")
 		return
 
-	# Liikkeessä: overlay-turn + pieni hidaste
 	var cur_speed := _current_move_speed()
 	var use_run_turn := _should_use_run_anim(cur_speed)
 
 	var turn_anim: StringName = (&"run_turn" if use_run_turn else &"walk_turn")
 	var after_anim: StringName = (&"run" if use_run_turn else &"walk")
 	_start_turn(turn_anim, after_anim)
-
 
 func _start_turn(turn_anim: StringName, after_anim: StringName) -> void:
 	if not _has_anim(turn_anim):
@@ -299,9 +294,8 @@ func _start_turn(turn_anim: StringName, after_anim: StringName) -> void:
 	pending_after_turn = after_anim
 	_play_safe(turn_anim)
 
-
 # -------------------------
-# ATTACK / COMBO + LUNGE (tiukempi combo window)
+# ATTACK / COMBO + LUNGE
 # -------------------------
 
 func _update_facing_from_mouse() -> void:
@@ -317,20 +311,16 @@ func _handle_attack_input(_delta: float) -> void:
 		_start_combo(1)
 		return
 
-	# ATTACK: hyväksy "next" vain combo-windowin aikana
 	if state == State.ATTACK and combo_step < 3 and not in_attack_end:
 		var time_left := maxf(0.0, attack_duration - attack_elapsed)
 		if time_left <= combo_chain_window:
 			queued_next = true
 		elif not combo_early_click_ignored:
-			# vaihtoehtoinen: jos haluat "bufferin", aseta false ja se queueaa heti
 			queued_next = true
-
 
 func _start_combo(step: int) -> void:
 	state = State.ATTACK
 
-	# katkaise overlayt
 	is_turning = false
 	is_run_to_idle = false
 
@@ -338,21 +328,24 @@ func _start_combo(step: int) -> void:
 	in_attack_end = false
 	queued_next = false
 
-	# Face mouse (x only)
 	var mx := get_global_mouse_position().x
 	facing_right = (mx >= global_position.x)
 	_apply_flip()
 
-	# lunge x
 	lunge_dir = Vector2(1, 0) if facing_right else Vector2(-1, 0)
 	lunge_timer = lunge_duration
 
 	velocity = Vector2.ZERO
+
+	if combo_step == 1:
+		combo_target_id = -1
+		combo_hits_landed_on_target = 0
+		combo_attack3_hits_on_target = 0
+		combo_sequence_valid = true
+
 	_play_attack_anim(_attack_name(combo_step))
 
-
 func _process_attack(delta: float) -> void:
-	# attack movement
 	if lunge_timer > 0.0:
 		lunge_timer -= delta
 		velocity = lunge_dir * lunge_speed
@@ -361,34 +354,32 @@ func _process_attack(delta: float) -> void:
 
 	move_and_slide()
 
-	# timing (combo window)
 	attack_elapsed += delta
-	
-	# ---- HIT TIMING ----
-	if hit_timer_left > 0.0 and not did_hit_this_swing:
-		hit_timer_left -= delta
-		if hit_timer_left <= 0.0:
-			_try_deal_damage()
-			did_hit_this_swing = true
 
+	if current_hit_index < current_hit_times.size():
+		if attack_elapsed >= current_hit_times[current_hit_index]:
+			targets_hit_this_window.clear()
+			_try_deal_damage()
+			current_hit_index += 1
 
 func _play_attack_anim(anim: StringName) -> void:
 	_play_safe(anim)
 	attack_elapsed = 0.0
 	attack_duration = _estimate_anim_duration(anim)
-	
-	# Resetoi osuma vain varsinaisille attack_1/2/3 (ei _end)
-	var s := String(anim)
-	if s.begins_with("attack_") and not s.ends_with("_end"):
-		hit_timer_left = attack_hit_time
-		did_hit_this_swing = false
-	else:
-		hit_timer_left = -1.0
-		did_hit_this_swing = false
 
+	current_hit_times.clear()
+	current_hit_index = 0
+	targets_hit_this_window.clear()
+
+	var s := String(anim)
+	if s == "attack_1":
+		current_hit_times = attack_1_hit_times.duplicate()
+	elif s == "attack_2":
+		current_hit_times = attack_2_hit_times.duplicate()
+	elif s == "attack_3":
+		current_hit_times = attack_3_hit_times.duplicate()
 
 func _estimate_anim_duration(anim: StringName) -> float:
-	# kesto ~ framecount / fps
 	if sprite.sprite_frames == null:
 		return 0.0
 	if not sprite.sprite_frames.has_animation(anim):
@@ -400,24 +391,19 @@ func _estimate_anim_duration(anim: StringName) -> float:
 		return 0.0
 	return float(frames) / fps
 
-
 func _attack_name(step: int) -> StringName:
 	return StringName("attack_%d" % step)
-
 
 func _attack_end_name(step: int) -> StringName:
 	return StringName("attack_%d_end" % step)
 
-
 func _on_animation_finished(_anim_name: StringName = &"") -> void:
-	# run_to_idle finished
 	if state == State.MOVE and is_run_to_idle and sprite.animation == &"run_to_idle":
 		is_run_to_idle = false
 		if input_dir == Vector2.ZERO:
 			_play_safe(&"idle")
 		return
 
-	# if a turn animation ends early, return
 	if state == State.MOVE and is_turning and (sprite.animation == &"walk_turn" or sprite.animation == &"run_turn" or sprite.animation == &"idle_turn"):
 		is_turning = false
 		_play_safe(pending_after_turn)
@@ -426,9 +412,7 @@ func _on_animation_finished(_anim_name: StringName = &"") -> void:
 	if state == State.ATTACK:
 		_on_attack_anim_finished()
 
-
 func _on_attack_anim_finished() -> void:
-	# attack_n finished
 	if not in_attack_end:
 		if queued_next and combo_step < 3:
 			queued_next = false
@@ -443,16 +427,12 @@ func _on_attack_anim_finished() -> void:
 			_play_attack_anim(_attack_name(combo_step))
 			return
 
-
-		# no next -> go end (ja tyhjennä queue varmuudeksi)
 		in_attack_end = true
 		queued_next = false
 		_play_attack_anim(_attack_end_name(combo_step))
 		return
 
-	# attack_n_end finished -> combo ends
 	_end_combo()
-
 
 func _end_combo() -> void:
 	state = State.MOVE
@@ -460,8 +440,100 @@ func _end_combo() -> void:
 	in_attack_end = false
 	queued_next = false
 	lunge_timer = 0.0
+	current_hit_times.clear()
+	current_hit_index = 0
+	targets_hit_this_window.clear()
+
+	combo_target_id = -1
+	combo_hits_landed_on_target = 0
+	combo_attack3_hits_on_target = 0
+	combo_sequence_valid = false
+
 	_play_safe(&"idle")
 
+# -------------------------
+# DAMAGE DEALING
+# -------------------------
+
+@export var attack_damage: int = 12
+@onready var attack_area: Area2D = $AttackArea
+
+func _register_combo_hit(target: Node, hit_index_within_attack: int) -> Dictionary:
+	var hit_info: Dictionary = {
+		"combo_step": combo_step,
+		"hit_index": hit_index_within_attack,
+		"is_attack3_multi_hit": (combo_step == 3),
+		"boss_combo_stun": false,
+		"boss_combo_stun_duration": combo_boss_stun_duration
+	}
+
+	if target == null:
+		combo_sequence_valid = false
+		return hit_info
+
+	var target_id: int = target.get_instance_id()
+
+	if combo_step == 1 and combo_hits_landed_on_target == 0 and combo_target_id == -1:
+		combo_target_id = target_id
+
+	if combo_target_id != target_id:
+		combo_sequence_valid = false
+		return hit_info
+
+	if combo_sequence_valid:
+		combo_hits_landed_on_target += 1
+
+		if combo_step == 3:
+			combo_attack3_hits_on_target += 1
+
+		if combo_hits_landed_on_target >= full_combo_required_hits and combo_attack3_hits_on_target >= full_combo_required_attack3_hits:
+			hit_info["boss_combo_stun"] = true
+
+	return hit_info
+
+func _deal_damage_to_target(target: Node) -> void:
+	if target == null:
+		return
+
+	var hit_index_within_attack: int = current_hit_index
+	var hit_info: Dictionary = _register_combo_hit(target, hit_index_within_attack)
+
+	if target.has_method("receive_player_hit"):
+		target.call("receive_player_hit", attack_damage, hit_info)
+	elif target.has_method("take_damage"):
+		target.call("take_damage", attack_damage)
+
+func _try_deal_damage() -> void:
+	if attack_area == null:
+		return
+
+	var targets: Dictionary = {}
+
+	var bodies = attack_area.get_overlapping_bodies()
+	for b in bodies:
+		if b != null and b is Node and b.is_in_group("enemy"):
+			targets[b] = true
+
+	var areas = attack_area.get_overlapping_areas()
+	for a in areas:
+		if a == null or not (a is Area2D):
+			continue
+
+		var owner_node := a.get_parent()
+		if owner_node != null and owner_node is Node and owner_node.is_in_group("enemy"):
+			targets[owner_node] = true
+
+	for target_variant in targets.keys():
+		var target: Node = target_variant as Node
+		if target == null:
+			continue
+
+		var target_id: int = target.get_instance_id()
+		if targets_hit_this_window.has(target_id):
+			continue
+
+		targets_hit_this_window[target_id] = true
+		_deal_damage_to_target(target)
 
 # -------------------------
 # Helpers
@@ -472,7 +544,6 @@ func _get_surface_under_player() -> StringName:
 	if scene == null:
 		return &"grass"
 
-	# Tarkista vain PropsTileLayer
 	var props := scene.get_node_or_null("PropsTileLayer") as TileMapLayer
 	if props == null:
 		return &"grass"
@@ -493,15 +564,12 @@ func _surface_from_layer(layer: TileMapLayer, world_pos: Vector2) -> StringName:
 		return &""
 
 	return StringName(str(v))
-	
 
 func _apply_flip() -> void:
 	sprite.flip_h = not facing_right
 
-
 func _has_anim(anim: StringName) -> bool:
 	return sprite.sprite_frames != null and sprite.sprite_frames.has_animation(anim)
-
 
 func _play_safe(anim: StringName) -> void:
 	if not _has_anim(anim):
@@ -538,9 +606,10 @@ func current_camera():
 		cam.enabled = true
 		cam.make_current()
 
-#-------------------------
+# -------------------------
 # HEALTHBAR & DEATH LOGIC
-#-------------------------
+# -------------------------
+
 func play_hurt() -> void:
 	if dead or hurting:
 		return
@@ -555,30 +624,25 @@ func play_hurt() -> void:
 		sfx_hurt.play()
 
 	_play_safe(&"hurt")
-
-	# odota että hurt animaatio loppuu
 	await sprite.animation_finished
 
 	hurting = false
 
-	# palauta järkevä animaatio heti kun vapautuu
 	if state == State.MOVE:
 		_play_safe(&"idle")
-
 
 @onready var healthbar = $HealthBar
 var dead = false
 var hurting: bool = false
 @export var hurt_lock_time: float = 0.25
 
-#funktio damagen testaamiseen
 func _test_damage(dmg: int) -> void:
 	if dead:
 		return
-		
+
 	health = maxi(0, health - dmg)
 	healthbar.health = health
-	
+
 	if health <= 0:
 		die()
 	else:
@@ -598,12 +662,10 @@ func die() -> void:
 	if _has_anim(&"death"):
 		_play_safe(&"death")
 		await sprite.animation_finished
-
 		await get_tree().create_timer(0.3).timeout
-	
+
 	var current_scene_path = get_tree().current_scene.scene_file_path
 	get_tree().change_scene_to_file(current_scene_path)
-
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("test_damage"):
@@ -617,39 +679,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			push_warning("NOCLIP: CollisionShape2D not found at 'collision/CollisionShape2D'. Check node path.")
 		print("NOCLIP:", noclip)
 
-
-# -------------------------
-# DAMAGING
-# -------------------------
-
-@export var attack_damage: int = 12
-@export var attack_hit_time: float = 0.12 # sekuntia iskun alusta -> osuma
-
-@onready var attack_area: Area2D = $AttackArea
-
-var hit_timer_left: float = -1.0
-var did_hit_this_swing: bool = false
-
-func _try_deal_damage() -> void:
-	if attack_area == null:
-		return
-
-	for b in attack_area.get_overlapping_bodies():
-		if b != null and b is Node and b.is_in_group("enemy"):
-			if b.has_method("take_damage"):
-				b.call("take_damage", attack_damage)
-				
-
-
 # -------------------------
 # CHARACTER STATS
 # -------------------------
 
-# Sprint stamina runtime
 var sprint_energy: float = 1.0
 var sprint_regen_timer: float = 0.0
-
-#HP
 
 var max_hp: int = 100
 var health: int = 100
