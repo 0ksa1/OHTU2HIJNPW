@@ -3,6 +3,7 @@ extends Node
 var rats_dead: bool = false
 var bats_dead: bool = false
 var slimes_dead: bool = false
+var boss_dead: bool = false
 
 var current_spawn: String = "DefaultSpawn"
 

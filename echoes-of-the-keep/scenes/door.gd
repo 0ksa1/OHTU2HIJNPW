@@ -1,12 +1,16 @@
 extends Node2D
 
-@export var door_id: String = "slime_room"
+@export_enum("slime_room", "water_split_room", "boss_to_item") var door_id: String = "slime_room"
 @export var locked: bool = true
 
 @onready var blocker: StaticBody2D = $StaticBody2D
 
-@onready var sfx_locked: AudioStreamPlayer2D = $SFX_Locked
+@onready var sfx_open: AudioStreamPlayer2D = $SFX_Open
 @onready var interact_area: Area2D = $Area2D
+@onready var dialogue = $CanvasLayer/Dialogue
+@onready var player: Node2D = $"../player"
+
+
 
 var player_inside: bool = false
 
@@ -30,11 +34,10 @@ func unlock() -> void:
 	_apply_locked_state()
 	# tänne myöhemmin open-ääni/animaatio
 
-func _play_locked_feedback() -> void:
-	if sfx_locked:
-		sfx_locked.pitch_scale = randf_range(0.95, 1.05)
-		sfx_locked.play()
-
+func _play_open_feedback() -> void:
+	if sfx_open:
+		sfx_open.pitch_scale = randf_range(0.95, 1.05)
+		sfx_open.play()
 
 func _on_body_entered(body: Node) -> void:
 	if body.has_method("player"):
@@ -61,4 +64,22 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed("interact"):
 		if locked:
-			_play_locked_feedback()
+			if _can_unlock():
+				unlock()
+				_play_open_feedback()
+			else:
+				player.can_move = false
+				dialogue.start("res://dialogue/door_dialogue.json")
+				await dialogue.dialogue_finished
+				player.can_move = true
+
+func _can_unlock() -> bool:
+	match door_id:
+		"slime_room":
+			return spawn_controller.rats_dead
+		"water_split_room":
+			return spawn_controller.bats_dead and spawn_controller.slimes_dead
+		"boss_to_item":
+			return spawn_controller.boss_dead
+		_:
+			return false
