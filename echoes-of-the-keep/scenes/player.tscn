@@ -1,4 +1,4 @@
-[gd_scene load_steps=149 format=3 uid="uid://dohybjnu4fth3"]
+
 [gd_scene load_steps=150 format=3 uid="uid://dohybjnu4fth3"]
 
 [ext_resource type="Script" uid="uid://msne0d0esa3u" path="res://scripts/player.gd" id="1_ur7pv"]
@@ -26,6 +26,7 @@
 [ext_resource type="Script" uid="uid://wpvixkkab2ub" path="res://art/ui/healthbar/staminabar.gd" id="21_i4ail"]
 [ext_resource type="AudioStream" uid="uid://bfvlopies3v2v" path="res://audio/sfx/hurt.mp3" id="22_ke2ow"]
 [ext_resource type="AudioStream" uid="uid://cnrkha6yoweeb" path="res://audio/sfx/death2.mp3" id="23_ujl30"]
+[ext_resource type="AudioStream" uid="uid://d2agk11031dy7" path="res://audio/itemAudios/freesound_community-085594_potion-35983.mp3" id="24_l71n6"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wnwbv"]
 atlas = ExtResource("2_f1ej7")
@@ -1060,6 +1061,10 @@ stream = ExtResource("22_ke2ow")
 
 [node name="SFX_Death" type="AudioStreamPlayer2D" parent="audio"]
 stream = ExtResource("23_ujl30")
+
+[node name="SFX_Potion_Use" type="AudioStreamPlayer2D" parent="audio"]
+process_mode = 3
+stream = ExtResource("24_l71n6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
