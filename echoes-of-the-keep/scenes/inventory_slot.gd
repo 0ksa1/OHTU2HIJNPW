@@ -12,6 +12,9 @@ func _ready() -> void:
 	#print("inventory slot testi")
 	clear_slot()
 	border_color()
+	#hiirellä hoveraus itemin kuvaukselle
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
 
 func clear_slot() -> void:
 	if item != null:
@@ -43,3 +46,31 @@ func border_color() -> void:
 		modulate = Color.ANTIQUE_WHITE
 	else:
 		modulate = Color.WHITE
+
+#hiirellä hoveraus funktiot tavaroiden kuvauksille
+func _on_mouse_entered() -> void:
+	#indeksin tarkistus
+	if slot_index == -1:
+		return
+	if slot_index >= Inventory.inventory.size():
+		return
+
+	#haetaan itemin id
+	var item_id = Inventory.inventory[slot_index]
+	if item_id == null:
+		return
+
+	var data = ItemDB.ITEMS.get(item_id, null)
+	if data == null:
+		return
+
+	# haetaan node ja näytetään item databasessa oleva kuvaus
+	var tooltip = get_tree().get_first_node_in_group("item_tooltip")
+	if tooltip:
+		tooltip.show_tooltip(data.get("description", ""), get_global_mouse_position())
+
+# funktio kuvauksen poistamiseen kun hiiri ei ole item slotin päällä
+func _on_mouse_exited() -> void:
+	var tooltip = get_tree().get_first_node_in_group("item_tooltip")
+	if tooltip:
+		tooltip.hide_tooltip()
