@@ -1,10 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://6hfc5udusvir"]
+[gd_scene load_steps=10 format=3 uid="uid://6hfc5udusvir"]
 
 [ext_resource type="Script" uid="uid://d01t34ufxujlr" path="res://scenes/inventory_ui.gd" id="1_iradw"]
 [ext_resource type="Texture2D" uid="uid://namp5fdkfvm8" path="res://art/ui/menu/inventoryScreen.tres" id="1_mdwe3"]
 [ext_resource type="Texture2D" uid="uid://dj3bkicompomt" path="res://art/ui/menu/inventorySlot.tres" id="2_iradw"]
 [ext_resource type="Script" uid="uid://vcv4v4mqfvpv" path="res://scenes/inventory_slot.gd" id="3_eifbp"]
+[ext_resource type="Script" uid="uid://tw3ifhk6v4ok" path="res://scenes/item_tooltip.gd" id="5_2lmnb"]
 [ext_resource type="Texture2D" uid="uid://dl75kcw7qmsg7" path="res://art/ui/menu/inventoryText.tres" id="5_eifbp"]
+[ext_resource type="Texture2D" uid="uid://dk7rl4yeq67x7" path="res://art/ui/dialogue_box.png" id="6_eicjl"]
+[ext_resource type="FontFile" uid="uid://c1db6jtul0b63" path="res://art/ui/fonts/PressStart2P-Regular.ttf" id="7_uwj4j"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ldkr4"]
 texture = ExtResource("2_iradw")
@@ -124,6 +127,40 @@ custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_ldkr4")
 script = ExtResource("3_eifbp")
+
+[node name="itemTooltip" type="Panel" parent="InventoryWindow" groups=["item_tooltip"]]
+visible = false
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+script = ExtResource("5_2lmnb")
+
+[node name="itemBackground" type="TextureRect" parent="InventoryWindow/itemTooltip"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_eicjl")
+expand_mode = 1
+
+[node name="TooltipLabel" type="Label" parent="InventoryWindow/itemTooltip"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("7_uwj4j")
+theme_override_font_sizes/font_size = 8
+autowrap_mode = 3
 
 [node name="inventoryText" type="TextureRect" parent="."]
 layout_mode = 0
