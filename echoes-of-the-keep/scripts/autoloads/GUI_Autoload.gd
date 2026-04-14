@@ -2,8 +2,7 @@ extends CanvasLayer
 
 var gui_components = [
 	"res://scenes/pause_menu.tscn",
-	"res://scenes/inventory_ui.tscn",
-	"res://scenes/hud.tscn"
+	"res://scenes/inventory_ui.tscn"
 ]
 
 # Resoluutiot listana
@@ -16,7 +15,6 @@ var resolutions = {
 
 var pause_menu: Node = null
 var inventory_ui: Node = null
-var hud: Node = null
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -30,12 +28,6 @@ func _ready():
 
 		if new_scene.name == "Inventory":
 			inventory_ui = new_scene
-
-		if new_scene.name == "HUD":
-			hud = new_scene
-			new_scene.show()
-
-
 
 func _input(_event):
 	if Input.is_action_just_pressed("escKey") and pause_menu:
