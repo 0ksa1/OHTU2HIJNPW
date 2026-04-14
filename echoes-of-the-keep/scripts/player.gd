@@ -136,6 +136,7 @@ func player() -> void:
 @onready var sfx_step_wood: AudioStreamPlayer2D = $audio/SFX_Footstep_Wood
 @onready var sfx_hurt: AudioStreamPlayer2D = $audio/SFX_Hurt
 @onready var sfx_death: AudioStreamPlayer2D = $audio/SFX_Death
+@onready var sfx_potion_use: AudioStreamPlayer2D = $audio/SFX_Potion_Use
 
 func sfx_attack(step: int) -> void:
 	var p: AudioStreamPlayer2D
@@ -168,8 +169,6 @@ func play_potion_sound() -> void:
 	if sfx_potion_use:
 		sfx_potion_use.pitch_scale = randf_range(0.98, 1.02)
 		sfx_potion_use.play()
-
-
 
 # -------------------------
 # INPUT
