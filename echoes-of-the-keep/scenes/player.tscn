@@ -1068,21 +1068,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_kk2rg")
 }
 
-[node name="HealthBar" parent="." instance=ExtResource("20_60mlk")]
-z_index = 100
-offset_left = -19.0
-offset_top = -46.0
-offset_right = 13.0
-offset_bottom = -44.0
-
-[node name="StaminaBar" parent="." instance=ExtResource("20_60mlk")]
-z_index = 100
-offset_left = -19.0
-offset_top = -42.0
-offset_right = 13.0
-offset_bottom = -40.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_i4ail")
-script = ExtResource("21_i4ail")
 
 [node name="AttackArea" type="Area2D" parent="."]
 collision_mask = 2
