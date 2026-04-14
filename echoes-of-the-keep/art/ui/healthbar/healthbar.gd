@@ -12,11 +12,9 @@ func _set_health(new_health):
 	health = min(max_value, new_health)
 	value = health
 	
-	# jos hp loppuu, piilotetaan healthbar
+	# jos hp loppuu, poistetaan healthbar
 	if health <= 0:
-		hide()
-	else:
-		show()
+		queue_free()
 	
 	#jos otetaan damagea
 	if health < prev_health:

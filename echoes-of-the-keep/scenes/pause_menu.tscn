@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://b7rrmwbsn41pt"]
+[gd_scene load_steps=18 format=3 uid="uid://b7rrmwbsn41pt"]
 
 [ext_resource type="Shader" uid="uid://msui542rssr8" path="res://pause_menu.gdshader" id="1_hdmo1"]
 [ext_resource type="Script" uid="uid://dji04ov37q01t" path="res://pause_menu.gd" id="1_myx47"]
@@ -6,8 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://dphf3qn87ewda" path="res://art/ui/menu/button_off.tres" id="4_v4r4p"]
 [ext_resource type="Texture2D" uid="uid://beyxohers2twl" path="res://art/ui/menu/button_on.tres" id="5_1s2dm"]
 [ext_resource type="Texture2D" uid="uid://bfd7rgujwos5l" path="res://art/ui/menu/button_normal.tres" id="5_7l7mv"]
-[ext_resource type="FontFile" uid="uid://c1db6jtul0b63" path="res://art/ui/fonts/PressStart2P-Regular.ttf" id="6_1s2dm"]
-[ext_resource type="FontFile" uid="uid://c6g6rnkhhiee0" path="res://art/ui/fonts/Silkscreen-Regular.ttf" id="7_88e76"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nwcfo"]
 shader = ExtResource("1_hdmo1")
@@ -244,7 +242,6 @@ offset_bottom = 40.0
 
 [node name="Label7" type="Label" parent="CenterContainer/PanelContainer/ControlsPanel/GridContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("6_1s2dm")
 text = "CONTROLS"
 
 [node name="Label" type="Label" parent="CenterContainer/PanelContainer/ControlsPanel/GridContainer"]
@@ -280,8 +277,7 @@ process_mode = 3
 layout_mode = 2
 theme_override_colors/font_color = Color(0.22745098, 0.16862746, 0.11764706, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("7_88e76")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxTexture_v4r4p")
 text = "Resume"
 
@@ -289,8 +285,7 @@ text = "Resume"
 process_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.22745098, 0.16862746, 0.11764706, 1)
-theme_override_fonts/font = ExtResource("7_88e76")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxTexture_1s2dm")
 text = "Restart
 "
@@ -299,8 +294,7 @@ text = "Restart
 process_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.22745098, 0.16862746, 0.11764706, 1)
-theme_override_fonts/font = ExtResource("7_88e76")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxTexture_88e76")
 text = "Settings"
 
@@ -308,8 +302,7 @@ text = "Settings"
 process_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.22745098, 0.16862746, 0.11764706, 1)
-theme_override_fonts/font = ExtResource("7_88e76")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxTexture_knqa7")
 text = "Controls"
 
@@ -317,8 +310,7 @@ text = "Controls"
 process_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.16862746, 0.16862746, 0.16862746, 1)
-theme_override_fonts/font = ExtResource("7_88e76")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxTexture_71k7c")
 text = "Quit"
 

@@ -78,33 +78,6 @@ var targets_hit_this_window: Dictionary = {}
 func _ready() -> void:
 	if not sprite.animation_finished.is_connected(_on_animation_finished):
 		sprite.animation_finished.connect(_on_animation_finished)
-
-	await get_tree().process_frame
-
-	max_hp = global.player_max_hp
-	health = global.player_health
-
-# haetaan hp ja staminapalkit hahmolle
-	stamina_bar = GUI.get_node_or_null("HUD/Staminabar")
-	healthbar = GUI.get_node_or_null("HUD/Healthbar")
-	health_label = GUI.get_node_or_null("HUD/HealthLabel")
-	stamina_label = GUI.get_node_or_null("HUD/StaminaLabel")
-	
-	if stamina_bar:
-		stamina_bar.show()
-		stamina_bar.set_stamina(sprint_energy * 100.0, 100.0)
-	
-	if healthbar:
-		healthbar.show()
-		healthbar.health = health
-	
-	if stamina_label:
-		stamina_label.show()
-	
-	if health_label:
-		health_label.show()
-
-
 	_play_safe(&"idle")
 	current_camera()
 	# use call_deferred to make sure spawn runs correctly
@@ -144,8 +117,7 @@ func _physics_process(delta: float) -> void:
 	_read_movement_input()
 	_update_sprint_energy(delta)
 	_handle_attack_input(delta)
-	if stamina_bar:
-		stamina_bar.set_stamina(sprint_energy * 100.0, 100.0)
+	stamina_bar.set_stamina(sprint_energy * 100.0, 100.0)
 
 	match state:
 		State.MOVE:
@@ -164,7 +136,6 @@ func player() -> void:
 @onready var sfx_step_wood: AudioStreamPlayer2D = $audio/SFX_Footstep_Wood
 @onready var sfx_hurt: AudioStreamPlayer2D = $audio/SFX_Hurt
 @onready var sfx_death: AudioStreamPlayer2D = $audio/SFX_Death
-@onready var sfx_potion_use: AudioStreamPlayer2D = $audio/SFX_Potion_Use
 
 func sfx_attack(step: int) -> void:
 	var p: AudioStreamPlayer2D
@@ -377,7 +348,6 @@ func _start_combo(step: int) -> void:
 	# lunge x
 	lunge_dir = Vector2(1, 0) if facing_right else Vector2(-1, 0)
 	lunge_timer = lunge_duration
-
 
 	velocity = Vector2.ZERO
 	_play_attack_anim(_attack_name(combo_step))
@@ -615,20 +585,6 @@ func _test_damage(dmg: int) -> void:
 	else:
 		play_hurt()
 
-#funktio hahmon parantamiseen
-func heal(amount: int) -> void:
-	if dead:
-		return
-	if amount <= 0:
-		return
-
-	health = mini(max_hp, health + amount)
-	global.player_health = health
-
-
-	if healthbar:
-		healthbar.health = health
-
 func die() -> void:
 	if dead:
 		return
@@ -661,8 +617,6 @@ func die() -> void:
 
 	var current_scene_path = get_tree().current_scene.scene_file_path
 	get_tree().change_scene_to_file(current_scene_path)
-
-
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("test_damage"):
