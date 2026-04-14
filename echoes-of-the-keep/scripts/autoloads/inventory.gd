@@ -45,6 +45,45 @@ func swap_items(index_a: int, index_b: int) -> void:
 
 	inventory_updated.emit()
 
-# tähän voisi lisätä sitten remove item kun potion tms käytetään
+
+# tavaraluettelosta poistaminen
+func remove_item(index: int) -> void:
+	if index < 0 or index >= inventory.size():
+		return
+
+	inventory[index] = null
+	inventory_updated.emit()
+
+func use_item(index: int, player) -> void:
+#tarkistus onko indeksi inventoryn rajojen mukainen
+	if index < 0 or index >= inventory.size():
+		return
+
+# haetaan itemin id ja jos slotissa ei ole kyseistä itemiä niin lopetetaan
+	var item_id = inventory[index]
+	if item_id == null:
+		return
+
+#itemin tiedot
+	var data = ItemDB.ITEMS.get(item_id, null)
+	if data == null:
+		return
+
+#tyyppi
+	var item_type = data.get("type", "")
+	var effect = data.get("effect", "")
+
+#itse itemin käyttö
+	if item_type == "consumable":
+		if effect == "heal":
+			var amount = data.get("amount", 0)
+			player.heal(amount)
+			player.play_potion_sound()
+			remove_item(index)
+
+		elif effect == "teleport":
+			print("Teleport item used")
+			#ei poisteta artifaktia
+			#remove_item(index)
 
 # ehkä myös tarkistus funktio onko pelaajalla itemi niin voi vaikka avata seuraavan dungeonin tms?

@@ -22,16 +22,27 @@ func _ready() -> void:
 # Tähän klikkauksen käsittely, kun klikataan ruutua niin vaihdetaan niissä olevat tavarat keskenään
 # kutsutaan myös swap_items joka on itse funktio itemejen paikkojen vaihdolle
 func _on_slot_gui_input(event, i: int) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		print("slot clicked from ui: ", i)
+	if event is InputEventMouseButton and event.pressed:
+		#vasemman klikkauksen käsittely
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			print("slot clicked from ui: ", i)
 
-		if Inventory.selected_slot == -1:
-			Inventory.selected_slot = i
-		else:
-			Inventory.swap_items(Inventory.selected_slot, i)
-			Inventory.selected_slot = -1
+			if Inventory.selected_slot == -1:
+				Inventory.selected_slot = i
+			else:
+				Inventory.swap_items(Inventory.selected_slot, i)
+				Inventory.selected_slot = -1
 
-		refresh_ui()
+			refresh_ui()
+
+#oikean (hiiren)klikkauksen käsittely
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			var player = get_tree().get_first_node_in_group("player")
+			if player:
+				Inventory.use_item(i, player)
+				refresh_ui()
+
+
 
 func refresh_ui() -> void:
 	#slotit
