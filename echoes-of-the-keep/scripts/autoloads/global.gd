@@ -13,9 +13,6 @@ var dungeon_activated: bool = false
 
 var firstload = true
 
-var player_max_hp: int = 100
-var player_health: int = 100
-
 func finish_scene_change():
 	if transition_scene == true:
 		transition_scene = false
