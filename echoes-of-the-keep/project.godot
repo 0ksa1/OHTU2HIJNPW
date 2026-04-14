@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Echoes of the Keep"
-run/main_scene="uid://ctht0jnmxygkx"
+run/main_scene="uid://boyvj412ly0dj"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -19,8 +19,10 @@ config/icon="res://icon.svg"
 
 GUI="*res://scripts/autoloads/GUI_Autoload.gd"
 global="*res://scripts/autoloads/global.gd"
+EffectPlayer="*res://scripts/effect/effect_player.gd"
 Inventory="*res://scripts/autoloads/inventory.gd"
 ItemDB="*res://scripts/autoloads/item_db.gd"
+spawn_controller="*res://scripts/autoloads/spawn_controller.gd"
 
 [display]
 
@@ -33,6 +35,10 @@ window/per_pixel_transparency/allowed=true
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
+[global_group]
+
+enemy=""
 
 [input]
 

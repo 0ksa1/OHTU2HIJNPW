@@ -49,6 +49,12 @@ Tytön viimeinen muoto, jota vastaan pelaaja taistelee (final boss form)
 Final Form animated
 
 TO BE ADDED
+---
+
+# Toiminnallisuudet
+- scripti `/scenes/girl_npc.gd`
+- linkattu dialogiin joka aukeaa, kun pelaaja interaktaa tyt;n kanssa `/dialogue/girl_dialogue1.json")`
+- linkattu cutsceneen, joka näytetään, kun pelaaja puhuu tytölle ensimmäisen kerran. Avaa dungeon portin
 
 ---
 

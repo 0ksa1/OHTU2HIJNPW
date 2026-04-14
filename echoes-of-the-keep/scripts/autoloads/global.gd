@@ -9,6 +9,7 @@ var player_start_posx: float = 526.0
 var player_start_posy: float = 566.0
 var player_exit_dungeon_1_posx: float = -144.0
 var player_exit_dungeon_1_posy: float = 21.0
+var dungeon_activated: bool = false
 
 var firstload = true
 

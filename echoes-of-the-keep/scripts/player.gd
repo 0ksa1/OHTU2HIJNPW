@@ -12,15 +12,15 @@ var noclip: bool = false
 
 # ---------- Sprint stamina ----------
 # 1.0 = täysi sprint, 0.0 = pelkkä walk
-@export var sprint_drain_per_sec: float = 0.55     # isompi = nopeammin väsyy
-@export var sprint_regen_per_sec: float = 0.43     # isompi = nopeammin palautuu
-@export var sprint_regen_delay: float = 0.4       # viive ennen kuin palautuminen alkaa
-@export var run_anim_threshold: float = 25.0       # jos current_speed > walk_speed + tämä -> käytä run animaatiota
+@export var sprint_drain_per_sec: float = 0.55
+@export var sprint_regen_per_sec: float = 0.43
+@export var sprint_regen_delay: float = 0.4
+@export var run_anim_threshold: float = 25.0
 
 # ---------- Combo ----------
 # Klikkaus hyväksytään seuraavaan iskuun vain lopussa (tiukempi ikkuna)
-@export var combo_chain_window: float = 0.3      # sekunteina (pienempi = tiukempi)
-@export var combo_early_click_ignored: bool = true # jos true, liian aikainen klikkaus ei queuea
+@export var combo_chain_window: float = 0.3
+@export var combo_early_click_ignored: bool = true
 
 # Attack lunge
 @export var lunge_speed: float = 260.0
@@ -30,6 +30,11 @@ var noclip: bool = false
 @export var turn_duration: float = 0.10
 @export var turn_speed_multiplier: float = 0.80
 @export var use_idle_turn: bool = false
+
+# Multi-hit timings
+@export var attack_1_hit_times: Array[float] = [0.12]
+@export var attack_2_hit_times: Array[float] = [0.12]
+@export var attack_3_hit_times: Array[float] = [0.12, 0.5, 1.05]
 
 @onready var sprite: AnimatedSprite2D = %sprite
 
@@ -65,18 +70,47 @@ var attack_duration: float = 0.0
 var lunge_timer: float = 0.0
 var lunge_dir: Vector2 = Vector2.ZERO
 
+# Multi-hit runtime
+var current_hit_times: Array[float] = []
+var current_hit_index: int = 0
+var targets_hit_this_window: Dictionary = {}
 
 func _ready() -> void:
 	if not sprite.animation_finished.is_connected(_on_animation_finished):
 		sprite.animation_finished.connect(_on_animation_finished)
 	_play_safe(&"idle")
 	current_camera()
+	# use call_deferred to make sure spawn runs correctly
+	call_deferred("_spawn")
 
+# handles spawning to correct spot after death
+func _spawn():
+	spawn_controller.update_spawn()
+	var spawn = spawn_controller.current_spawn
+	var marker = get_tree().current_scene.find_child(spawn, true, false)
+
+	if marker is Marker2D:
+		global_position = marker.global_position
+	else:
+		print("Marker2D not found: ", spawn)
+
+# Variable for disabling movement during cutscenes
+var can_move = true
 @onready var stamina_bar = $StaminaBar
+
 func _physics_process(delta: float) -> void:
 	if dead:
 		return
 	if hurting:
+		move_and_slide()
+		return
+	if not can_move:
+		velocity = Vector2.ZERO
+		if sprite:
+			sprite.play(&"idle")
+		if has_node("AnimationPlayer"):
+			var ap: AnimationPlayer = $AnimationPlayer
+			ap.stop()
 		move_and_slide()
 		return
 
@@ -91,10 +125,8 @@ func _physics_process(delta: float) -> void:
 		State.ATTACK:
 			_process_attack(delta)
 
-
 func player() -> void:
 	pass
-
 
 # -------------------------
 # AUDIO
@@ -104,7 +136,6 @@ func player() -> void:
 @onready var sfx_step_wood: AudioStreamPlayer2D = $audio/SFX_Footstep_Wood
 @onready var sfx_hurt: AudioStreamPlayer2D = $audio/SFX_Hurt
 @onready var sfx_death: AudioStreamPlayer2D = $audio/SFX_Death
-
 
 func sfx_attack(step: int) -> void:
 	var p: AudioStreamPlayer2D
@@ -132,8 +163,6 @@ func sfx_footstep(_surface: StringName = &"grass") -> void:
 	p.pitch_scale = randf_range(0.95, 1.05)
 	p.play()
 
-
-
 # -------------------------
 # INPUT
 # -------------------------
@@ -147,7 +176,6 @@ func _read_movement_input() -> void:
 		input_dir = input_dir.normalized()
 
 	sprint_pressed = Input.is_action_pressed("move_run")
-
 
 # -------------------------
 # SPRINT STAMINA
@@ -167,7 +195,6 @@ func _update_sprint_energy(delta: float) -> void:
 		else:
 			sprint_energy = minf(1.0, sprint_energy + sprint_regen_per_sec * delta)
 
-
 func _current_move_speed() -> float:
 	# jos shift ei painettuna -> always walk
 	if not sprint_pressed:
@@ -176,10 +203,8 @@ func _current_move_speed() -> float:
 	# shift painettuna -> speed laskee energian mukaan kohti walkia
 	return lerpf(walk_speed, run_speed, sprint_energy)
 
-
 func _should_use_run_anim(current_speed: float) -> bool:
 	return current_speed > (walk_speed + run_anim_threshold)
-
 
 # -------------------------
 # MOVE (turn + run_to_idle overlays)
@@ -238,7 +263,6 @@ func _process_move(delta: float) -> void:
 			if not is_turning and not is_run_to_idle:
 				_play_safe(&"idle")
 
-
 func _set_facing_right(new_right: bool) -> void:
 	if new_right == facing_right:
 		_apply_flip()
@@ -264,7 +288,6 @@ func _set_facing_right(new_right: bool) -> void:
 	var after_anim: StringName = (&"run" if use_run_turn else &"walk")
 	_start_turn(turn_anim, after_anim)
 
-
 func _start_turn(turn_anim: StringName, after_anim: StringName) -> void:
 	if not _has_anim(turn_anim):
 		return
@@ -273,9 +296,8 @@ func _start_turn(turn_anim: StringName, after_anim: StringName) -> void:
 	pending_after_turn = after_anim
 	_play_safe(turn_anim)
 
-
 # -------------------------
-# ATTACK / COMBO + LUNGE (tiukempi combo window)
+# ATTACK / COMBO + LUNGE
 # -------------------------
 
 func _update_facing_from_mouse() -> void:
@@ -283,7 +305,7 @@ func _update_facing_from_mouse() -> void:
 	facing_right = (mx >= global_position.x)
 	_apply_flip()
 
-func _handle_attack_input(delta: float) -> void:
+func _handle_attack_input(_delta: float) -> void:
 	if not Input.is_action_just_pressed("attack"):
 		return
 
@@ -297,9 +319,7 @@ func _handle_attack_input(delta: float) -> void:
 		if time_left <= combo_chain_window:
 			queued_next = true
 		elif not combo_early_click_ignored:
-			# vaihtoehtoinen: jos haluat "bufferin", aseta false ja se queueaa heti
 			queued_next = true
-
 
 func _start_combo(step: int) -> void:
 	state = State.ATTACK
@@ -324,7 +344,6 @@ func _start_combo(step: int) -> void:
 	velocity = Vector2.ZERO
 	_play_attack_anim(_attack_name(combo_step))
 
-
 func _process_attack(delta: float) -> void:
 	# attack movement
 	if lunge_timer > 0.0:
@@ -335,15 +354,32 @@ func _process_attack(delta: float) -> void:
 
 	move_and_slide()
 
-	# timing (combo window)
+	# timing
 	attack_elapsed += delta
 
+	# multi-hit windows
+	if current_hit_index < current_hit_times.size():
+		if attack_elapsed >= current_hit_times[current_hit_index]:
+			targets_hit_this_window.clear()
+			_try_deal_damage()
+			current_hit_index += 1
 
 func _play_attack_anim(anim: StringName) -> void:
 	_play_safe(anim)
 	attack_elapsed = 0.0
 	attack_duration = _estimate_anim_duration(anim)
 
+	current_hit_times.clear()
+	current_hit_index = 0
+	targets_hit_this_window.clear()
+
+	var s := String(anim)
+	if s == "attack_1":
+		current_hit_times = attack_1_hit_times.duplicate()
+	elif s == "attack_2":
+		current_hit_times = attack_2_hit_times.duplicate()
+	elif s == "attack_3":
+		current_hit_times = attack_3_hit_times.duplicate()
 
 func _estimate_anim_duration(anim: StringName) -> float:
 	# kesto ~ framecount / fps
@@ -358,14 +394,11 @@ func _estimate_anim_duration(anim: StringName) -> float:
 		return 0.0
 	return float(frames) / fps
 
-
 func _attack_name(step: int) -> StringName:
 	return StringName("attack_%d" % step)
 
-
 func _attack_end_name(step: int) -> StringName:
 	return StringName("attack_%d_end" % step)
-
 
 func _on_animation_finished(_anim_name: StringName = &"") -> void:
 	# run_to_idle finished
@@ -384,7 +417,6 @@ func _on_animation_finished(_anim_name: StringName = &"") -> void:
 	if state == State.ATTACK:
 		_on_attack_anim_finished()
 
-
 func _on_attack_anim_finished() -> void:
 	# attack_n finished
 	if not in_attack_end:
@@ -401,8 +433,7 @@ func _on_attack_anim_finished() -> void:
 			_play_attack_anim(_attack_name(combo_step))
 			return
 
-
-		# no next -> go end (ja tyhjennä queue varmuudeksi)
+		# no next -> go end
 		in_attack_end = true
 		queued_next = false
 		_play_attack_anim(_attack_end_name(combo_step))
@@ -411,15 +442,18 @@ func _on_attack_anim_finished() -> void:
 	# attack_n_end finished -> combo ends
 	_end_combo()
 
-
 func _end_combo() -> void:
 	state = State.MOVE
 	combo_step = 0
 	in_attack_end = false
 	queued_next = false
 	lunge_timer = 0.0
-	_play_safe(&"idle")
 
+	current_hit_times.clear()
+	current_hit_index = 0
+	targets_hit_this_window.clear()
+
+	_play_safe(&"idle")
 
 # -------------------------
 # Helpers
@@ -451,15 +485,12 @@ func _surface_from_layer(layer: TileMapLayer, world_pos: Vector2) -> StringName:
 		return &""
 
 	return StringName(str(v))
-	
 
 func _apply_flip() -> void:
 	sprite.flip_h = not facing_right
 
-
 func _has_anim(anim: StringName) -> bool:
 	return sprite.sprite_frames != null and sprite.sprite_frames.has_animation(anim)
-
 
 func _play_safe(anim: StringName) -> void:
 	if not _has_anim(anim):
@@ -496,9 +527,10 @@ func current_camera():
 		cam.enabled = true
 		cam.make_current()
 
-#-------------------------
+# -------------------------
 # HEALTHBAR & DEATH LOGIC
-#-------------------------
+# -------------------------
+
 func play_hurt() -> void:
 	if dead or hurting:
 		return
@@ -507,29 +539,35 @@ func play_hurt() -> void:
 
 	hurting = true
 	velocity = Vector2.ZERO
-	
+
 	if sfx_hurt:
 		sfx_hurt.pitch_scale = randf_range(0.98, 1.02)
 		sfx_hurt.play()
-	
+
 	_play_safe(&"hurt")
 
-	await get_tree().create_timer(hurt_lock_time).timeout
+	# odota että hurt animaatio loppuu
+	await sprite.animation_finished
+
 	hurting = false
+
+	# palauta järkevä animaatio heti kun vapautuu
+	if state == State.MOVE:
+		_play_safe(&"idle")
 
 @onready var healthbar = $HealthBar
 var dead = false
 var hurting: bool = false
 @export var hurt_lock_time: float = 0.25
 
-#funktio damagen testaamiseen
+# funktio damagen testaamiseen
 func _test_damage(dmg: int) -> void:
 	if dead:
 		return
-		
+
 	health = maxi(0, health - dmg)
 	healthbar.health = health
-	
+
 	if health <= 0:
 		die()
 	else:
@@ -561,16 +599,15 @@ func die() -> void:
 	if _has_anim(&"death"):
 		_play_safe(&"death")
 		await sprite.animation_finished
-
 		await get_tree().create_timer(0.3).timeout
 
-	var main_scene_path: String = ProjectSettings.get_setting("application/run/main_scene")
-	get_tree().change_scene_to_file(main_scene_path)
+	var current_scene_path = get_tree().current_scene.scene_file_path
+	get_tree().change_scene_to_file(current_scene_path)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("test_damage"):
 		_test_damage(10)
-	
+
 	if dev_allow_noclip and event.is_action_pressed("toggle_noclip"):
 		noclip = !noclip
 		if player_collider:
@@ -578,7 +615,58 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			push_warning("NOCLIP: CollisionShape2D not found at 'collision/CollisionShape2D'. Check node path.")
 		print("NOCLIP:", noclip)
-		
+
+# -------------------------
+# DAMAGING
+# -------------------------
+
+@export var attack_damage: int = 12
+@onready var attack_area: Area2D = $AttackArea
+
+func _deal_damage_to_target(target: Node) -> void:
+	if target == null:
+		return
+
+	if target.has_method("receive_player_hit"):
+		target.call("receive_player_hit", attack_damage)
+	elif target.has_method("take_damage"):
+		target.call("take_damage", attack_damage)
+
+func _try_deal_damage() -> void:
+	if attack_area == null:
+		return
+
+	var targets: Dictionary = {}
+
+	# Tavalliset enemy bodyt
+	var bodies = attack_area.get_overlapping_bodies()
+	for b in bodies:
+		if b != null and b is Node and b.is_in_group("enemy"):
+			targets[b] = true
+
+	# Bossin kaltaiset hurtbox-area targetit
+	var areas = attack_area.get_overlapping_areas()
+	for a in areas:
+		if a == null or not (a is Area2D):
+			continue
+
+		var owner_node := a.get_parent()
+		if owner_node != null and owner_node is Node and owner_node.is_in_group("enemy"):
+			targets[owner_node] = true
+
+	# Damage vain kerran per target per hit-window
+	for target_variant in targets.keys():
+		var target: Node = target_variant as Node
+		if target == null:
+			continue
+
+		var target_id: int = target.get_instance_id()
+		if targets_hit_this_window.has(target_id):
+			continue
+
+		targets_hit_this_window[target_id] = true
+		_deal_damage_to_target(target)
+
 # -------------------------
 # CHARACTER STATS
 # -------------------------
@@ -587,7 +675,6 @@ func _unhandled_input(event: InputEvent) -> void:
 var sprint_energy: float = 1.0
 var sprint_regen_timer: float = 0.0
 
-#HP
-
+# HP
 var max_hp: int = 100
 var health: int = 100
