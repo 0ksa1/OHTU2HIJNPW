@@ -35,12 +35,21 @@ func collect():
 		get_tree().change_scene_to_file(next_scene)
 
 func collect_item():
+	print("collecting: ", name, " item_id=", item_id)
 	var added := Inventory.add_item(item_id)
+	
 	if not added:
 		print("Inventory full")
 		return
+
 	sprite.visible = false
 	player_in_range = false
+
+	if item_id == &"teleport_flask":
+		queue_free()
+		get_tree().change_scene_to_file(next_scene)
+		return
+
 	queue_free()
 
 func _on_body_entered(body):
