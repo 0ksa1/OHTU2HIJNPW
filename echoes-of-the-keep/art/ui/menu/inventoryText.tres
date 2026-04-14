@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://dl75kcw7qmsg7"]
+
+[ext_resource type="Texture2D" uid="uid://doj77mggvh1qe" path="res://art/ui/menu/Inventory.png" id="1_dboku"]
+
+[resource]
+atlas = ExtResource("1_dboku")
+region = Rect2(55.105522, 113.585754, 68.865814, 11.853958)
