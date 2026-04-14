@@ -739,7 +739,5 @@ var health: int = 100
 
 
 #haetaan hp ja staminapalkki sekä tekstit/labelit
-var stamina_bar = null
-var healthbar = null
 var health_label = null
 var stamina_label = null
