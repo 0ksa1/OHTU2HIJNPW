@@ -604,6 +604,8 @@ func _test_damage(dmg: int) -> void:
 		return
 
 	health = maxi(0, health - dmg)
+	healthbar.health = health
+
 	global.player_health = health
 	if healthbar:
 		healthbar.health = health
@@ -739,7 +741,5 @@ var health: int = 100
 
 
 #haetaan hp ja staminapalkki sekä tekstit/labelit
-var stamina_bar = null
-var healthbar = null
 var health_label = null
 var stamina_label = null
