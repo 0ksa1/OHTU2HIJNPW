@@ -1,16 +1,22 @@
 # Itemejen tiedot tulee tänne
-# jatkossa voi lisätä tietoja kuten vaikka kuvaus tms
-# tai tulevalle potionille määrän jonka se antaa hp:Ta
+
+
+#item database
 
 extends Node
 
 const ITEMS := {
 	&"potion": {
-		"icon": preload("res://art/items/potion-0002.png")
+		#sisältää tiedot kuvalle, tyypille, efektille ja määrälle mitä tavara tekee
+		"icon": preload("res://art/items/potion-0002.png"),
+		"type": "consumable",
+		"effect": "heal",
+		"amount": 25
 	},
 	#artifakti
 	&"teleport_flask": {
 		"icon": preload("res://art/items/bottle.png"),
-		
+		"type": "consumable",
+		"effect": "teleport"
 	}
 }
