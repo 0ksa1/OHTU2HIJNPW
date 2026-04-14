@@ -163,6 +163,14 @@ func sfx_footstep(_surface: StringName = &"grass") -> void:
 	p.pitch_scale = randf_range(0.95, 1.05)
 	p.play()
 
+#potion audio
+func play_potion_sound() -> void:
+	if sfx_potion_use:
+		sfx_potion_use.pitch_scale = randf_range(0.98, 1.02)
+		sfx_potion_use.play()
+
+
+
 # -------------------------
 # INPUT
 # -------------------------
@@ -568,6 +576,10 @@ func _test_damage(dmg: int) -> void:
 	health = maxi(0, health - dmg)
 	healthbar.health = health
 
+	global.player_health = health
+	if healthbar:
+		healthbar.health = health
+	
 	if health <= 0:
 		die()
 	else:
@@ -587,6 +599,20 @@ func die() -> void:
 	if _has_anim(&"death"):
 		_play_safe(&"death")
 		await sprite.animation_finished
+
+# piilotetaan stamina ja hp palkit kun hahmo kuolee + labelit
+	if stamina_bar:
+		stamina_bar.hide()
+
+	if healthbar:
+		healthbar.hide()
+
+	if stamina_label:
+		stamina_label.hide()
+
+	if health_label:
+		health_label.hide()
+
 		await get_tree().create_timer(0.3).timeout
 
 	var current_scene_path = get_tree().current_scene.scene_file_path
@@ -666,3 +692,8 @@ var sprint_regen_timer: float = 0.0
 # HP
 var max_hp: int = 100
 var health: int = 100
+
+
+#haetaan hp ja staminapalkki sekä tekstit/labelit
+var health_label = null
+var stamina_label = null
