@@ -34,6 +34,8 @@ This project utilizes the following third-party assets. We do not claim ownershi
 - [Adventurer 2D Top-Down](https://xzany.itch.io/top-down-adventurer-character) by [Matzz Art](https://xzany.itch.io/)
 - [Waterfall - animated](https://jomi13.itch.io/waterfall-animated) by [JoMi](https://jomi13.itch.io/)
 - [EDINNU: STONE CEMETERY](https://rowdy41.itch.io/stone-cemetery-asset-pack) by [rowdy41](https://rowdy41.itch.io/)
+- [8-Bit Explosion 1_4](https://freesound.org/people/Joao_Janz/sounds/478271/) by [Joao_Janz](https://freesound.org/people/Joao_Janz/)
+
 - []() by []() (audiofiles used)
 - []() by []()
 
