@@ -2,15 +2,19 @@
 layout: default
 title: CollisionWorld
 parent: Classes
+nav_order: 5
 ---
 
 # CollisionWorld
 **Inherits:** Node2D
 
-A utility script used to hide "debug" or "ugly" collision shapes that are visible in the Godot Editor.
+A helper utility used to toggle the visibility of collision geometry. 
 
 ## Properties
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| bool | hide_in_game | If true, the target node will be hidden on start. |
-| NodePath | debug_node_path | Path to the TileMap or Node2D containing collision visuals. |
+| bool | hide_in_game | If `true`, the target node is hidden on `_ready()`. |
+| NodePath | debug_node_path | The path to the TileMap containing collision data. |
+
+## Why use this?
+In the Godot Editor, it is helpful to see the collision shapes while painting levels. This script ensures those "ugly" shapes are automatically hidden when the game actually runs.
