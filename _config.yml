@@ -1,5 +1,12 @@
-# GitHub Pages configuration file
-title: "Echoes of the Keep"
-remote_theme: pages-themes/midnight@v0.2.0
+
+remote_theme: just-the-docs/just-the-docs
 plugins:
-- jekyll-remote-theme 
+  - jekyll-remote-theme
+
+# Site settings
+title: "Echoes of the Keep"
+description: Internal documentation for the team.
+
+# Navigation settings
+aux_links:
+  "View on GitHub": https://github.com/0ksa1/OHTU2HIJNPW
