@@ -17,8 +17,8 @@ The Keep is not just a setting; it is a character. The documentation here is des
 - **Narrative Depth:** Integration of a JSON-based dialogue system for items and world events.
 
 ## How to use this Manual
-- **[Manual](./manual/introduction):** Start here if you are a Designer or Writer. This section covers high-level concepts like Scene Flow and Combat.
-- **[Classes](./classes/player):** Start here if you are a Programmer. This is a technical API-style reference of every GDScript in the project.
+- **[Manual](./docs/manual):** Start here if you are a Designer or Writer. This section covers high-level concepts like Scene Flow and Combat.
+- **[Classes](./docs/classes):** Start here if you are a Programmer. This is a technical API-style reference of every GDScript in the project.
 
 {: .note }
 > Looking for the latest build instructions? Check the [Installation Guide](./manual/getting-started).
