@@ -17,8 +17,8 @@ The Keep is not just a setting; it is a character. The documentation here is des
 - **Narrative Depth:** Integration of a JSON-based dialogue system for items and world events.
 
 ## How to use this Manual
-- **[Manual](./docs/manual):** Start here if you are a Designer or Writer. This section covers high-level concepts like Scene Flow and Combat.
-- **[Classes](./docs/classes):** Start here if you are a Programmer. This is a technical API-style reference of every GDScript in the project.
+- **[Manual](./manual):** Start here if you are a Designer or Writer. This section covers high-level concepts like Scene Flow and Combat.
+- **[Classes](./classes):** Start here if you are a Programmer. This is a technical API-style reference of every GDScript in the project.
 
 {: .note }
 > Looking for the latest build instructions? Check the [Installation Guide](./manual/getting-started).
@@ -27,8 +27,8 @@ The Keep is not just a setting; it is a character. The documentation here is des
 When adding new features, please ensure you update the relevant class documentation. We aim for a "Code First, Document Second" workflow to keep our technical debt low.
 
 ## 📖 Core Manual
-- [Combat & Combos](./combat-system)
-- [Scene Transitions](./scene-flow)
-- [Visual Effects](./effect-system)
-- [Enemy AI Behavior](./enemy-ai)
-- [Items & Pickups](./progression-items)
+- [Combat & Combos](./manual/combat-system)
+- [Scene Transitions](./manual/scene-flow)
+- [Visual Effects](./manual/effect-system)
+- [Enemy AI Behavior](./manual/enemy-ai)
+- [Items & Pickups](./manual/progression-items)
