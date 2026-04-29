@@ -48208,10 +48208,12 @@ volume_db = 1.0
 
 [node name="ItemUpgrade1" parent="." instance=ExtResource("14_7ire7")]
 position = Vector2(1041, 350)
+item_id = &"teleport_flask"
+is_inventory_item = true
 
 [node name="ItemUpgrade2" parent="." instance=ExtResource("14_7ire7")]
 position = Vector2(1040, 399)
-item_id = &"potion"
+is_inventory_item = true
 
 [node name="Sprite2D" parent="ItemUpgrade2" index="0"]
 texture = ExtResource("15_jnhlp")

@@ -84,6 +84,7 @@ func _ready() -> void:
 	max_hp = global.player_max_hp
 	health = global.player_health
 
+
 # haetaan hp ja staminapalkit hahmolle
 	stamina_bar = GUI.get_node_or_null("HUD/Staminabar")
 	healthbar = GUI.get_node_or_null("HUD/Healthbar")
@@ -736,5 +737,7 @@ var health: int = 100
 
 
 #haetaan hp ja staminapalkki sekä tekstit/labelit
+var stamina_bar = null
+var healthbar = null
 var health_label = null
 var stamina_label = null

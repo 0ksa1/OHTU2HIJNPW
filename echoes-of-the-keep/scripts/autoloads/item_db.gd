@@ -16,7 +16,7 @@ const ITEMS := {
 	},
 	#artifakti
 	&"teleport_flask": {
-		"icon": preload("res://art/items/bottle.png"),
+		"icon": preload("res://art/items/orb.png"),
 		"type": "consumable",
 		"effect": "teleport",
 		"description": "artifact
