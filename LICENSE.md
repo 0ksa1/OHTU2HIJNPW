@@ -36,8 +36,8 @@ This project utilizes the following third-party assets. We do not claim ownershi
 - [EDINNU: STONE CEMETERY](https://rowdy41.itch.io/stone-cemetery-asset-pack) by [rowdy41](https://rowdy41.itch.io/)
 - [8-Bit Explosion 1_4](https://freesound.org/people/Joao_Janz/sounds/478271/) by [Joao_Janz](https://freesound.org/people/Joao_Janz/)
 
-- []() by []() (audiofiles used)
-- []() by []()
+- [Potion drinking audio](https://pixabay.com/sound-effects/film-special-effects-085594-potion-35983/) by [freesound_community](https://pixabay.com/users/freesound_community-46691455/) 
+- []() by []()(audiofiles used)
 
 
 
