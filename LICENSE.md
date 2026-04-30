@@ -36,8 +36,11 @@ This project utilizes the following third-party assets. We do not claim ownershi
 - [EDINNU: STONE CEMETERY](https://rowdy41.itch.io/stone-cemetery-asset-pack) by [rowdy41](https://rowdy41.itch.io/)
 - [8-Bit Explosion 1_4](https://freesound.org/people/Joao_Janz/sounds/478271/) by [Joao_Janz](https://freesound.org/people/Joao_Janz/)
 
-- [Potion drinking audio](https://pixabay.com/sound-effects/film-special-effects-085594-potion-35983/) by [freesound_community](https://pixabay.com/users/freesound_community-46691455/) 
-- []() by []()(audiofiles used)
+- Potion drinking + male hurt audio by [freesound_community](https://pixabay.com/users/freesound_community-46691455/) 
+-  footstep_wood + footstep grass by [freesounds123](https://pixabay.com/users/freesounds123-49985424/)
+-  Forgotten cave OST by [mavopix]https://pixabay.com/users/mavopix-2288045/()
+-  Water dripping in cave by [solarmusic](https://pixabay.com/users/solarmusic-27851065/)
+-  Door SFX by [DRAGON-STUDIO](https://pixabay.com/users/dragon-studio-38165424/)
 
 
 
