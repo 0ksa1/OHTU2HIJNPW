@@ -48207,7 +48207,7 @@ stream = ExtResource("13_v23nj")
 volume_db = 1.0
 
 [node name="ItemUpgrade1" parent="." instance=ExtResource("14_7ire7")]
-position = Vector2(1041, 350)
+position = Vector2(2175, 741)
 item_id = &"teleport_flask"
 is_inventory_item = true
 
@@ -48217,6 +48217,9 @@ is_inventory_item = true
 
 [node name="Sprite2D" parent="ItemUpgrade2" index="0"]
 texture = ExtResource("15_jnhlp")
+
+[node name="PickupRange" parent="ItemUpgrade2" index="1"]
+visible = true
 
 [node name="SpawnPoints" type="Node" parent="."]
 

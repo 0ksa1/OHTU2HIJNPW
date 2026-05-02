@@ -231,3 +231,5 @@ func _on_boss_died() -> void:
 
 	if boss_health_ui != null and boss_health_ui.has_method("hide_bar"):
 		boss_health_ui.call("hide_bar")
+	
+	spawn_controller.boss_dead = true
