@@ -48208,6 +48208,8 @@ volume_db = 1.0
 
 [node name="ItemUpgrade1" parent="." instance=ExtResource("14_7ire7")]
 position = Vector2(2175, 741)
+item_id = &"teleport_flask"
+is_inventory_item = true
 
 [node name="ItemUpgrade2" parent="." instance=ExtResource("14_7ire7")]
 position = Vector2(1040, 399)
